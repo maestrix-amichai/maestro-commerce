@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloom & Petals - Bella Chat Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #ffd6e8 50%, #ffc4dd 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .demo-container {
+            text-align: center;
+            max-width: 800px;
+        }
+
+        .demo-title {
+            color: #d63384;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .demo-subtitle {
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .demo-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        .demo-text {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #d63384 0%, #f06595 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(214, 51, 132, 0.4);
+            transition: transform 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(214, 51, 132, 0.5);
+        }
+
+        /* Chat Widget */
+        .chat-widget {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .chat-bubble {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #d63384 0%, #f06595 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(214, 51, 132, 0.4);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+        }
+
+        .chat-bubble:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 32px rgba(214, 51, 132, 0.5);
+        }
+
+        .chat-bubble.hidden {
+            display: none;
+        }
+
+        .bubble-icon {
+            font-size: 32px;
+            animation: wave 2s infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(20deg); }
+            75% { transform: rotate(-20deg); }
+        }
+
+        .bubble-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4757;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .chat-window {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 420px;
+            height: 650px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: scale(0.8) translateY(20px);
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            overflow: hidden;
+        }
+
+        .chat-window.visible {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: all;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #d63384 0%, #f06595 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-avatar {
+            width: 45px;
+            height: 45px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .chat-header-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 2px;
+        }
+
+        .chat-status {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .chat-close {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .chat-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: linear-gradient(to bottom, #fef3f7, #ffffff);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #d6338488;
+            border-radius: 3px;
+        }
+
+        .message {
+            display: flex;
+            flex-direction: column;
+            animation: messageSlide 0.4s ease-out;
+        }
+
+        @keyframes messageSlide {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.ai { align-items: flex-start; }
+        .message.user { align-items: flex-end; }
+
+        .message-bubble {
+            padding: 12px 16px;
+            border-radius: 18px;
+            max-width: 80%;
+            word-wrap: break-word;
+            line-height: 1.5;
+        }
+
+        .message.ai .message-bubble {
+            background: white;
+            border: 2px solid #f0f0f0;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #d63384 0%, #f06595 100%);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: 4px;
+            padding: 0 8px;
+        }
+
+        .confidence-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #d1fae5;
+            color: #065f46;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .quick-reply-btn {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid #d63384;
+            color: #d63384;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .quick-reply-btn:hover {
+            background: #d63384;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .product-card {
+            background: #fef3f7;
+            border: 2px solid #ffd6e8;
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .product-card:hover {
+            border-color: #d63384;
+            box-shadow: 0 4px 16px rgba(214, 51, 132, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .product-card-content {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .product-card-image {
+            width: 90px;
+            height: 90px;
+            border-radius: 12px;
+            object-fit: cover;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-card-info { flex: 1; }
+
+        .product-card-name {
+            font-weight: 700;
+            color: #333;
+            font-size: 1.05rem;
+            margin-bottom: 6px;
+        }
+
+        .product-card-desc {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .product-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+        }
+
+        .product-card-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #d63384;
+        }
+
+        .product-card-btn {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #d63384 0%, #f06595 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .product-card-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(214, 51, 132, 0.3);
+        }
+
+        .product-carousel {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 8px 0;
+            margin-top: 12px;
+        }
+
+        .product-carousel::-webkit-scrollbar { height: 6px; }
+        .product-carousel::-webkit-scrollbar-thumb { background: #d63384; border-radius: 3px; }
+
+        .carousel-item {
+            min-width: 140px;
+            background: white;
+            border: 2px solid #ffd6e8;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .carousel-item:hover {
+            border-color: #d63384;
+            transform: translateY(-4px);
+        }
+
+        .carousel-item-img {
+            width: 100%;
+            height: 100px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-bottom: 8px;
+        }
+
+        .carousel-item-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .carousel-item-price {
+            color: #d63384;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: white;
+            border: 2px solid #f0f0f0;
+            border-radius: 18px;
+            border-bottom-left-radius: 4px;
+            max-width: fit-content;
+        }
+
+        .typing-text {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #d63384;
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-8px); }
+        }
+
+        .chat-input-area {
+            padding: 16px 20px;
+            background: white;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 18px;
+            border: 2px solid #f0f0f0;
+            border-radius: 24px;
+            outline: none;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .chat-input:focus {
+            border-color: #d63384;
+            box-shadow: 0 0 0 3px rgba(214, 51, 132, 0.1);
+        }
+
+        .send-btn {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #d63384 0%, #f06595 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .send-btn:hover:not(:disabled) {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(214, 51, 132, 0.4);
+        }
+
+        .checkout-form {
+            background: #fef3f7;
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 12px;
+        }
+
+        .checkout-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #ffd6e8;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus {
+            border-color: #d63384;
+            box-shadow: 0 0 0 3px rgba(214, 51, 132, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .order-summary {
+            background: white;
+            border: 2px solid #ffd6e8;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .order-summary-title {
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #333;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+            padding-top: 12px;
+            margin-top: 8px;
+            border-top: 2px solid #f0f0f0;
+            font-weight: 700;
+        }
+
+        .submit-order-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #d63384 0%, #f06595 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: all 0.3s;
+        }
+
+        .submit-order-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(214, 51, 132, 0.4);
+        }
+
+        .success-animation {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+            animation: successPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes successPop {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .success-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #22543d;
+            margin-bottom: 8px;
+        }
+
+        .tracking-info {
+            background: #f0fdf4;
+            border: 2px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .tracking-number {
+            font-weight: 700;
+            color: #22543d;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            margin: 8px 0;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #d63384;
+            background: white;
+            color: #d63384;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            background: #d63384;
+            color: white;
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, #d63384 0%, #f06595 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        @media (max-width: 768px) {
+            .chat-window {
+                width: 100%;
+                height: 100vh;
+                bottom: 0;
+                right: 0;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1 class="demo-title">🌸 Bloom & Petals</h1>
+        <p class="demo-subtitle">AI-Powered Flower Shopping Experience</p>
+        
+        <div class="demo-card">
+            <p class="demo-text">
+                <strong>Meet Bella</strong> - your AI florist assistant! She helps customers find the perfect flowers for any occasion, provides instant recommendations, and completes orders seamlessly.
+            </p>
+            <p class="demo-text">
+                ✨ Smart product recommendations<br>
+                💬 Natural conversation flow<br>
+                🛍️ Complete checkout experience<br>
+                📦 Order tracking & confirmation
+            </p>
+            <button class="cta-button" onclick="document.getElementById('chatBubble').click()">
+                Chat with Bella Now →
+            </button>
+        </div>
+    </div>
+
+    <!-- Chat Widget -->
+    <div class="chat-widget">
+        <div class="chat-bubble" id="chatBubble">
+            <div class="bubble-icon">🌸</div>
+            <div class="bubble-badge">1</div>
+        </div>
+
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <div class="chat-header-left">
+                    <div class="chat-avatar">🤖</div>
+                    <div class="chat-header-info">
+                        <h3>Bella</h3>
+                        <div class="chat-status">
+                            <div class="status-dot"></div>
+                            <span>Online now</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="chat-close" id="chatClose">✕</button>
+            </div>
+
+            <div class="chat-messages" id="chatMessages"></div>
+
+            <div class="chat-input-area">
+                <div class="chat-input-wrapper">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Type your message..." autocomplete="off">
+                    <button class="send-btn" id="sendBtn">➤</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const state = {
+            isOpen: false,
+            conversation: [],
+            selectedProduct: null,
+            orderNumber: null
+        };
+
+        const products = {
+            spring_bouquet: {
+                id: 'spring_bouquet',
+                name: 'Spring Bouquet',
+                image: 'https://res.cloudinary.com/dukf4ckq1/image/upload/v1761770933/Maestro%20Commerce/Generated_Image_October_29_2025_-_9_46PM_t5fjxi.png',
+                price: 45.00,
+                description: 'A delightful mix of tulips, daffodils, and hyacinths'
+            },
+            romance_roses: {
+                id: 'romance_roses',
+                name: 'Romance Roses',
+                image: 'https://res.cloudinary.com/dukf4ckq1/image/upload/v1761770933/Maestro%20Commerce/Generated_Image_October_29_2025_-_9_47PM_tzjpdm.png',
+                price: 65.00,
+                description: 'Classic red roses arranged beautifully for that special someone'
+            },
+            sunshine_mix: {
+                id: 'sunshine_mix',
+                name: 'Sunshine Mix',
+                image: 'https://res.cloudinary.com/dukf4ckq1/image/upload/v1761770933/Maestro%20Commerce/Generated_Image_October_29_2025_-_9_47PM_1_xbedip.png',
+                price: 38.00,
+                description: 'Bright sunflowers and daisies to brighten any day'
+            }
+        };
+
+        const chatBubble = document.getElementById('chatBubble');
+        const chatWindow = document.getElementById('chatWindow');
+        const chatClose = document.getElementById('chatClose');
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+
+        chatBubble.addEventListener('click', openChat);
+        chatClose.addEventListener('click', closeChat);
+        sendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        function openChat() {
+            state.isOpen = true;
+            chatBubble.classList.add('hidden');
+            chatWindow.classList.add('visible');
+            if (state.conversation.length === 0) {
+                setTimeout(() => addAIMessage('greeting'), 500);
+            }
+        }
+
+        function closeChat() {
+            state.isOpen = false;
+            chatWindow.classList.remove('visible');
+            chatBubble.classList.remove('hidden');
+        }
+
+        function getCurrentTime() {
+            return new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function scrollToBottom() {
+            setTimeout(() => chatMessages.scrollTop = chatMessages.scrollHeight, 100);
+        }
+
+        function addMessage(type, content, options = {}) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.className = 'message-bubble';
+            
+            if (typeof content === 'string') {
+                bubbleDiv.innerHTML = content;
+            } else {
+                bubbleDiv.appendChild(content);
+            }
+            
+            messageDiv.appendChild(bubbleDiv);
+            
+            if (options.showTime !== false) {
+                const timeDiv = document.createElement('div');
+                timeDiv.className = 'message-time';
+                timeDiv.textContent = getCurrentTime();
+                messageDiv.appendChild(timeDiv);
+            }
+            
+            if (options.confidence) {
+                const badge = document.createElement('div');
+                badge.className = 'confidence-badge';
+                badge.innerHTML = `✓ ${options.confidence}% confident`;
+                bubbleDiv.appendChild(badge);
+            }
+            
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        function showTyping() {
+            const div = document.createElement('div');
+            div.className = 'message ai';
+            div.id = 'typing-indicator';
+            div.innerHTML = `
+                <div class="typing-indicator">
+                    <span class="typing-text">Bella is typing</span>
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            `;
+            chatMessages.appendChild(div);
+            scrollToBottom();
+        }
+
+        function hideTyping() {
+            const typing = document.getElementById('typing-indicator');
+            if (typing) typing.remove();
+        }
+
+        function addUserMessage(text) {
+            addMessage('user', text);
+            state.conversation.push({ role: 'user', content: text });
+        }
+
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+            addUserMessage(message);
+            chatInput.value = '';
+            setTimeout(() => processUserMessage(message), 800);
+        }
+
+        function processUserMessage(message) {
+            const lower = message.toLowerCase();
+            if (lower.includes('anniversary') || lower.includes('romantic')) {
+                showProductRecommendations(['romance_roses']);
+            } else if (lower.includes('birthday')) {
+                showProductRecommendations(['spring_bouquet', 'sunshine_mix']);
+            } else {
+                addAIMessage('ask_occasion');
+            }
+        }
+
+        function addAIMessage(type) {
+            showTyping();
+            setTimeout(() => {
+                hideTyping();
+                if (type === 'greeting') {
+                    addMessage('ai', 'Hi! I\'m Bella 🌸 your personal florist assistant at Bloom & Petals!<br><br>I\'m here to help you find the perfect flowers for any occasion. What brings you here today?', { confidence: 95 });
+                    setTimeout(() => addQuickReplies([
+                        { text: '🎂 Birthday flowers', action: 'birthday' },
+                        { text: '💕 Anniversary gift', action: 'anniversary' },
+                        { text: '💐 Just browsing', action: 'browse' }
+                    ]), 500);
+                } else if (type === 'ask_occasion') {
+                    addMessage('ai', 'I\'d love to help you choose! What\'s the occasion for these flowers?', { confidence: 88 });
+                    setTimeout(() => addQuickReplies([
+                        { text: '🎂 Birthday', action: 'birthday' },
+                        { text: '💕 Anniversary', action: 'anniversary' }
+                    ]), 500);
+                }
+            }, 1500);
+        }
+
+        function addQuickReplies(replies) {
+            const div = document.createElement('div');
+            div.className = 'message ai';
+            const container = document.createElement('div');
+            container.className = 'quick-replies';
+            replies.forEach(reply => {
+                const btn = document.createElement('button');
+                btn.className = 'quick-reply-btn';
+                btn.textContent = reply.text;
+                btn.onclick = () => handleQuickReply(reply.action);
+                container.appendChild(btn);
+            });
+            div.appendChild(container);
+            chatMessages.appendChild(div);
+            scrollToBottom();
+        }
+
+        function handleQuickReply(action) {
+            const text = {
+                'birthday': 'I need birthday flowers',
+                'anniversary': 'I\'m looking for anniversary flowers',
+                'browse': 'I\'d like to see what you have'
+            };
+            addUserMessage(text[action]);
+            setTimeout(() => {
+                if (action === 'birthday') {
+                    showProductRecommendations(['spring_bouquet', 'sunshine_mix']);
+                } else if (action === 'anniversary') {
+                    showProductRecommendations(['romance_roses']);
+                } else if (action === 'browse') {
+                    showAllProducts();
+                }
+            }, 1000);
+        }
+
+        function showProductRecommendations(productIds) {
+            showTyping();
+            setTimeout(() => {
+                hideTyping();
+                addMessage('ai', 'Perfect! I\'ve found some beautiful options for you. Each arrangement is handcrafted by our expert florists! 🌸', { confidence: 91 });
+                setTimeout(() => {
+                    productIds.forEach((id, i) => {
+                        setTimeout(() => addProductCard(products[id]), i * 300);
+                    });
+                }, 500);
+            }, 1500);
+        }
+
+        function showAllProducts() {
+            showTyping();
+            setTimeout(() => {
+                hideTyping();
+                addMessage('ai', 'Here\'s our collection! Swipe to see all options 👉', { confidence: 93 });
+                setTimeout(() => {
+                    const div = document.createElement('div');
+                    div.className = 'message ai';
+                    const carousel = document.createElement('div');
+                    carousel.className = 'product-carousel';
+                    Object.values(products).forEach(p => {
+                        const item = document.createElement('div');
+                        item.className = 'carousel-item';
+                        item.innerHTML = `
+                            <img src="${p.image}" alt="${p.name}" class="carousel-item-img">
+                            <div class="carousel-item-name">${p.name}</div>
+                            <div class="carousel-item-price">$${p.price.toFixed(2)}</div>
+                        `;
+                        item.onclick = () => {
+                            addUserMessage(`Tell me more about ${p.name}`);
+                            setTimeout(() => {
+                                showTyping();
+                                setTimeout(() => {
+                                    hideTyping();
+                                    addProductCard(p);
+                                }, 1000);
+                            }, 500);
+                        };
+                        carousel.appendChild(item);
+                    });
+                    div.appendChild(carousel);
+                    chatMessages.appendChild(div);
+                    scrollToBottom();
+                }, 500);
+            }, 1200);
+        }
+
+        function addProductCard(product) {
+            const div = document.createElement('div');
+            div.className = 'message ai';
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.innerHTML = `
+                <div class="product-card-content">
+                    <img src="${product.image}" alt="${product.name}" class="product-card-image">
+                    <div class="product-card-info">
+                        <div class="product-card-name">${product.name}</div>
+                        <div class="product-card-desc">${product.description}</div>
+                    </div>
+                </div>
+                <div class="product-card-footer">
+                    <div class="product-card-price">$${product.price.toFixed(2)}</div>
+                    <button class="product-card-btn">Select & Order</button>
+                </div>
+            `;
+            card.querySelector('.product-card-btn').onclick = () => selectProduct(product);
+            div.appendChild(card);
+            chatMessages.appendChild(div);
+            scrollToBottom();
+        }
+
+        function selectProduct(product) {
+            state.selectedProduct = product;
+            addUserMessage(`I'd like to order the ${product.name}`);
+            setTimeout(() => {
+                showTyping();
+                setTimeout(() => {
+                    hideTyping();
+                    addMessage('ai', `Excellent choice! The ${product.name} is absolutely beautiful 💐<br><br>Let me help you complete your order. I just need a few details for delivery.`, { confidence: 96 });
+                    setTimeout(() => showCheckoutForm(), 1000);
+                }, 1500);
+            }, 800);
+        }
+
+        function showCheckoutForm() {
+            const div = document.createElement('div');
+            div.className = 'message ai';
+            const form = document.createElement('div');
+            form.className = 'checkout-form';
+            form.innerHTML = `
+                <div class="checkout-title">📝 Delivery Information</div>
+                <div class="form-group">
+                    <label class="form-label">Recipient Name *</label>
+                    <input type="text" class="form-input" id="recipientName" placeholder="Full name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Delivery Address *</label>
+                    <input type="text" class="form-input" id="address" placeholder="Street address">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">City *</label>
+                        <input type="text" class="form-input" id="city" placeholder="City">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">ZIP *</label>
+                        <input type="text" class="form-input" id="zip" placeholder="12345">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone *</label>
+                    <input type="tel" class="form-input" id="phone" placeholder="(555) 123-4567">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Delivery Date *</label>
+                    <input type="date" class="form-input" id="deliveryDate">
+                </div>
+                <div class="order-summary">
+                    <div class="order-summary-title">Order Summary</div>
+                    <div class="order-item">
+                        <span>${state.selectedProduct.name}</span>
+                        <span>$${state.selectedProduct.price.toFixed(2)}</span>
+                    </div>
+                    <div class="order-item">
+                        <span>Same-Day Delivery</span>
+                        <span>$12.99</span>
+                    </div>
+                    <div class="order-item">
+                        <span>Total</span>
+                        <span>$${(state.selectedProduct.price + 12.99).toFixed(2)}</span>
+                    </div>
+                </div>
+                <button class="submit-order-btn" id="submitOrder">Complete Order 🎉</button>
+            `;
+            div.appendChild(form);
+            chatMessages.appendChild(div);
+            scrollToBottom();
+            
+            const dateInput = document.getElementById('deliveryDate');
+            dateInput.min = new Date().toISOString().split('T')[0];
+            dateInput.value = dateInput.min;
+            
+            document.getElementById('submitOrder').onclick = submitOrder;
+        }
+
+        function submitOrder() {
+            if (!document.getElementById('recipientName').value.trim() || 
+                !document.getElementById('address').value.trim() ||
+                !document.getElementById('city').value.trim() ||
+                !document.getElementById('zip').value.trim() ||
+                !document.getElementById('phone').value.trim()) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            state.orderNumber = 'BL' + Math.random().toString(36).substr(2, 9).toUpperCase();
+            const btn = document.getElementById('submitOrder');
+            btn.textContent = 'Processing... 🔄';
+            btn.disabled = true;
+            
+            setTimeout(() => showOrderConfirmation(), 2000);
+        }
+
+        function showOrderConfirmation() {
+            const div = document.createElement('div');
+            div.className = 'message ai';
+            const conf = document.createElement('div');
+            conf.className = 'success-animation';
+            conf.innerHTML = `
+                <div class="success-icon">🎉</div>
+                <div class="success-title">Order Confirmed!</div>
+                <div style="color: #666; margin-bottom: 16px;">
+                    Thank you! Your ${state.selectedProduct.name} will be delivered with care 💐
+                </div>
+                <div class="tracking-info">
+                    <strong>Order Number:</strong>
+                    <div class="tracking-number">${state.orderNumber}</div>
+                    <div style="color: #666; font-size: 0.9rem; margin-top: 8px;">
+                        🚚 Estimated delivery: ${new Date(document.getElementById('deliveryDate').value).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="action-btn" onclick="addUserMessage('Can I track my order?'); setTimeout(() => { showTyping(); setTimeout(() => { hideTyping(); addMessage('ai', 'Your order <strong>${state.orderNumber}</strong> is being prepared! 📦<br><br>You\\'ll receive SMS updates when:<br>• Flowers are prepared<br>• Out for delivery<br>• Delivered', { confidence: 99 }); }, 1500); }, 800);">📦 Track Order</button>
+                    <button class="action-btn primary" onclick="addUserMessage('I\\'d like to see more flowers'); setTimeout(() => showAllProducts(), 800);">🌸 Shop More</button>
+                </div>
+            `;
+            div.appendChild(conf);
+            chatMessages.appendChild(div);
+            scrollToBottom();
+            
+            setTimeout(() => {
+                addMessage('ai', 'You\'ll receive SMS updates on your delivery! Is there anything else I can help you with today? 😊', { confidence: 97 });
+            }, 2000);
+        }
+
+        window.addEventListener('load', () => {
+            setTimeout(() => chatBubble.style.animation = 'wave 2s infinite', 1000);
+        });
+    </script>
+</body>
+</html>
