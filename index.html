@@ -776,40 +776,40 @@
             box-shadow: 0 4px 12px rgba(214, 51, 132, 0.3);
         }
 
-       /* Enhanced Carousel with Navigation Arrows - FIXED VERSION */
+       /* Enhanced Carousel - PROPER IMPLEMENTATION */
 .carousel-wrapper {
     position: relative;
     margin-top: 12px;
-    padding: 0 8px; /* Add padding for arrows */
 }
 
 .carousel-container {
-    overflow: hidden;
+    overflow: hidden; /* Critical - hides overflow */
     border-radius: 12px;
     position: relative;
+    width: 100%; /* Takes full width of message bubble */
 }
 
 .product-carousel {
     display: flex;
     gap: 12px;
-    transition: transform 0.3s ease-out;
+    transition: transform 0.4s ease-out;
     padding: 8px 0;
-    /* Remove any scrollbar styles */
+    will-change: transform; /* Performance optimization */
 }
 
-/* Hide scrollbars completely */
+/* Hide all scrollbars */
 .product-carousel::-webkit-scrollbar {
     display: none;
 }
 
 .product-carousel {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 .carousel-item {
-    min-width: 160px;
-    max-width: 160px; /* ADD THIS - prevents items from growing */
+    min-width: 145px; /* Slightly narrower so ~2.5 items show */
+    max-width: 145px;
     background: white;
     border: 2px solid #ffd6e8;
     border-radius: 12px;
@@ -817,24 +817,25 @@
     text-align: center;
     cursor: pointer;
     transition: all 0.3s;
-    flex-shrink: 0;
+    flex-shrink: 0; /* Prevents shrinking */
 }
 
 .carousel-item:hover {
     border-color: #d63384;
     transform: translateY(-4px);
+    z-index: 1;
 }
 
 .carousel-item-img {
     width: 100%;
-    height: 120px; /* Fixed height */
+    height: 110px;
     border-radius: 8px;
     object-fit: cover;
     margin-bottom: 8px;
 }
 
 .carousel-item-name {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 600;
     margin-bottom: 4px;
     overflow: hidden;
@@ -845,16 +846,17 @@
 .carousel-item-price {
     color: #d63384;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 0.95rem;
 }
 
+/* Navigation Arrows */
 .carousel-nav {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
-    background: white;
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.95);
     border: 2px solid #d63384;
     border-radius: 50%;
     display: flex;
@@ -865,33 +867,32 @@
     transition: all 0.3s;
     z-index: 10;
     color: #d63384;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: bold;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
 .carousel-wrapper:hover .carousel-nav:not(.disabled) {
-    opacity: 1;
+    opacity: 0.9;
 }
 
 .carousel-nav:hover:not(.disabled) {
     background: #d63384;
     color: white;
-    transform: translateY(-50%) scale(1.1);
+    opacity: 1 !important;
+    transform: translateY(-50%) scale(1.15);
 }
 
 .carousel-nav.prev {
-    left: -10px;
+    left: 5px;
 }
 
 .carousel-nav.next {
-    right: -10px;
+    right: 5px;
 }
 
 .carousel-nav.disabled {
-    opacity: 0 !important;
-    cursor: not-allowed;
-    pointer-events: none;
+    display: none; /* Completely hide when disabled */
 }
         .typing-indicator {
             display: flex;
