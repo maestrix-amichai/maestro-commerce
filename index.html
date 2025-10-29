@@ -776,13 +776,14 @@
             box-shadow: 0 4px 12px rgba(214, 51, 132, 0.3);
         }
 
-        /* Enhanced Carousel with Navigation Arrows */
-        .carousel-wrapper {
-            position: relative;
-            margin-top: 12px;
-        }
+       /* Enhanced Carousel with Navigation Arrows - FIXED VERSION */
+.carousel-wrapper {
+    position: relative;
+    margin-top: 12px;
+    padding: 0 8px; /* Add padding for arrows */
+}
 
-        .carousel-container {
+.carousel-container {
     overflow: hidden;
     border-radius: 12px;
     position: relative;
@@ -792,12 +793,59 @@
     display: flex;
     gap: 12px;
     transition: transform 0.3s ease-out;
-    padding: 8px 4px; /* Reduced horizontal padding */
-    overflow: visible; /* Changed from hidden */
+    padding: 8px 0;
+    /* Remove any scrollbar styles */
 }
 
+/* Hide scrollbars completely */
 .product-carousel::-webkit-scrollbar {
-    display: none; /* Hide scrollbar */
+    display: none;
+}
+
+.product-carousel {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.carousel-item {
+    min-width: 160px;
+    max-width: 160px; /* ADD THIS - prevents items from growing */
+    background: white;
+    border: 2px solid #ffd6e8;
+    border-radius: 12px;
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    flex-shrink: 0;
+}
+
+.carousel-item:hover {
+    border-color: #d63384;
+    transform: translateY(-4px);
+}
+
+.carousel-item-img {
+    width: 100%;
+    height: 120px; /* Fixed height */
+    border-radius: 8px;
+    object-fit: cover;
+    margin-bottom: 8px;
+}
+
+.carousel-item-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.carousel-item-price {
+    color: #d63384;
+    font-weight: 700;
+    font-size: 1rem;
 }
 
 .carousel-nav {
@@ -822,7 +870,7 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-.carousel-wrapper:hover .carousel-nav {
+.carousel-wrapper:hover .carousel-nav:not(.disabled) {
     opacity: 1;
 }
 
@@ -833,15 +881,15 @@
 }
 
 .carousel-nav.prev {
-    left: -5px; /* Moved to edge */
+    left: -10px;
 }
 
 .carousel-nav.next {
-    right: -5px; /* Moved to edge */
+    right: -10px;
 }
 
 .carousel-nav.disabled {
-    opacity: 0.3 !important;
+    opacity: 0 !important;
     cursor: not-allowed;
     pointer-events: none;
 }
