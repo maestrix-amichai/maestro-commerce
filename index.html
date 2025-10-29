@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bloom & Petals - Bella Chat Assistant</title>
+    <title>Bloom & Petals - Premium Flower Delivery</title>
     <style>
         * {
             margin: 0;
@@ -13,65 +13,437 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #ffeef8 0%, #ffd6e8 50%, #ffc4dd 100%);
+            background: #ffffff;
             min-height: 100vh;
+        }
+
+        /* Header & Navigation */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #d63384;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            font-size: 2.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #374151;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #d63384;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .search-icon, .cart-icon {
+            font-size: 1.3rem;
+            color: #374151;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .search-icon:hover, .cart-icon:hover {
+            color: #d63384;
+        }
+
+        .cart-badge {
+            position: relative;
+        }
+
+        .cart-badge::after {
+            content: '0';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #d63384;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
-        }
-
-        .demo-container {
-            text-align: center;
-            max-width: 800px;
-        }
-
-        .demo-title {
-            color: #d63384;
-            font-size: 2.5rem;
+            font-size: 0.7rem;
             font-weight: 700;
-            margin-bottom: 10px;
         }
 
-        .demo-subtitle {
-            color: #666;
-            font-size: 1.2rem;
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #ffeef8 0%, #ffd6e8 100%);
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            color: #1f2937;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: #6b7280;
             margin-bottom: 30px;
         }
 
-        .demo-card {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-            margin-bottom: 20px;
+        .hero-cta {
+            display: inline-flex;
+            gap: 15px;
         }
 
-        .demo-text {
-            color: #666;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .cta-button {
+        .btn-primary {
             background: linear-gradient(135deg, #d63384 0%, #f06595 100%);
             color: white;
-            padding: 15px 40px;
+            padding: 16px 40px;
             border: none;
             border-radius: 30px;
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 8px 24px rgba(214, 51, 132, 0.4);
+            box-shadow: 0 8px 24px rgba(214, 51, 132, 0.3);
             transition: transform 0.3s;
         }
 
-        .cta-button:hover {
+        .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(214, 51, 132, 0.5);
+            box-shadow: 0 12px 32px rgba(214, 51, 132, 0.4);
         }
 
-        /* Chat Widget */
+        .btn-secondary {
+            background: white;
+            color: #d63384;
+            padding: 16px 40px;
+            border: 2px solid #d63384;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: #d63384;
+            color: white;
+        }
+
+        /* Features Bar */
+        .features-bar {
+            background: white;
+            padding: 30px 40px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .features-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+        }
+
+        .feature-text h4 {
+            font-size: 1rem;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .feature-text p {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        /* Products Section */
+        .products-section {
+            padding: 80px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: #1f2937;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: #6b7280;
+        }
+
+        /* Enhanced Product Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+
+        .product-image-wrapper {
+            position: relative;
+            overflow: hidden;
+            height: 320px;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.1);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #d63384;
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .quick-add {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: white;
+            color: #d63384;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .product-card:hover .quick-add {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .quick-add:hover {
+            background: #d63384;
+            color: white;
+        }
+
+        .product-info {
+            padding: 25px;
+        }
+
+        .product-category {
+            color: #9ca3af;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .product-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .product-description {
+            color: #6b7280;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #d63384;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #fbbf24;
+        }
+
+        /* Newsletter Section */
+        .newsletter {
+            background: linear-gradient(135deg, #ffeef8 0%, #ffd6e8 100%);
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        .newsletter-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .newsletter h2 {
+            font-size: 2.2rem;
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+
+        .newsletter p {
+            color: #6b7280;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 10px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 15px 25px;
+            border: 2px solid #ffd6e8;
+            border-radius: 30px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .newsletter-input:focus {
+            border-color: #d63384;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 60px 40px 30px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section a {
+            color: #d1d5db;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: #f9a8d4;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+        }
+
+        /* Chat Widget Styles */
         .chat-widget {
             position: fixed;
             bottom: 30px;
@@ -139,7 +511,7 @@
             position: fixed;
             bottom: 30px;
             right: 30px;
-            width: 420px;
+            width: 500px;
             height: 650px;
             background: white;
             border-radius: 20px;
@@ -264,7 +636,7 @@
         .message-bubble {
             padding: 12px 16px;
             border-radius: 18px;
-            max-width: 80%;
+            max-width: 85%;
             word-wrap: break-word;
             line-height: 1.5;
         }
@@ -327,7 +699,7 @@
             transform: translateY(-2px);
         }
 
-        .product-card {
+        .product-card-chat {
             background: #fef3f7;
             border: 2px solid #ffd6e8;
             border-radius: 16px;
@@ -337,7 +709,7 @@
             transition: all 0.3s;
         }
 
-        .product-card:hover {
+        .product-card-chat:hover {
             border-color: #d63384;
             box-shadow: 0 4px 16px rgba(214, 51, 132, 0.2);
             transform: translateY(-2px);
@@ -350,8 +722,8 @@
         }
 
         .product-card-image {
-            width: 90px;
-            height: 90px;
+            width: 100px;
+            height: 100px;
             border-radius: 12px;
             object-fit: cover;
             flex-shrink: 0;
@@ -404,19 +776,26 @@
             box-shadow: 0 4px 12px rgba(214, 51, 132, 0.3);
         }
 
-        .product-carousel {
-            display: flex;
-            gap: 12px;
-            overflow-x: auto;
-            padding: 8px 0;
+        /* Enhanced Carousel with Navigation Arrows */
+        .carousel-wrapper {
+            position: relative;
             margin-top: 12px;
         }
 
-        .product-carousel::-webkit-scrollbar { height: 6px; }
-        .product-carousel::-webkit-scrollbar-thumb { background: #d63384; border-radius: 3px; }
+        .carousel-container {
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .product-carousel {
+            display: flex;
+            gap: 12px;
+            transition: transform 0.3s ease-out;
+            padding: 8px 0;
+        }
 
         .carousel-item {
-            min-width: 140px;
+            min-width: 160px;
             background: white;
             border: 2px solid #ffd6e8;
             border-radius: 12px;
@@ -424,6 +803,7 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
+            flex-shrink: 0;
         }
 
         .carousel-item:hover {
@@ -433,14 +813,14 @@
 
         .carousel-item-img {
             width: 100%;
-            height: 100px;
+            height: 120px;
             border-radius: 8px;
             object-fit: cover;
             margin-bottom: 8px;
         }
 
         .carousel-item-name {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 600;
             margin-bottom: 4px;
         }
@@ -448,7 +828,57 @@
         .carousel-item-price {
             color: #d63384;
             font-weight: 700;
-            font-size: 0.95rem;
+            font-size: 1rem;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: 2px solid #d63384;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 10;
+            color: #d63384;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .carousel-wrapper:hover .carousel-nav {
+            opacity: 1;
+        }
+
+        .carousel-nav:hover {
+            background: #d63384;
+            color: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-nav.prev {
+            left: -15px;
+        }
+
+        .carousel-nav.next {
+            right: -15px;
+        }
+
+        .carousel-nav.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .carousel-nav.disabled:hover {
+            transform: translateY(-50%) scale(1);
+            background: white;
+            color: #d63384;
         }
 
         .typing-indicator {
@@ -711,29 +1141,213 @@
                 right: 0;
                 border-radius: 0;
             }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="demo-container">
-        <h1 class="demo-title">🌸 Bloom & Petals</h1>
-        <p class="demo-subtitle">AI-Powered Flower Shopping Experience</p>
-        
-        <div class="demo-card">
-            <p class="demo-text">
-                <strong>Meet Bella</strong> - your AI florist assistant! She helps customers find the perfect flowers for any occasion, provides instant recommendations, and completes orders seamlessly.
-            </p>
-            <p class="demo-text">
-                ✨ Smart product recommendations<br>
-                💬 Natural conversation flow<br>
-                🛍️ Complete checkout experience<br>
-                📦 Order tracking & confirmation
-            </p>
-            <button class="cta-button" onclick="document.getElementById('chatBubble').click()">
-                Chat with Bella Now →
-            </button>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <span class="logo-icon">🌸</span>
+                <span>Bloom & Petals</span>
+            </a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#products">Shop</a></li>
+                    <li><a href="#occasions">Occasions</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <span class="search-icon">🔍</span>
+                <span class="cart-icon cart-badge">🛒</span>
+            </div>
         </div>
-    </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Fresh Flowers Delivered with Love</h1>
+            <p class="hero-subtitle">Handcrafted arrangements for every occasion. Same-day delivery available.</p>
+            <div class="hero-cta">
+                <button class="btn-primary" onclick="document.getElementById('chatBubble').click()">Chat with Bella 💬</button>
+                <button class="btn-secondary" onclick="document.querySelector('.products-section').scrollIntoView({behavior: 'smooth'})">Browse Collection</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Bar -->
+    <section class="features-bar">
+        <div class="features-container">
+            <div class="feature-item">
+                <div class="feature-icon">🚚</div>
+                <div class="feature-text">
+                    <h4>Same-Day Delivery</h4>
+                    <p>Order by 2 PM</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🌿</div>
+                <div class="feature-text">
+                    <h4>Fresh Guarantee</h4>
+                    <p>7-day freshness promise</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🎨</div>
+                <div class="feature-text">
+                    <h4>Expert Florists</h4>
+                    <p>Handcrafted with care</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">💝</div>
+                <div class="feature-text">
+                    <h4>Personalized Cards</h4>
+                    <p>Free with every order</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section" id="products">
+        <div class="section-header">
+            <h2 class="section-title">Bestselling Arrangements</h2>
+            <p class="section-subtitle">Handpicked by our expert florists</p>
+        </div>
+
+        <div class="products-grid">
+            <div class="product-card" onclick="document.getElementById('chatBubble').click()">
+                <div class="product-image-wrapper">
+                    <img src="https://res.cloudinary.com/dukf4ckq1/image/upload/v1761770933/Maestro%20Commerce/Generated_Image_October_29_2025_-_9_46PM_t5fjxi.png" alt="Spring Bouquet" class="product-image">
+                    <span class="product-badge">Bestseller</span>
+                    <button class="quick-add">Quick Add</button>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Birthday • Thank You</div>
+                    <h3 class="product-name">Spring Bouquet</h3>
+                    <p class="product-description">A delightful mix of tulips, daffodils, and hyacinths</p>
+                    <div class="product-footer">
+                        <span class="product-price">$45.00</span>
+                        <div class="product-rating">
+                            ⭐⭐⭐⭐⭐ <span style="color: #6b7280; font-size: 0.9rem;">(127)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" onclick="document.getElementById('chatBubble').click()">
+                <div class="product-image-wrapper">
+                    <img src="https://res.cloudinary.com/dukf4ckq1/image/upload/v1761770933/Maestro%20Commerce/Generated_Image_October_29_2025_-_9_47PM_tzjpdm.png" alt="Romance Roses" class="product-image">
+                    <span class="product-badge">Premium</span>
+                    <button class="quick-add">Quick Add</button>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Anniversary • Romance</div>
+                    <h3 class="product-name">Romance Roses</h3>
+                    <p class="product-description">Classic red roses arranged beautifully for that special someone</p>
+                    <div class="product-footer">
+                        <span class="product-price">$65.00</span>
+                        <div class="product-rating">
+                            ⭐⭐⭐⭐⭐ <span style="color: #6b7280; font-size: 0.9rem;">(203)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" onclick="document.getElementById('chatBubble').click()">
+                <div class="product-image-wrapper">
+                    <img src="https://res.cloudinary.com/dukf4ckq1/image/upload/v1761770933/Maestro%20Commerce/Generated_Image_October_29_2025_-_9_47PM_1_xbedip.png" alt="Sunshine Mix" class="product-image">
+                    <span class="product-badge">New</span>
+                    <button class="quick-add">Quick Add</button>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Get Well • Celebration</div>
+                    <h3 class="product-name">Sunshine Mix</h3>
+                    <p class="product-description">Bright sunflowers and daisies to brighten any day</p>
+                    <div class="product-footer">
+                        <span class="product-price">$38.00</span>
+                        <div class="product-rating">
+                            ⭐⭐⭐⭐⭐ <span style="color: #6b7280; font-size: 0.9rem;">(89)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="newsletter-content">
+            <h2>Join Our Bloom Club</h2>
+            <p>Get exclusive offers, flower care tips, and seasonal specials delivered to your inbox</p>
+            <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thanks for subscribing! 🌸');">
+                <input type="email" class="newsletter-input" placeholder="Enter your email" required>
+                <button type="submit" class="btn-primary">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <ul>
+                    <li><a href="#">Our Story</a></li>
+                    <li><a href="#">Our Florists</a></li>
+                    <li><a href="#">Sustainability</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Customer Service</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Delivery Info</a></li>
+                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">Track Order</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Shop</h3>
+                <ul>
+                    <li><a href="#">All Flowers</a></li>
+                    <li><a href="#">Occasions</a></li>
+                    <li><a href="#">Sympathy</a></li>
+                    <li><a href="#">Corporate Gifts</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <ul>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Pinterest</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Bloom & Petals. All rights reserved. | Est. 2020</p>
+        </div>
+    </footer>
 
     <!-- Chat Widget -->
     <div class="chat-widget">
@@ -773,7 +1387,8 @@
             isOpen: false,
             conversation: [],
             selectedProduct: null,
-            orderNumber: null
+            orderNumber: null,
+            carouselPosition: 0
         };
 
         const products = {
@@ -991,43 +1606,110 @@
             setTimeout(() => {
                 hideTyping();
                 addMessage('ai', 'Here\'s our collection! Swipe to see all options 👉', { confidence: 93 });
-                setTimeout(() => {
-                    const div = document.createElement('div');
-                    div.className = 'message ai';
-                    const carousel = document.createElement('div');
-                    carousel.className = 'product-carousel';
-                    Object.values(products).forEach(p => {
-                        const item = document.createElement('div');
-                        item.className = 'carousel-item';
-                        item.innerHTML = `
-                            <img src="${p.image}" alt="${p.name}" class="carousel-item-img">
-                            <div class="carousel-item-name">${p.name}</div>
-                            <div class="carousel-item-price">$${p.price.toFixed(2)}</div>
-                        `;
-                        item.onclick = () => {
-                            addUserMessage(`Tell me more about ${p.name}`);
-                            setTimeout(() => {
-                                showTyping();
-                                setTimeout(() => {
-                                    hideTyping();
-                                    addProductCard(p);
-                                }, 1000);
-                            }, 500);
-                        };
-                        carousel.appendChild(item);
-                    });
-                    div.appendChild(carousel);
-                    chatMessages.appendChild(div);
-                    scrollToBottom();
-                }, 500);
+                setTimeout(() => createCarousel(), 500);
             }, 1200);
+        }
+
+        function createCarousel() {
+            const div = document.createElement('div');
+            div.className = 'message ai';
+            
+            const wrapper = document.createElement('div');
+            wrapper.className = 'carousel-wrapper';
+            
+            const prevBtn = document.createElement('div');
+            prevBtn.className = 'carousel-nav prev';
+            prevBtn.innerHTML = '‹';
+            prevBtn.onclick = () => scrollCarousel(-1);
+            
+            const nextBtn = document.createElement('div');
+            nextBtn.className = 'carousel-nav next';
+            nextBtn.innerHTML = '›';
+            nextBtn.onclick = () => scrollCarousel(1);
+            
+            const container = document.createElement('div');
+            container.className = 'carousel-container';
+            
+            const carousel = document.createElement('div');
+            carousel.className = 'product-carousel';
+            carousel.id = 'productCarousel';
+            
+            Object.values(products).forEach(p => {
+                const item = document.createElement('div');
+                item.className = 'carousel-item';
+                item.innerHTML = `
+                    <img src="${p.image}" alt="${p.name}" class="carousel-item-img">
+                    <div class="carousel-item-name">${p.name}</div>
+                    <div class="carousel-item-price">$${p.price.toFixed(2)}</div>
+                `;
+                item.onclick = () => {
+                    addUserMessage(`Tell me more about ${p.name}`);
+                    setTimeout(() => {
+                        showTyping();
+                        setTimeout(() => {
+                            hideTyping();
+                            addProductCard(p);
+                        }, 1000);
+                    }, 500);
+                };
+                carousel.appendChild(item);
+            });
+            
+            container.appendChild(carousel);
+            wrapper.appendChild(prevBtn);
+            wrapper.appendChild(container);
+            wrapper.appendChild(nextBtn);
+            div.appendChild(wrapper);
+            chatMessages.appendChild(div);
+            
+            updateCarouselButtons();
+            scrollToBottom();
+        }
+
+        function scrollCarousel(direction) {
+            const carousel = document.getElementById('productCarousel');
+            if (!carousel) return;
+            
+            const itemWidth = 172; // 160px width + 12px gap
+            const maxScroll = carousel.scrollWidth - carousel.parentElement.clientWidth;
+            
+            state.carouselPosition += direction * itemWidth;
+            state.carouselPosition = Math.max(0, Math.min(state.carouselPosition, maxScroll));
+            
+            carousel.style.transform = `translateX(-${state.carouselPosition}px)`;
+            updateCarouselButtons();
+        }
+
+        function updateCarouselButtons() {
+            const carousel = document.getElementById('productCarousel');
+            if (!carousel) return;
+            
+            const prevBtn = document.querySelector('.carousel-nav.prev');
+            const nextBtn = document.querySelector('.carousel-nav.next');
+            const maxScroll = carousel.scrollWidth - carousel.parentElement.clientWidth;
+            
+            if (prevBtn) {
+                if (state.carouselPosition <= 0) {
+                    prevBtn.classList.add('disabled');
+                } else {
+                    prevBtn.classList.remove('disabled');
+                }
+            }
+            
+            if (nextBtn) {
+                if (state.carouselPosition >= maxScroll) {
+                    nextBtn.classList.add('disabled');
+                } else {
+                    nextBtn.classList.remove('disabled');
+                }
+            }
         }
 
         function addProductCard(product) {
             const div = document.createElement('div');
             div.className = 'message ai';
             const card = document.createElement('div');
-            card.className = 'product-card';
+            card.className = 'product-card-chat';
             card.innerHTML = `
                 <div class="product-card-content">
                     <img src="${product.image}" alt="${product.name}" class="product-card-image">
@@ -1158,7 +1840,7 @@
                     </div>
                 </div>
                 <div class="action-buttons">
-                    <button class="action-btn" onclick="addUserMessage('Can I track my order?'); setTimeout(() => { showTyping(); setTimeout(() => { hideTyping(); addMessage('ai', 'Your order <strong>${state.orderNumber}</strong> is being prepared! 📦<br><br>You\\'ll receive SMS updates when:<br>• Flowers are prepared<br>• Out for delivery<br>• Delivered', { confidence: 99 }); }, 1500); }, 800);">📦 Track Order</button>
+                    <button class="action-btn" onclick="trackOrder()">📦 Track Order</button>
                     <button class="action-btn primary" onclick="addUserMessage('I\\'d like to see more flowers'); setTimeout(() => showAllProducts(), 800);">🌸 Shop More</button>
                 </div>
             `;
@@ -1169,6 +1851,17 @@
             setTimeout(() => {
                 addMessage('ai', 'You\'ll receive SMS updates on your delivery! Is there anything else I can help you with today? 😊', { confidence: 97 });
             }, 2000);
+        }
+
+        function trackOrder() {
+            addUserMessage('Can I track my order?');
+            setTimeout(() => {
+                showTyping();
+                setTimeout(() => {
+                    hideTyping();
+                    addMessage('ai', `Your order <strong>${state.orderNumber}</strong> is being prepared! 📦<br><br>You'll receive SMS updates when:<br>• Flowers are prepared<br>• Out for delivery<br>• Delivered`, { confidence: 99 });
+                }, 1500);
+            }, 800);
         }
 
         window.addEventListener('load', () => {
