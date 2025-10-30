@@ -776,124 +776,123 @@
             box-shadow: 0 4px 12px rgba(214, 51, 132, 0.3);
         }
 
-       /* Enhanced Carousel - PROPER IMPLEMENTATION */
-.carousel-wrapper {
-    position: relative;
-    margin-top: 12px;
-}
+        /* Enhanced Carousel - PROPER IMPLEMENTATION */
+        .carousel-wrapper {
+            position: relative;
+            margin-top: 12px;
+            padding: 0; /* Remove padding */
+        }
 
-.carousel-container {
-    overflow: hidden; /* Critical - hides overflow */
-    border-radius: 12px;
-    position: relative;
-    width: 100%; /* Takes full width of message bubble */
-}
+        .carousel-container {
+            overflow: hidden;
+            border-radius: 12px;
+            position: relative;
+            width: 100%;
+        }
 
-.product-carousel {
-    display: flex;
-    gap: 12px;
-    transition: transform 0.4s ease-out;
-    padding: 8px 0;
-    will-change: transform; /* Performance optimization */
-}
+        .product-carousel {
+            display: flex;
+            gap: 12px;
+            transition: transform 0.4s ease-out;
+            padding: 8px 0;
+            will-change: transform;
+        }
 
-/* Hide all scrollbars */
-.product-carousel::-webkit-scrollbar {
-    display: none;
-}
+        /* Hide all scrollbars */
+        .product-carousel::-webkit-scrollbar {
+            display: none;
+        }
 
-.product-carousel {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
+        .product-carousel {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
 
-.carousel-item {
-    min-width: 145px; /* Slightly narrower so ~2.5 items show */
-    max-width: 145px;
-    background: white;
-    border: 2px solid #ffd6e8;
-    border-radius: 12px;
-    padding: 12px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s;
-    flex-shrink: 0; /* Prevents shrinking */
-}
+        .carousel-item {
+            min-width: 140px;
+            max-width: 140px;
+            background: white;
+            border: 2px solid #ffd6e8;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
 
-.carousel-item:hover {
-    border-color: #d63384;
-    transform: translateY(-4px);
-    z-index: 1;
-}
+        .carousel-item:hover {
+            border-color: #d63384;
+            transform: translateY(-4px);
+            z-index: 1;
+        }
 
-.carousel-item-img {
-    width: 100%;
-    height: 110px;
-    border-radius: 8px;
-    object-fit: cover;
-    margin-bottom: 8px;
-}
+        .carousel-item-img {
+            width: 100%;
+            height: 110px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-bottom: 8px;
+        }
 
-.carousel-item-name {
-    font-size: 0.85rem;
-    font-weight: 600;
-    margin-bottom: 4px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
+        .carousel-item-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
 
-.carousel-item-price {
-    color: #d63384;
-    font-weight: 700;
-    font-size: 0.95rem;
-}
+        .carousel-item-price {
+            color: #d63384;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
 
-/* Navigation Arrows */
-.carousel-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 36px;
-    height: 36px;
-    background: rgba(255, 255, 255, 0.95);
-    border: 2px solid #d63384;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    opacity: 0;
-    transition: all 0.3s;
-    z-index: 10;
-    color: #d63384;
-    font-size: 1.3rem;
-    font-weight: bold;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
+        /* Navigation Arrows - ALWAYS VISIBLE FOR DEBUGGING */
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 3px solid #d63384;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 1; /* Always visible for now */
+            transition: all 0.3s;
+            z-index: 10;
+            color: #d63384;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
 
-.carousel-wrapper:hover .carousel-nav:not(.disabled) {
-    opacity: 0.9;
-}
+        .carousel-nav:hover:not(.disabled) {
+            background: #d63384;
+            color: white;
+            transform: translateY(-50%) scale(1.15);
+        }
 
-.carousel-nav:hover:not(.disabled) {
-    background: #d63384;
-    color: white;
-    opacity: 1 !important;
-    transform: translateY(-50%) scale(1.15);
-}
+        .carousel-nav.prev {
+            left: 8px;
+        }
 
-.carousel-nav.prev {
-    left: 5px;
-}
+        .carousel-nav.next {
+            right: 8px;
+        }
 
-.carousel-nav.next {
-    right: 5px;
-}
+        .carousel-nav.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
 
-.carousel-nav.disabled {
-    display: none; /* Completely hide when disabled */
-}
         .typing-indicator {
             display: flex;
             align-items: center;
@@ -1302,6 +1301,25 @@
                     </div>
                 </div>
             </div>
+
+            <div class="product-card" onclick="document.getElementById('chatBubble').click()">
+                <div class="product-image-wrapper">
+                    <img src="https://res.cloudinary.com/dukf4ckq1/image/upload/v1761845440/Maestro%20Commerce/Generated_Image_October_30_2025_-_6_30PM_dovya7.png" alt="Spring Bloom" class="product-image">
+                    <span class="product-badge">Featured</span>
+                    <button class="quick-add">Quick Add</button>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Wedding • Special Event</div>
+                    <h3 class="product-name">Spring Bloom</h3>
+                    <p class="product-description">Elegant white and pink roses with baby's breath</p>
+                    <div class="product-footer">
+                        <span class="product-price">$52.00</span>
+                        <div class="product-rating">
+                            ⭐⭐⭐⭐⭐ <span style="color: #6b7280; font-size: 0.9rem;">(156)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -1425,6 +1443,13 @@
                 image: 'https://res.cloudinary.com/dukf4ckq1/image/upload/v1761770933/Maestro%20Commerce/Generated_Image_October_29_2025_-_9_47PM_1_xbedip.png',
                 price: 38.00,
                 description: 'Bright sunflowers and daisies to brighten any day'
+            },
+            spring_bloom: {
+                id: 'spring_bloom',
+                name: 'Spring Bloom',
+                image: 'https://res.cloudinary.com/dukf4ckq1/image/upload/v1761845440/Maestro%20Commerce/Generated_Image_October_30_2025_-_6_30PM_dovya7.png',
+                price: 52.00,
+                description: 'Elegant white and pink roses with baby\'s breath'
             }
         };
 
@@ -1540,6 +1565,8 @@
                 showProductRecommendations(['romance_roses']);
             } else if (lower.includes('birthday')) {
                 showProductRecommendations(['spring_bouquet', 'sunshine_mix']);
+            } else if (lower.includes('wedding')) {
+                showProductRecommendations(['spring_bloom', 'romance_roses']);
             } else {
                 addAIMessage('ask_occasion');
             }
@@ -1594,7 +1621,7 @@
                 if (action === 'birthday') {
                     showProductRecommendations(['spring_bouquet', 'sunshine_mix']);
                 } else if (action === 'anniversary') {
-                    showProductRecommendations(['romance_roses']);
+                    showProductRecommendations(['romance_roses', 'spring_bloom']);
                 } else if (action === 'browse') {
                     showAllProducts();
                 }
@@ -1618,7 +1645,7 @@
             showTyping();
             setTimeout(() => {
                 hideTyping();
-                addMessage('ai', 'Here\'s our collection! Swipe to see all options 👉', { confidence: 93 });
+                addMessage('ai', 'Here\'s our collection! Use the arrows to browse all options 👉', { confidence: 93 });
                 setTimeout(() => createCarousel(), 500);
             }, 1200);
         }
@@ -1675,6 +1702,8 @@
             div.appendChild(wrapper);
             chatMessages.appendChild(div);
             
+            // Reset position when creating new carousel
+            state.carouselPosition = 0;
             updateCarouselButtons();
             scrollToBottom();
         }
@@ -1684,9 +1713,9 @@
             if (!carousel) return;
             
             const containerWidth = carousel.parentElement.clientWidth;
-            const scrollAmount = containerWidth * 0.8; // Scroll 80% of visible width
+            const itemWidth = 152; // 140px + 12px gap
             
-            state.carouselPosition += direction * scrollAmount;
+            state.carouselPosition += direction * itemWidth;
             
             const maxScroll = carousel.scrollWidth - containerWidth;
             state.carouselPosition = Math.max(0, Math.min(state.carouselPosition, maxScroll));
@@ -1712,7 +1741,7 @@
             }
             
             if (nextBtn) {
-                if (state.carouselPosition >= maxScroll) {
+                if (state.carouselPosition >= maxScroll - 1) {
                     nextBtn.classList.add('disabled');
                 } else {
                     nextBtn.classList.remove('disabled');
