@@ -1683,10 +1683,12 @@
             const carousel = document.getElementById('productCarousel');
             if (!carousel) return;
             
-            const itemWidth = 172; // 160px width + 12px gap
-            const maxScroll = carousel.scrollWidth - carousel.parentElement.clientWidth;
+            const containerWidth = carousel.parentElement.clientWidth;
+            const scrollAmount = containerWidth * 0.8; // Scroll 80% of visible width
             
-            state.carouselPosition += direction * itemWidth;
+            state.carouselPosition += direction * scrollAmount;
+            
+            const maxScroll = carousel.scrollWidth - containerWidth;
             state.carouselPosition = Math.max(0, Math.min(state.carouselPosition, maxScroll));
             
             carousel.style.transform = `translateX(-${state.carouselPosition}px)`;
