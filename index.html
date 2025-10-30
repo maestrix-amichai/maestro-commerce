@@ -776,27 +776,45 @@
             box-shadow: 0 4px 12px rgba(214, 51, 132, 0.3);
         }
 
-        /* Enhanced Carousel - PROPER IMPLEMENTATION */
-        .carousel-wrapper {
-            position: relative;
-            margin-top: 12px;
-            padding: 0; /* Remove padding */
-        }
+        /* The arrows should be on carousel-wrapper, not following the scrolled content */
+.carousel-wrapper {
+    position: relative;
+    margin-top: 12px;
+    padding: 0;
+}
 
-        .carousel-container {
-            overflow: hidden;
-            border-radius: 12px;
-            position: relative;
-            width: 100%;
-        }
+.carousel-container {
+    overflow: hidden; /* This hides overflow but scrollbar still shows */
+    border-radius: 12px;
+    position: relative;
+    width: 100%;
+}
 
-        .product-carousel {
-            display: flex;
-            gap: 12px;
-            transition: transform 0.4s ease-out;
-            padding: 8px 0;
-            will-change: transform;
-        }
+.product-carousel {
+    display: flex;
+    gap: 12px;
+    transition: transform 0.4s ease-out;
+    padding: 8px 0;
+    will-change: transform;
+    overflow-x: hidden; /* ADD THIS - prevents scrollbar */
+}
+
+/* CRITICAL FIX: Arrows positioned on wrapper, not carousel */
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    /* ... rest of styles ... */
+    /* Arrows are already on carousel-wrapper which is correct */
+}
+
+.carousel-nav.prev {
+    left: 8px; /* Positioned from LEFT edge of visible area */
+}
+
+.carousel-nav.next {
+    right: 8px; /* Positioned from RIGHT edge of visible area */
+}
 
         /* Hide all scrollbars */
         .product-carousel::-webkit-scrollbar {
