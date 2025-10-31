@@ -1440,6 +1440,8 @@
             carouselPosition: 0,
             userPreferences: {
                 occasion: null,
+                subCategory: null,
+                questionIndex: 0,
                 budget: null,
                 style: null,
                 colors: null,
@@ -1923,11 +1925,81 @@
             celebration: {
                 name: 'Celebration',
                 icon: '🎉',
-                questions: [
-                    { text: 'What are you celebrating?', options: ['Promotion', 'Graduation', 'New baby', 'Achievement', 'Just because!'] },
-                    { text: 'Energy level?', options: ['Bold & vibrant', 'Elegant celebration', 'Sweet & cheerful'] },
-                    { text: 'Want to add champagne?', options: ['Yes, make it festive!', 'No, just flowers'] }
-                ]
+                hasSubCategories: true,
+                subCategories: {
+                    wedding_celebration: {
+                        name: 'Wedding',
+                        displayName: '💒 Wedding',
+                        questions: [
+                            { text: 'What aspect of the wedding?', options: ['Bridal shower', 'Bachelor/Bachelorette party', 'Rehearsal dinner', 'Wedding day', 'Anniversary'] },
+                            { text: 'Style preference?', options: ['Classic & romantic', 'Modern & chic', 'Rustic elegance'] },
+                            { text: 'Would you like champagne or chocolates too?', options: ['Yes, add celebration extras!', 'No, just perfect flowers'] }
+                        ]
+                    },
+                    retirement: {
+                        name: 'Retirement',
+                        displayName: '🎊 Retirement Party',
+                        questions: [
+                            { text: 'Your relationship to the retiree?', options: ['Colleague', 'Friend', 'Family member', 'I\'m retiring!'] },
+                            { text: 'What vibe fits them best?', options: ['Well-earned relaxation', 'New adventures ahead', 'Celebrating their legacy'] },
+                            { text: 'Would they appreciate a keepsake vase?', options: ['Yes, add a beautiful vase', 'No, just flowers'] }
+                        ]
+                    },
+                    work_anniversary: {
+                        name: 'Work Anniversary',
+                        displayName: '🏆 Work Anniversary',
+                        questions: [
+                            { text: 'How many years?', options: ['1-5 years', '5-10 years', '10-20 years', '20+ years'] },
+                            { text: 'Professional setting?', options: ['Corporate office', 'Creative workspace', 'Remote/Home delivery'] },
+                            { text: 'Tone of arrangement?', options: ['Professional & sophisticated', 'Warm & appreciative', 'Celebratory & bold'] }
+                        ]
+                    },
+                    promotion: {
+                        name: 'Promotion',
+                        displayName: '📈 Promotion',
+                        questions: [
+                            { text: 'Your relationship?', options: ['My own promotion!', 'Colleague', 'Friend', 'Family member'] },
+                            { text: 'New role type?', options: ['Leadership position', 'Creative role', 'Technical role', 'Not sure'] },
+                            { text: 'Celebration style?', options: ['Bold & confident', 'Elegant & professional', 'Fun & energetic'] }
+                        ]
+                    },
+                    graduation: {
+                        name: 'Graduation',
+                        displayName: '🎓 Graduation',
+                        questions: [
+                            { text: 'What level?', options: ['High school', 'College/University', 'Graduate degree', 'Professional certification'] },
+                            { text: 'Their personality?', options: ['Achiever & ambitious', 'Creative & artistic', 'Thoughtful & studious'] },
+                            { text: 'Add a congratulations card?', options: ['Yes, with a personal message', 'No, flowers say it all'] }
+                        ]
+                    },
+                    new_baby: {
+                        name: 'New Baby',
+                        displayName: '👶 New Baby',
+                        questions: [
+                            { text: 'Do you know the baby\'s gender?', options: ['Boy', 'Girl', 'Gender neutral please'] },
+                            { text: 'Your relationship to parents?', options: ['Close friend', 'Family', 'Colleague'] },
+                            { text: 'Add baby gift extras?', options: ['Yes, suggest something special', 'No, just flowers for parents'] }
+                        ]
+                    },
+                    birthday_celebration: {
+                        name: 'Birthday',
+                        displayName: '🎂 Birthday Celebration',
+                        questions: [
+                            { text: 'Milestone birthday?', options: ['Sweet 16', '21st', '30th', '40th', '50th+', 'Just another great year'] },
+                            { text: 'Party vibe?', options: ['Elegant dinner party', 'Fun & festive', 'Intimate gathering', 'Surprise party'] },
+                            { text: 'Want to add birthday extras?', options: ['Yes, chocolates & card!', 'Yes, celebration champagne!', 'No, flowers are perfect'] }
+                        ]
+                    },
+                    achievement: {
+                        name: 'Achievement',
+                        displayName: '🌟 Achievement/Milestone',
+                        questions: [
+                            { text: 'What kind of achievement?', options: ['Personal goal reached', 'Competition/Award won', 'Health milestone', 'Creative accomplishment', 'Other triumph'] },
+                            { text: 'How would they like to be celebrated?', options: ['Loud & proud!', 'Quietly proud', 'Humble but happy'] },
+                            { text: 'Message tone?', options: ['You\'re a superstar!', 'So proud of you', 'Well deserved!'] }
+                        ]
+                    }
+                }
             }
         };
 
@@ -2087,18 +2159,83 @@
 
             addUserMessage(displayText);
 
+            // Handle validation checkpoint
+            if (action === 'validate_proceed') {
+                setTimeout(() => showRecommendations(), 1000);
+                return;
+            } else if (action === 'validate_restart') {
+                // Clear preferences and restart
+                state.userPreferences = {
+                    occasion: null,
+                    subCategory: null,
+                    questionIndex: 0,
+                    budget: null,
+                    style: null,
+                    colors: null,
+                    recipient: null
+                };
+                showTyping();
+                setTimeout(() => {
+                    hideTyping();
+                    addMessage('ai', 'No problem! Let\'s start fresh. What brings you here today? 🌸', { confidence: 90 });
+                    setTimeout(() => addOccasionSelector(), 500);
+                }, 1200);
+                return;
+            }
+
             // Handle occasion selection
             if (occasions[action]) {
                 state.userPreferences.occasion = action;
                 state.userPreferences.questionIndex = 0;
-                setTimeout(() => askOccasionQuestions(action), 1000);
+
+                // Check if this occasion has sub-categories
+                if (occasions[action].hasSubCategories) {
+                    setTimeout(() => showSubCategorySelection(action), 1000);
+                } else {
+                    setTimeout(() => askOccasionQuestions(action), 1000);
+                }
+            } else if (action.startsWith('subcat_')) {
+                // Handle sub-category selection
+                const subCatId = action.replace('subcat_', '');
+                state.userPreferences.subCategory = subCatId;
+                state.userPreferences.questionIndex = 0;
+                setTimeout(() => askOccasionQuestions(state.userPreferences.occasion, subCatId), 1000);
+            } else if (action.startsWith('answer_')) {
+                // Handle question answers
+                state.userPreferences.questionIndex = (state.userPreferences.questionIndex || 0) + 1;
+                const occasion = state.userPreferences.occasion;
+                const subCat = state.userPreferences.subCategory;
+                setTimeout(() => askOccasionQuestions(occasion, subCat), 1000);
             } else {
                 setTimeout(() => processUserMessage(displayText), 800);
             }
         }
 
-        function askOccasionQuestions(occasion) {
+        function showSubCategorySelection(occasion) {
             const occasionData = occasions[occasion];
+            showTyping();
+            setTimeout(() => {
+                hideTyping();
+                addMessage('ai', 'Great choice! Let me help you find exactly what you need. What type of celebration is this?', { confidence: 92 });
+
+                const subCatButtons = Object.entries(occasionData.subCategories).map(([id, data]) => ({
+                    text: data.displayName,
+                    action: `subcat_${id}`
+                }));
+
+                setTimeout(() => addQuickReplies(subCatButtons), 500);
+            }, 1200);
+        }
+
+        function askOccasionQuestions(occasion, subCategory = null) {
+            // Get the right question set - from sub-category if available
+            let occasionData;
+            if (subCategory && occasions[occasion].subCategories) {
+                occasionData = occasions[occasion].subCategories[subCategory];
+            } else {
+                occasionData = occasions[occasion];
+            }
+
             const questionIndex = state.userPreferences.questionIndex || 0;
 
             if (questionIndex < occasionData.questions.length) {
@@ -2116,9 +2253,24 @@
                     setTimeout(() => addQuickReplies(options), 500);
                 }, 1200);
             } else {
-                // Questions complete, show recommendations
-                setTimeout(() => showRecommendations(), 1000);
+                // Questions complete, ask for validation before showing recommendations
+                setTimeout(() => showValidationCheckpoint(), 1000);
             }
+        }
+
+        function showValidationCheckpoint() {
+            showTyping();
+            setTimeout(() => {
+                hideTyping();
+                addMessage('ai', 'Perfect! I think I have a good understanding of what you\'re looking for. Does this sound right, or would you like me to adjust anything? 🌸', { confidence: 88 });
+
+                const validationOptions = [
+                    { text: '✓ Yes, show me options!', action: 'validate_proceed' },
+                    { text: '🔄 Let me adjust my choices', action: 'validate_restart' }
+                ];
+
+                setTimeout(() => addQuickReplies(validationOptions), 500);
+            }, 1200);
         }
 
         function processUserMessage(message) {
@@ -2150,16 +2302,7 @@
             }
         }
 
-        // Handle answers to occasion questions
-        document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('quick-reply-btn')) {
-                const text = e.target.textContent;
-                if (state.userPreferences.occasion && text && !text.includes('💕') && !text.includes('🎂')) {
-                    state.userPreferences.questionIndex = (state.userPreferences.questionIndex || 0) + 1;
-                    setTimeout(() => askOccasionQuestions(state.userPreferences.occasion), 1000);
-                }
-            }
-        });
+        // Removed duplicate event listener - buttons now use onclick handlers only
 
         function showRecommendations() {
             const occasion = state.userPreferences.occasion;
