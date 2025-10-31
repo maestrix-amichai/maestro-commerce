@@ -762,19 +762,6 @@
             padding: 0 8px;
         }
 
-        .confidence-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            background: #d1fae5;
-            color: #065f46;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-top: 8px;
-        }
-
         .quick-replies {
             display: flex;
             flex-wrap: wrap;
@@ -2371,13 +2358,6 @@
                 timeDiv.className = 'message-time';
                 timeDiv.textContent = getCurrentTime();
                 messageDiv.appendChild(timeDiv);
-            }
-
-            if (options.confidence) {
-                const badge = document.createElement('div');
-                badge.className = 'confidence-badge';
-                badge.innerHTML = `✓ ${options.confidence}% confident`;
-                bubbleDiv.appendChild(badge);
             }
 
             chatMessages.appendChild(messageDiv);
