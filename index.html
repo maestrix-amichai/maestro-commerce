@@ -353,6 +353,107 @@
             color: #fbbf24;
         }
 
+        /* Occasions Section */
+        .occasions-section {
+            padding: 80px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: linear-gradient(180deg, #ffffff 0%, #fef3f8 100%);
+        }
+
+        .occasions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .occasion-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #f3f4f6;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .occasion-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(214, 51, 132, 0.15);
+            border-color: #d63384;
+        }
+
+        .occasion-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+
+        .occasion-name {
+            font-size: 1.4rem;
+            color: #1f2937;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .occasion-desc {
+            color: #6b7280;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Complementary Products Section */
+        .complementary-section {
+            padding: 80px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #fafafa;
+        }
+
+        .complementary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .complementary-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .complementary-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        .complementary-image {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+        }
+
+        .complementary-name {
+            font-size: 1.1rem;
+            color: #1f2937;
+            padding: 20px 20px 10px;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .complementary-price {
+            color: #d63384;
+            font-size: 1.2rem;
+            font-weight: 700;
+            padding: 0 20px 20px;
+            margin: 0;
+        }
+
         /* Newsletter Section */
         .newsletter {
             background: linear-gradient(135deg, #ffeef8 0%, #ffd6e8 100%);
@@ -1326,7 +1427,7 @@
                     <button class="quick-add">Quick Add</button>
                 </div>
                 <div class="product-info">
-                    <div class="product-category">Wedding • Special Event</div>
+                    <div class="product-category">Wedding • Anniversary</div>
                     <h3 class="product-name">Spring Bloom</h3>
                     <p class="product-description">Elegant white and pink roses with baby's breath</p>
                     <div class="product-footer">
@@ -1336,6 +1437,212 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="product-card" onclick="document.getElementById('chatBubble').click()">
+                <div class="product-image-wrapper">
+                    <img src="https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422620/Maestro%20Commerce/Generated_Image_October_31_2025_-_5_57PM_6_chzv2q.png" alt="Elegant White Lilies" class="product-image">
+                    <span class="product-badge">Sympathy</span>
+                    <button class="quick-add">Quick Add</button>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Sympathy • Remembrance</div>
+                    <h3 class="product-name">Elegant White Lilies</h3>
+                    <p class="product-description">Graceful white lilies symbolizing peace and remembrance</p>
+                    <div class="product-footer">
+                        <span class="product-price">$58.00</span>
+                        <div class="product-rating">
+                            ⭐⭐⭐⭐⭐ <span style="color: #6b7280; font-size: 0.9rem;">(143)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" onclick="document.getElementById('chatBubble').click()">
+                <div class="product-image-wrapper">
+                    <img src="https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422620/Maestro%20Commerce/Generated_Image_October_31_2025_-_5_57PM_3_zxdhbm.png" alt="Pink Peony Paradise" class="product-image">
+                    <span class="product-badge">Luxury</span>
+                    <button class="quick-add">Quick Add</button>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Romance • Wedding</div>
+                    <h3 class="product-name">Pink Peony Paradise</h3>
+                    <p class="product-description">Luxurious pink peonies in full bloom</p>
+                    <div class="product-footer">
+                        <span class="product-price">$72.00</span>
+                        <div class="product-rating">
+                            ⭐⭐⭐⭐⭐ <span style="color: #6b7280; font-size: 0.9rem;">(98)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" onclick="document.getElementById('chatBubble').click()">
+                <div class="product-image-wrapper">
+                    <img src="https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422620/Maestro%20Commerce/orchid-plant-elegant.png" alt="Tropical Paradise" class="product-image">
+                    <span class="product-badge">Exotic</span>
+                    <button class="quick-add">Quick Add</button>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Celebration • Housewarming</div>
+                    <h3 class="product-name">Tropical Paradise</h3>
+                    <p class="product-description">Exotic birds of paradise and vibrant orchids</p>
+                    <div class="product-footer">
+                        <span class="product-price">$68.00</span>
+                        <div class="product-rating">
+                            ⭐⭐⭐⭐⭐ <span style="color: #6b7280; font-size: 0.9rem;">(76)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" onclick="document.getElementById('chatBubble').click()">
+                <div class="product-image-wrapper">
+                    <img src="https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422620/Maestro%20Commerce/delicate-pastel-bouquet.png" alt="Lavender Dreams" class="product-image">
+                    <span class="product-badge">Self-Care</span>
+                    <button class="quick-add">Quick Add</button>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Just For Me • Relaxation</div>
+                    <h3 class="product-name">Lavender Dreams</h3>
+                    <p class="product-description">Calming lavender with soft purple blooms</p>
+                    <div class="product-footer">
+                        <span class="product-price">$42.00</span>
+                        <div class="product-rating">
+                            ⭐⭐⭐⭐⭐ <span style="color: #6b7280; font-size: 0.9rem;">(112)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" onclick="document.getElementById('chatBubble').click()">
+                <div class="product-image-wrapper">
+                    <img src="https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422620/Maestro%20Commerce/Generated_Image_October_31_2025_-_5_57PM_9_nikqjy.png" alt="Garden Rose Collection" class="product-image">
+                    <span class="product-badge">Premium</span>
+                    <button class="quick-add">Quick Add</button>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Wedding • Anniversary</div>
+                    <h3 class="product-name">Garden Rose Collection</h3>
+                    <p class="product-description">Premium garden roses in soft pastels</p>
+                    <div class="product-footer">
+                        <span class="product-price">$78.00</span>
+                        <div class="product-rating">
+                            ⭐⭐⭐⭐⭐ <span style="color: #6b7280; font-size: 0.9rem;">(134)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" onclick="document.getElementById('chatBubble').click()">
+                <div class="product-image-wrapper">
+                    <img src="https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422620/Maestro%20Commerce/Generated_Image_October_31_2025_-_5_57PM_5_mdw56c.png" alt="Wildflower Meadow" class="product-image">
+                    <span class="product-badge">Value</span>
+                    <button class="quick-add">Quick Add</button>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Housewarming • Just Because</div>
+                    <h3 class="product-name">Wildflower Meadow</h3>
+                    <p class="product-description">Rustic wildflower mix with natural charm</p>
+                    <div class="product-footer">
+                        <span class="product-price">$35.00</span>
+                        <div class="product-rating">
+                            ⭐⭐⭐⭐⭐ <span style="color: #6b7280; font-size: 0.9rem;">(94)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Occasions Section -->
+    <section class="occasions-section" id="occasions">
+        <div class="section-header">
+            <h2 class="section-title">Shop by Occasion</h2>
+            <p class="section-subtitle">Let Bella help you find the perfect flowers for any moment</p>
+        </div>
+
+        <div class="occasions-grid">
+            <div class="occasion-card" onclick="document.getElementById('chatBubble').click()">
+                <div class="occasion-icon">💕</div>
+                <h3 class="occasion-name">Romance & Love</h3>
+                <p class="occasion-desc">Express your love with stunning arrangements</p>
+            </div>
+
+            <div class="occasion-card" onclick="document.getElementById('chatBubble').click()">
+                <div class="occasion-icon">🎂</div>
+                <h3 class="occasion-name">Birthday</h3>
+                <p class="occasion-desc">Make their special day even brighter</p>
+            </div>
+
+            <div class="occasion-card" onclick="document.getElementById('chatBubble').click()">
+                <div class="occasion-icon">💐</div>
+                <h3 class="occasion-name">Wedding</h3>
+                <p class="occasion-desc">Beautiful blooms for your big day</p>
+            </div>
+
+            <div class="occasion-card" onclick="document.getElementById('chatBubble').click()">
+                <div class="occasion-icon">🎉</div>
+                <h3 class="occasion-name">Celebration</h3>
+                <p class="occasion-desc">Graduations, promotions, retirements & more</p>
+            </div>
+
+            <div class="occasion-card" onclick="document.getElementById('chatBubble').click()">
+                <div class="occasion-icon">🕊️</div>
+                <h3 class="occasion-name">Sympathy</h3>
+                <p class="occasion-desc">Thoughtful tributes for difficult times</p>
+            </div>
+
+            <div class="occasion-card" onclick="document.getElementById('chatBubble').click()">
+                <div class="occasion-icon">🏡</div>
+                <h3 class="occasion-name">Housewarming</h3>
+                <p class="occasion-desc">Welcome them to their new home</p>
+            </div>
+
+            <div class="occasion-card" onclick="document.getElementById('chatBubble').click()">
+                <div class="occasion-icon">🙏</div>
+                <h3 class="occasion-name">Thank You</h3>
+                <p class="occasion-desc">Show your appreciation with flowers</p>
+            </div>
+
+            <div class="occasion-card" onclick="document.getElementById('chatBubble').click()">
+                <div class="occasion-icon">🌸</div>
+                <h3 class="occasion-name">Just For Me</h3>
+                <p class="occasion-desc">Treat yourself to something beautiful</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Complementary Products Section -->
+    <section class="complementary-section">
+        <div class="section-header">
+            <h2 class="section-title">Make It Extra Special</h2>
+            <p class="section-subtitle">Add chocolates, wine, or a personalized card</p>
+        </div>
+
+        <div class="complementary-grid">
+            <div class="complementary-card" onclick="document.getElementById('chatBubble').click()">
+                <img src="https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422860/Maestro%20Commerce/Generated_Image_October_31_2025_-_6_14PM_yf92e6.png" alt="Luxury Chocolates" class="complementary-image">
+                <h4 class="complementary-name">Gourmet Chocolates</h4>
+                <p class="complementary-price">From $29.99</p>
+            </div>
+
+            <div class="complementary-card" onclick="document.getElementById('chatBubble').click()">
+                <img src="https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422900/Maestro%20Commerce/Generated_Image_October_31_2025_-_6_15PM_wokgpx.png" alt="Champagne & Strawberries" class="complementary-image">
+                <h4 class="complementary-name">Champagne & Strawberries</h4>
+                <p class="complementary-price">$64.99</p>
+            </div>
+
+            <div class="complementary-card" onclick="document.getElementById('chatBubble').click()">
+                <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400" alt="Premium Wine" class="complementary-image">
+                <h4 class="complementary-name">Premium Wine</h4>
+                <p class="complementary-price">From $38.00</p>
+            </div>
+
+            <div class="complementary-card" onclick="document.getElementById('chatBubble').click()">
+                <img src="https://images.unsplash.com/photo-1608475860759-cc71142d0d9e?w=400" alt="Greeting Cards" class="complementary-image">
+                <h4 class="complementary-name">Personalized Cards</h4>
+                <p class="complementary-price">$5.99</p>
             </div>
         </div>
     </section>
