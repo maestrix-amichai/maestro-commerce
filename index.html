@@ -776,59 +776,35 @@
             box-shadow: 0 4px 12px rgba(214, 51, 132, 0.3);
         }
 
-        /* The arrows should be on carousel-wrapper, not following the scrolled content */
-.carousel-wrapper {
-    position: relative;
-    margin-top: 12px;
-    padding: 0;
-}
+        /* CAROUSEL - THREE LAYER APPROACH */
+        .carousel-wrapper {
+            position: relative;
+            margin-top: 12px;
+            width: 100%;
+        }
 
-.carousel-container {
-    overflow: hidden; /* This hides overflow but scrollbar still shows */
-    border-radius: 12px;
-    position: relative;
-    width: 100%;
-}
+        .carousel-container {
+            width: 100%;
+            position: relative;
+            padding: 0; /* Remove padding since arrows will overlay */
+        }
 
-.product-carousel {
-    display: flex;
-    gap: 12px;
-    transition: transform 0.4s ease-out;
-    padding: 8px 0;
-    will-change: transform;
-    overflow-x: hidden; /* ADD THIS - prevents scrollbar */
-}
-
-/* CRITICAL FIX: Arrows positioned on wrapper, not carousel */
-.carousel-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    /* ... rest of styles ... */
-    /* Arrows are already on carousel-wrapper which is correct */
-}
-
-.carousel-nav.prev {
-    left: 8px; /* Positioned from LEFT edge of visible area */
-}
-
-.carousel-nav.next {
-    right: 8px; /* Positioned from RIGHT edge of visible area */
-}
-
-        /* Hide all scrollbars */
-        .product-carousel::-webkit-scrollbar {
-            display: none;
+        .carousel-track {
+            overflow: hidden;
+            width: 100%;
         }
 
         .product-carousel {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+            display: flex;
+            gap: 12px;
+            padding: 8px 0;
+            transition: transform 0.4s ease-out;
         }
 
         .carousel-item {
             min-width: 140px;
             max-width: 140px;
+            flex-shrink: 0;
             background: white;
             border: 2px solid #ffd6e8;
             border-radius: 12px;
@@ -836,13 +812,11 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
-            flex-shrink: 0;
         }
 
         .carousel-item:hover {
             border-color: #d63384;
             transform: translateY(-4px);
-            z-index: 1;
         }
 
         .carousel-item-img {
@@ -868,7 +842,7 @@
             font-size: 0.95rem;
         }
 
-        /* Navigation Arrows - ALWAYS VISIBLE FOR DEBUGGING */
+        /* Navigation Arrows - OVER first and last cards */
         .carousel-nav {
             position: absolute;
             top: 50%;
@@ -882,13 +856,17 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            opacity: 1; /* Always visible for now */
-            transition: all 0.3s;
-            z-index: 10;
+            z-index: 20;
             color: #d63384;
             font-size: 1.5rem;
             font-weight: bold;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .carousel-wrapper:hover .carousel-nav:not(.disabled) {
+            opacity: 1;
         }
 
         .carousel-nav:hover:not(.disabled) {
@@ -898,15 +876,15 @@
         }
 
         .carousel-nav.prev {
-            left: 8px;
+            left: 15px; /* Over first card */
         }
 
         .carousel-nav.next {
-            right: 8px;
+            right: 15px; /* Over last visible card */
         }
 
         .carousel-nav.disabled {
-            opacity: 0.3;
+            opacity: 0 !important;
             cursor: not-allowed;
             pointer-events: none;
         }
@@ -1688,6 +1666,9 @@
             const container = document.createElement('div');
             container.className = 'carousel-container';
             
+            const track = document.createElement('div');
+            track.className = 'carousel-track';
+            
             const carousel = document.createElement('div');
             carousel.className = 'product-carousel';
             carousel.id = 'productCarousel';
@@ -1713,7 +1694,8 @@
                 carousel.appendChild(item);
             });
             
-            container.appendChild(carousel);
+            track.appendChild(carousel);
+            container.appendChild(track);
             wrapper.appendChild(prevBtn);
             wrapper.appendChild(container);
             wrapper.appendChild(nextBtn);
@@ -1730,15 +1712,22 @@
             const carousel = document.getElementById('productCarousel');
             if (!carousel) return;
             
-            const containerWidth = carousel.parentElement.clientWidth;
-            const itemWidth = 152; // 140px + 12px gap
+            const track = carousel.parentElement; // carousel-track
+            const containerWidth = track.clientWidth;
+            const itemWidth = 140 + 12; // item width + gap = 152px
             
+            // Move by one item at a time
             state.carouselPosition += direction * itemWidth;
             
+            // Calculate max scroll (total width - visible width)
             const maxScroll = carousel.scrollWidth - containerWidth;
+            
+            // Clamp position
             state.carouselPosition = Math.max(0, Math.min(state.carouselPosition, maxScroll));
             
+            // Apply transform
             carousel.style.transform = `translateX(-${state.carouselPosition}px)`;
+            
             updateCarouselButtons();
         }
 
@@ -1748,22 +1737,17 @@
             
             const prevBtn = document.querySelector('.carousel-nav.prev');
             const nextBtn = document.querySelector('.carousel-nav.next');
-            const maxScroll = carousel.scrollWidth - carousel.parentElement.clientWidth;
+            
+            const track = carousel.parentElement; // carousel-track
+            const containerWidth = track.clientWidth;
+            const maxScroll = carousel.scrollWidth - containerWidth;
             
             if (prevBtn) {
-                if (state.carouselPosition <= 0) {
-                    prevBtn.classList.add('disabled');
-                } else {
-                    prevBtn.classList.remove('disabled');
-                }
+                prevBtn.classList.toggle('disabled', state.carouselPosition <= 0);
             }
             
             if (nextBtn) {
-                if (state.carouselPosition >= maxScroll - 1) {
-                    nextBtn.classList.add('disabled');
-                } else {
-                    nextBtn.classList.remove('disabled');
-                }
+                nextBtn.classList.toggle('disabled', state.carouselPosition >= maxScroll);
             }
         }
 
