@@ -776,28 +776,44 @@
         }
 
         .drawer-nav {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            padding: 15px;
-            border-top: 1px solid #f0f0f0;
+            display: none; /* Hidden by default, controlled via absolute positioning */
         }
 
         .drawer-nav-btn {
-            width: 40px;
-            height: 40px;
-            background: #d63384;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(214, 51, 132, 0.9);
             color: white;
             border: none;
             border-radius: 50%;
-            font-size: 20px;
+            font-size: 24px;
             cursor: pointer;
             transition: all 0.3s;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .suggestions-drawer:hover .drawer-nav-btn {
+            opacity: 1;
+            pointer-events: all;
         }
 
         .drawer-nav-btn:hover {
-            background: #f06595;
-            transform: scale(1.1);
+            background: rgba(240, 101, 149, 0.95);
+            transform: translateX(-50%) scale(1.1);
+        }
+
+        #drawerPrev {
+            top: 80px; /* Position over first card, below header */
+        }
+
+        #drawerNext {
+            bottom: 20px; /* Position over last visible card */
         }
 
         .drawer-product-compact {
@@ -2014,11 +2030,9 @@
                 </div>
             </div>
             <div class="drawer-content" id="drawerContent">
+                <button class="drawer-nav-btn" id="drawerPrev">↑</button>
                 <div class="drawer-carousel" id="drawerCarousel"></div>
-                <div class="drawer-nav">
-                    <button class="drawer-nav-btn" id="drawerPrev">↑</button>
-                    <button class="drawer-nav-btn" id="drawerNext">↓</button>
-                </div>
+                <button class="drawer-nav-btn" id="drawerNext">↓</button>
             </div>
         </div>
     </div>
@@ -3121,11 +3135,13 @@
         function showAllProducts() {
             const flowerProducts = Object.values(products).filter(p => p.category === 'flowers');
 
+            // Update drawer with all products
+            updateDrawerProducts(flowerProducts);
+
             showTyping();
             setTimeout(() => {
                 hideTyping();
-                addMessage('ai', 'Here\'s our beautiful collection! Use the arrows to browse all options 👉', { confidence: 93 });
-                setTimeout(() => createCarousel(flowerProducts), 500);
+                addMessage('ai', 'I\'ve added our full collection to the suggestions panel. Browse through and let me know if anything catches your eye! 🌸');
             }, 1200);
         }
 
@@ -3204,14 +3220,7 @@
                     <div class="carousel-item-price">$${p.price.toFixed(2)}</div>
                 `;
                 item.onclick = () => {
-                    addUserMessage(`Tell me more about ${p.name}`);
-                    setTimeout(() => {
-                        showTyping();
-                        setTimeout(() => {
-                            hideTyping();
-                            addEnhancedProductCard(p);
-                        }, 1000);
-                    }, 500);
+                    selectProduct(p);
                 };
                 carousel.appendChild(item);
             });
