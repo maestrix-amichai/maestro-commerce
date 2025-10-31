@@ -2466,30 +2466,6 @@
 
             addUserMessage(displayText);
 
-            // Handle validation checkpoint
-            if (action === 'validate_proceed') {
-                setTimeout(() => showRecommendations(), 1000);
-                return;
-            } else if (action === 'validate_restart') {
-                // Clear preferences and restart
-                state.userPreferences = {
-                    occasion: null,
-                    subCategory: null,
-                    questionIndex: 0,
-                    budget: null,
-                    style: null,
-                    colors: null,
-                    recipient: null
-                };
-                showTyping();
-                setTimeout(() => {
-                    hideTyping();
-                    addMessage('ai', 'No problem! Let\'s start fresh. What brings you here today? 🌸', { confidence: 90 });
-                    setTimeout(() => addOccasionSelector(), 500);
-                }, 1200);
-                return;
-            }
-
             // Handle occasion selection
             if (occasions[action]) {
                 state.userPreferences.occasion = action;
@@ -2560,24 +2536,9 @@
                     setTimeout(() => addQuickReplies(options), 500);
                 }, 1200);
             } else {
-                // Questions complete, ask for validation before showing recommendations
-                setTimeout(() => showValidationCheckpoint(), 1000);
+                // Questions complete, show recommendations directly
+                setTimeout(() => showRecommendations(), 1000);
             }
-        }
-
-        function showValidationCheckpoint() {
-            showTyping();
-            setTimeout(() => {
-                hideTyping();
-                addMessage('ai', 'Perfect! I think I have a good understanding of what you\'re looking for. Does this sound right, or would you like me to adjust anything? 🌸', { confidence: 88 });
-
-                const validationOptions = [
-                    { text: '✓ Yes, show me options!', action: 'validate_proceed' },
-                    { text: '🔄 Let me adjust my choices', action: 'validate_restart' }
-                ];
-
-                setTimeout(() => addQuickReplies(validationOptions), 500);
-            }, 1200);
         }
 
         function processUserMessage(message) {
