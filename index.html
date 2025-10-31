@@ -632,6 +632,282 @@
             pointer-events: all;
         }
 
+        /* Suggestions Drawer */
+        .suggestions-drawer {
+            position: fixed;
+            bottom: 30px;
+            right: 560px;
+            width: 80px;
+            height: 650px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            opacity: 0;
+            pointer-events: none;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .suggestions-drawer.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .suggestions-drawer.compact {
+            width: 200px;
+        }
+
+        .suggestions-drawer.full {
+            width: 400px;
+        }
+
+        .drawer-hint {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+            height: 100%;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .drawer-hint:hover {
+            background: rgba(214, 51, 132, 0.05);
+        }
+
+        .hint-icon {
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .drawer-hint span {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-weight: 600;
+            color: #d63384;
+            font-size: 0.9rem;
+        }
+
+        .suggestions-drawer.compact .drawer-hint,
+        .suggestions-drawer.full .drawer-hint {
+            display: none;
+        }
+
+        .drawer-header {
+            display: none;
+            background: linear-gradient(135deg, #d63384 0%, #f06595 100%);
+            color: white;
+            padding: 15px 20px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .suggestions-drawer.compact .drawer-header,
+        .suggestions-drawer.full .drawer-header {
+            display: flex;
+        }
+
+        .drawer-header h4 {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .drawer-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .drawer-toggle,
+        .drawer-close {
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .drawer-toggle:hover,
+        .drawer-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .drawer-content {
+            display: none;
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .suggestions-drawer.compact .drawer-content,
+        .suggestions-drawer.full .drawer-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .drawer-carousel {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+
+        .drawer-carousel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .drawer-carousel::-webkit-scrollbar-thumb {
+            background: #d6338450;
+            border-radius: 3px;
+        }
+
+        .drawer-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .drawer-nav-btn {
+            width: 40px;
+            height: 40px;
+            background: #d63384;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .drawer-nav-btn:hover {
+            background: #f06595;
+            transform: scale(1.1);
+        }
+
+        .drawer-product-compact {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .drawer-product-compact:hover {
+            border-color: #d63384;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(214, 51, 132, 0.15);
+        }
+
+        .drawer-product-compact img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .drawer-product-compact h5 {
+            font-size: 0.9rem;
+            margin: 0;
+            color: #1f2937;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .drawer-product-compact .price {
+            font-size: 0.85rem;
+            color: #d63384;
+            font-weight: 700;
+            text-align: center;
+            margin-top: 4px;
+        }
+
+        .drawer-product-full {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .drawer-product-full:hover {
+            box-shadow: 0 8px 20px rgba(214, 51, 132, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .drawer-product-full img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .drawer-product-full-content {
+            padding: 15px;
+        }
+
+        .drawer-product-full h5 {
+            font-size: 1.1rem;
+            margin: 0 0 8px 0;
+            color: #1f2937;
+            font-weight: 600;
+        }
+
+        .drawer-product-full .description {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .drawer-product-full .match-badge {
+            display: inline-block;
+            background: #d1fae5;
+            color: #065f46;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .drawer-product-full .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .drawer-product-full .price {
+            font-size: 1.2rem;
+            color: #d63384;
+            font-weight: 700;
+        }
+
+        .drawer-product-full .rating {
+            font-size: 0.8rem;
+            color: #fbbf24;
+        }
+
         .chat-header {
             background: linear-gradient(135deg, #d63384 0%, #f06595 100%);
             color: white;
@@ -1722,6 +1998,29 @@
                 </div>
             </div>
         </div>
+
+        <!-- Suggestions Drawer -->
+        <div class="suggestions-drawer" id="suggestionsDrawer">
+            <div class="drawer-hint" id="drawerHint">
+                <div class="hint-icon">🌸</div>
+                <span>Suggestions</span>
+            </div>
+            <div class="drawer-header">
+                <h4>Suggestions</h4>
+                <div class="drawer-controls">
+                    <button class="drawer-toggle" id="drawerToggleCompact" title="Compact view">⊟</button>
+                    <button class="drawer-toggle" id="drawerToggleFull" title="Full view">⊞</button>
+                    <button class="drawer-close" id="drawerClose" title="Hide">✕</button>
+                </div>
+            </div>
+            <div class="drawer-content" id="drawerContent">
+                <div class="drawer-carousel" id="drawerCarousel"></div>
+                <div class="drawer-nav">
+                    <button class="drawer-nav-btn" id="drawerPrev">↑</button>
+                    <button class="drawer-nav-btn" id="drawerNext">↓</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -1742,7 +2041,13 @@
                 recipient: null
             },
             cart: [],
-            recommendationsShown: false
+            recommendationsShown: false,
+            drawer: {
+                isOpen: false,
+                mode: 'hidden', // 'hidden', 'compact', 'full'
+                products: [],
+                scrollPosition: 0
+            }
         };
 
         // ===== PRODUCT CATALOG WITH RICH METADATA =====
@@ -2306,6 +2611,15 @@
         const chatInput = document.getElementById('chatInput');
         const sendBtn = document.getElementById('sendBtn');
 
+        const suggestionsDrawer = document.getElementById('suggestionsDrawer');
+        const drawerHint = document.getElementById('drawerHint');
+        const drawerCarousel = document.getElementById('drawerCarousel');
+        const drawerClose = document.getElementById('drawerClose');
+        const drawerToggleCompact = document.getElementById('drawerToggleCompact');
+        const drawerToggleFull = document.getElementById('drawerToggleFull');
+        const drawerPrev = document.getElementById('drawerPrev');
+        const drawerNext = document.getElementById('drawerNext');
+
         // ===== EVENT LISTENERS =====
         chatBubble.addEventListener('click', openChat);
         chatClose.addEventListener('click', closeChat);
@@ -2313,6 +2627,13 @@
         chatInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') sendMessage();
         });
+
+        drawerHint.addEventListener('click', () => setDrawerMode('compact'));
+        drawerClose.addEventListener('click', () => setDrawerMode('hidden'));
+        drawerToggleCompact.addEventListener('click', () => setDrawerMode('compact'));
+        drawerToggleFull.addEventListener('click', () => setDrawerMode('full'));
+        drawerPrev.addEventListener('click', () => scrollDrawer('up'));
+        drawerNext.addEventListener('click', () => scrollDrawer('down'));
 
         // ===== CHAT FUNCTIONS =====
         function openChat() {
@@ -2328,6 +2649,91 @@
             state.isOpen = false;
             chatWindow.classList.remove('visible');
             chatBubble.classList.remove('hidden');
+        }
+
+        // ===== DRAWER FUNCTIONS =====
+        function setDrawerMode(mode) {
+            state.drawer.mode = mode;
+            suggestionsDrawer.classList.remove('visible', 'compact', 'full');
+
+            if (mode === 'hidden') {
+                state.drawer.isOpen = false;
+            } else {
+                state.drawer.isOpen = true;
+                suggestionsDrawer.classList.add('visible');
+                if (mode === 'compact') {
+                    suggestionsDrawer.classList.add('compact');
+                } else if (mode === 'full') {
+                    suggestionsDrawer.classList.add('full');
+                }
+                // Re-render products when mode changes
+                if (state.drawer.products.length > 0) {
+                    renderDrawerProducts();
+                }
+            }
+        }
+
+        function updateDrawerProducts(productsArray, occasion = null) {
+            state.drawer.products = productsArray.map(p => ({ ...p, occasion }));
+
+            // Auto-open drawer in compact mode when products are added
+            if (state.drawer.mode === 'hidden') {
+                setDrawerMode('compact');
+            } else {
+                renderDrawerProducts();
+            }
+        }
+
+        function renderDrawerProducts() {
+            drawerCarousel.innerHTML = '';
+
+            state.drawer.products.forEach((product, index) => {
+                const productEl = createDrawerProductCard(product, state.drawer.mode);
+                drawerCarousel.appendChild(productEl);
+            });
+        }
+
+        function createDrawerProductCard(product, mode) {
+            const div = document.createElement('div');
+
+            if (mode === 'compact') {
+                div.className = 'drawer-product-compact';
+                div.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <h5>${product.name}</h5>
+                    <div class="price">$${product.price.toFixed(2)}</div>
+                `;
+            } else {
+                div.className = 'drawer-product-full';
+                const matchBadge = product.occasion && product.occasions[product.occasion]
+                    ? `<div class="match-badge">${product.occasions[product.occasion]}% Match</div>`
+                    : '';
+
+                div.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <div class="drawer-product-full-content">
+                        ${matchBadge}
+                        <h5>${product.name}</h5>
+                        <div class="description">${product.description}</div>
+                        <div class="footer">
+                            <div class="price">$${product.price.toFixed(2)}</div>
+                            <div class="rating">${'⭐'.repeat(Math.round(product.reviews.rating))}</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            div.onclick = () => selectProduct(product);
+            return div;
+        }
+
+        function scrollDrawer(direction) {
+            const scrollAmount = 200;
+            if (direction === 'up') {
+                drawerCarousel.scrollBy({ top: -scrollAmount, behavior: 'smooth' });
+            } else {
+                drawerCarousel.scrollBy({ top: scrollAmount, behavior: 'smooth' });
+            }
         }
 
         function getCurrentTime() {
@@ -2465,33 +2871,29 @@
                 // Show different products from the same occasion
                 const occasion = state.userPreferences.occasion;
                 const allProducts = Object.values(products)
-                    .filter(p => p.category === 'flowers' && p.occasions[occasion] >= 75)
-                    .sort((a, b) => (b.occasions[occasion] || 0) - (a.occasions[occasion] || 0));
+                    .filter(p => p.category === 'flowers' && p.occasions[occasion] >= 70)
+                    .sort(() => Math.random() - 0.5); // Shuffle for variety
 
-                // Remove old product cards
-                const productCards = document.querySelectorAll('.product-card-chat');
-                productCards.forEach(card => card.parentElement.remove());
+                // Show next 3 products (or rotate to different ones)
+                const offset = Math.floor(Math.random() * Math.max(0, allProducts.length - 3));
+                const newProducts = allProducts.slice(offset, offset + 3);
+
+                // Update drawer with new products
+                updateDrawerProducts(newProducts, occasion);
 
                 showTyping();
                 setTimeout(() => {
                     hideTyping();
-                    addMessage('ai', 'Let me show you some other beautiful options... 💐', { confidence: 88 });
-                    setTimeout(() => {
-                        // Show next 3 products (or rotate to different ones)
-                        const offset = Math.floor(Math.random() * Math.max(0, allProducts.length - 3));
-                        allProducts.slice(offset, offset + 3).forEach((product, i) => {
-                            setTimeout(() => addEnhancedProductCard(product, occasion), i * 400);
-                        });
+                    addMessage('ai', 'I\'ve updated the suggestions with some other beautiful options... 💐');
 
-                        // Re-offer refinement options
-                        setTimeout(() => {
-                            const refinementOptions = [
-                                { text: '✨ These look perfect!', action: 'refine_satisfied' },
-                                { text: '🔄 Show me something different', action: 'refine_change' },
-                                { text: '💬 Tell me more about my options', action: 'refine_info' }
-                            ];
-                            addQuickReplies(refinementOptions);
-                        }, 1400);
+                    // Re-offer refinement options
+                    setTimeout(() => {
+                        const refinementOptions = [
+                            { text: '✨ These look perfect!', action: 'refine_satisfied' },
+                            { text: '🔄 Show me something different', action: 'refine_change' },
+                            { text: '💬 Tell me more about my options', action: 'refine_info' }
+                        ];
+                        addQuickReplies(refinementOptions);
                     }, 600);
                 }, 1000);
                 return;
@@ -2500,7 +2902,7 @@
                 showTyping();
                 setTimeout(() => {
                     hideTyping();
-                    addMessage('ai', 'Each arrangement is handcrafted by our expert florists and comes with our 7-day freshness guarantee. You can click any arrangement to see full details, reviews, and add it to your cart. Or keep answering questions and I\'ll help narrow down your perfect choice! 🌸', { confidence: 90 });
+                    addMessage('ai', 'Each arrangement is handcrafted by our expert florists and comes with our 7-day freshness guarantee. You can click any arrangement in the suggestions panel to see full details, reviews, and add it to your cart. Or keep answering questions and I\'ll help narrow down your perfect choice! 🌸');
                     setTimeout(() => {
                         const occasion = state.userPreferences.occasion;
                         const subCat = state.userPreferences.subCategory;
@@ -2650,34 +3052,28 @@
                 })
                 .slice(0, 3);
 
+            // Update drawer with products
+            updateDrawerProducts(matchedProducts, occasion);
+
             showTyping();
             setTimeout(() => {
                 hideTyping();
-                addMessage('ai', `Great! Here are some beautiful options based on what you've told me so far... 🌸`, { confidence: 88 });
-                setTimeout(() => {
-                    matchedProducts.forEach((product, i) => {
-                        setTimeout(() => addEnhancedProductCard(product, occasion), i * 400);
-                    });
+                addMessage('ai', `Great! I've added some beautiful options to the suggestions panel. Take a look and let me know what you think! 🌸`);
 
-                    // After products are shown, offer refinement options
-                    setTimeout(() => {
-                        const refinementOptions = [
-                            { text: '✨ These look perfect!', action: 'refine_satisfied' },
-                            { text: '🔄 Show me something different', action: 'refine_change' },
-                            { text: '💬 Tell me more about my options', action: 'refine_info' }
-                        ];
-                        addQuickReplies(refinementOptions);
-                    }, matchedProducts.length * 400 + 600);
+                // Offer refinement options
+                setTimeout(() => {
+                    const refinementOptions = [
+                        { text: '✨ These look perfect!', action: 'refine_satisfied' },
+                        { text: '🔄 Show me something different', action: 'refine_change' },
+                        { text: '💬 Tell me more about my options', action: 'refine_info' }
+                    ];
+                    addQuickReplies(refinementOptions);
                 }, 600);
             }, 1000);
         }
 
         function refineRecommendations() {
             const occasion = state.userPreferences.occasion;
-
-            // Remove old product cards
-            const productCards = document.querySelectorAll('.product-card-chat');
-            productCards.forEach(card => card.parentElement.remove());
 
             // Show refined products with variety
             const matchedProducts = Object.values(products)
@@ -2690,15 +3086,13 @@
                 })
                 .slice(0, 3);
 
+            // Update drawer with refined products
+            updateDrawerProducts(matchedProducts, occasion);
+
             showTyping();
             setTimeout(() => {
                 hideTyping();
-                addMessage('ai', `I've refined my suggestions based on what you told me... 💫`, { confidence: 90 });
-                setTimeout(() => {
-                    matchedProducts.forEach((product, i) => {
-                        setTimeout(() => addEnhancedProductCard(product, occasion), i * 400);
-                    });
-                }, 600);
+                addMessage('ai', `I've updated the suggestions based on your preferences... 💫`);
             }, 800);
         }
 
@@ -2714,15 +3108,13 @@
                 })
                 .slice(0, 3);
 
+            // Update drawer with products
+            updateDrawerProducts(matchedProducts, occasion);
+
             showTyping();
             setTimeout(() => {
                 hideTyping();
-                addMessage('ai', `Perfect! I've found some beautiful options that are ideal for ${occasions[occasion]?.name || 'your occasion'}. Each has been loved by customers in similar situations! 🌸`, { confidence: 93 });
-                setTimeout(() => {
-                    matchedProducts.forEach((product, i) => {
-                        setTimeout(() => addEnhancedProductCard(product, occasion), i * 400);
-                    });
-                }, 600);
+                addMessage('ai', `Perfect! Check out the suggestions panel - I've found some beautiful options that are ideal for ${occasions[occasion]?.name || 'your occasion'}. Each has been loved by customers in similar situations! 🌸`);
             }, 1500);
         }
 
