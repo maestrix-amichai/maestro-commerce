@@ -747,6 +747,36 @@
             background: rgba(255, 255, 255, 0.3);
         }
 
+        .drawer-nav-history {
+            display: flex;
+            gap: 6px;
+        }
+
+        .drawer-history-btn {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .drawer-history-btn:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .drawer-history-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
         .drawer-content {
             display: none;
             flex: 1;
@@ -2085,7 +2115,11 @@
                 <span>Suggestions</span>
             </div>
             <div class="drawer-header">
-                <h4>Suggestions</h4>
+                <div class="drawer-nav-history">
+                    <button class="drawer-history-btn" id="drawerBack" title="Previous suggestions">←</button>
+                    <button class="drawer-history-btn" id="drawerForward" title="Next suggestions">→</button>
+                </div>
+                <h4 id="drawerTitle">Suggestions</h4>
                 <div class="drawer-controls">
                     <button class="drawer-toggle" id="drawerToggleCompact" title="Compact view">⊟</button>
                     <button class="drawer-toggle" id="drawerToggleFull" title="Full view">⊞</button>
@@ -2123,7 +2157,9 @@
                 isOpen: false,
                 mode: 'hidden', // 'hidden', 'compact', 'full'
                 products: [],
-                scrollPosition: 0
+                scrollPosition: 0,
+                history: [], // Array of { products: [], title: '', occasion: null }
+                historyIndex: -1 // Current position in history
             }
         };
 
@@ -2691,17 +2727,20 @@
         const suggestionsDrawer = document.getElementById('suggestionsDrawer');
         const drawerHint = document.getElementById('drawerHint');
         const drawerCarousel = document.getElementById('drawerCarousel');
+        const drawerTitle = document.getElementById('drawerTitle');
         const drawerClose = document.getElementById('drawerClose');
         const drawerToggleCompact = document.getElementById('drawerToggleCompact');
         const drawerToggleFull = document.getElementById('drawerToggleFull');
         const drawerPrev = document.getElementById('drawerPrev');
         const drawerNext = document.getElementById('drawerNext');
+        const drawerBack = document.getElementById('drawerBack');
+        const drawerForward = document.getElementById('drawerForward');
 
         // ===== EVENT LISTENERS =====
         chatBubble.addEventListener('click', openChat);
         chatClose.addEventListener('click', closeChat);
         sendBtn.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keypress', (e) => {
+        chatInput.addEventListener('click', (e) => {
             if (e.key === 'Enter') sendMessage();
         });
 
@@ -2711,6 +2750,8 @@
         drawerToggleFull.addEventListener('click', () => setDrawerMode('full'));
         drawerPrev.addEventListener('click', () => scrollDrawer('up'));
         drawerNext.addEventListener('click', () => scrollDrawer('down'));
+        drawerBack.addEventListener('click', () => navigateDrawerHistory(-1));
+        drawerForward.addEventListener('click', () => navigateDrawerHistory(1));
 
         // ===== CHAT FUNCTIONS =====
         function openChat() {
@@ -2750,8 +2791,31 @@
             }
         }
 
-        function updateDrawerProducts(productsArray, occasion = null) {
+        function updateDrawerProducts(productsArray, occasion = null, title = 'Suggestions') {
             state.drawer.products = productsArray.map(p => ({ ...p, occasion }));
+
+            // Save to history
+            // If we're not at the end of history, trim everything after current position
+            if (state.drawer.historyIndex < state.drawer.history.length - 1) {
+                state.drawer.history = state.drawer.history.slice(0, state.drawer.historyIndex + 1);
+            }
+
+            // Add new entry to history
+            state.drawer.history.push({
+                products: [...state.drawer.products],
+                title: title,
+                occasion: occasion
+            });
+
+            // Update history index to latest
+            state.drawer.historyIndex = state.drawer.history.length - 1;
+
+            // Update drawer title
+            drawerTitle.textContent = title;
+
+            // Update button states
+            drawerBack.disabled = (state.drawer.historyIndex === 0);
+            drawerForward.disabled = true; // Always true when adding new
 
             // Auto-open drawer in compact mode when products are added
             if (state.drawer.mode === 'hidden') {
@@ -2836,6 +2900,32 @@
             } else {
                 drawerCarousel.scrollBy({ top: scrollAmount, behavior: 'smooth' });
             }
+        }
+
+        function navigateDrawerHistory(direction) {
+            const newIndex = state.drawer.historyIndex + direction;
+
+            // Check bounds
+            if (newIndex < 0 || newIndex >= state.drawer.history.length) {
+                return;
+            }
+
+            // Update index
+            state.drawer.historyIndex = newIndex;
+
+            // Load products from history
+            const historyEntry = state.drawer.history[newIndex];
+            state.drawer.products = historyEntry.products;
+
+            // Update drawer title
+            drawerTitle.textContent = historyEntry.title || 'Suggestions';
+
+            // Update button states
+            drawerBack.disabled = (newIndex === 0);
+            drawerForward.disabled = (newIndex === state.drawer.history.length - 1);
+
+            // Re-render products
+            renderDrawerProducts();
         }
 
         function getCurrentTime() {
@@ -2981,7 +3071,7 @@
                 const newProducts = allProducts.slice(offset, offset + 3);
 
                 // Update drawer with new products
-                updateDrawerProducts(newProducts, occasion);
+                updateDrawerProducts(newProducts, occasion, '🔄 More Beautiful Options');
 
                 showTyping();
                 setTimeout(() => {
@@ -3155,7 +3245,7 @@
                 .slice(0, 3);
 
             // Update drawer with products
-            updateDrawerProducts(matchedProducts, occasion);
+            updateDrawerProducts(matchedProducts, occasion, '✨ Perfect Matches');
 
             showTyping();
             setTimeout(() => {
@@ -3189,7 +3279,7 @@
                 .slice(0, 3);
 
             // Update drawer with refined products
-            updateDrawerProducts(matchedProducts, occasion);
+            updateDrawerProducts(matchedProducts, occasion, '💫 Refined For You');
 
             showTyping();
             setTimeout(() => {
@@ -3211,7 +3301,8 @@
                 .slice(0, 3);
 
             // Update drawer with products
-            updateDrawerProducts(matchedProducts, occasion);
+            const occasionName = occasions[occasion]?.name || 'Your Occasion';
+            updateDrawerProducts(matchedProducts, occasion, `🌸 Perfect for ${occasionName}`);
 
             showTyping();
             setTimeout(() => {
@@ -3224,7 +3315,7 @@
             const flowerProducts = Object.values(products).filter(p => p.category === 'flowers');
 
             // Update drawer with all products
-            updateDrawerProducts(flowerProducts);
+            updateDrawerProducts(flowerProducts, null, '🌺 Full Collection');
 
             showTyping();
             setTimeout(() => {
@@ -3393,49 +3484,17 @@
                 return;
             }
 
-            addMessage('ai', '💝 Want to make it extra special? These pair beautifully:', { confidence: 92 });
+            addMessage('ai', '💝 Want to make it extra special? Check the suggestions drawer for perfect pairings!', { confidence: 92 });
 
+            // Update drawer with pairing products
             setTimeout(() => {
-                pairings.forEach((pairing, i) => {
-                    setTimeout(() => {
-                        const div = document.createElement('div');
-                        div.className = 'message ai';
-                        const card = document.createElement('div');
-                        card.className = 'product-card-chat';
-                        card.style.background = '#fff';
-                        card.style.border = '2px solid #e5e7eb';
+                updateDrawerProducts(pairings, null, '💝 Perfect Pairings');
 
-                        card.innerHTML = `
-                            <div class="product-card-content">
-                                <img src="${pairing.image}" alt="${pairing.name}" class="product-card-image" style="width: 80px; height: 80px;">
-                                <div class="product-card-info">
-                                    <div class="product-card-name" style="font-size: 0.95rem;">${pairing.name}</div>
-                                    <div class="product-card-desc">${pairing.description}</div>
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
-                                        <div style="color: #d63384; font-weight: 700;">+$${pairing.price.toFixed(2)}</div>
-                                        <button class="product-card-btn" style="padding: 6px 16px; font-size: 0.85rem;">Add to Order</button>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-
-                        card.querySelector('.product-card-btn').onclick = () => {
-                            state.cart.push(pairing);
-                            card.style.opacity = '0.6';
-                            card.querySelector('.product-card-btn').textContent = '✓ Added';
-                            card.querySelector('.product-card-btn').disabled = true;
-                        };
-
-                        div.appendChild(card);
-                        chatMessages.appendChild(div);
-                        scrollToBottom();
-                    }, i * 300);
-                });
-
+                // Add quick reply to continue
                 setTimeout(() => {
                     const continueBtn = [{ text: 'Continue to Checkout', action: 'checkout' }];
                     addQuickReplies(continueBtn);
-                }, pairings.length * 300 + 500);
+                }, 800);
             }, 500);
         }
 
