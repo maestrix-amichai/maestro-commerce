@@ -1756,7 +1756,7 @@
                 price: 45.00,
                 description: 'A delightful mix of tulips, daffodils, and hyacinths',
                 detailedDescription: '12 fresh tulips, 8 daffodils, and fragrant hyacinths arranged with seasonal greens',
-                occasions: { birthday: 92, thankyou: 88, justbecause: 85, celebration: 80 },
+                occasions: { birthday: 92, thankyou: 88, justbecause: 85, celebration: 86, housewarming: 82, romance: 70 },
                 bestFor: 'Perfect for birthdays and spreading joy',
                 reviews: {
                     rating: 4.8,
@@ -1773,7 +1773,7 @@
                 price: 65.00,
                 description: 'Classic red roses arranged beautifully for that special someone',
                 detailedDescription: '24 premium long-stem red roses with eucalyptus and ribbon',
-                occasions: { romance: 98, anniversary: 95, apology: 90, valentines: 99 },
+                occasions: { romance: 98, anniversary: 95, apology: 90, valentines: 99, celebration: 75, wedding: 85 },
                 bestFor: 'Expressing deep love and commitment',
                 reviews: {
                     rating: 4.9,
@@ -1807,7 +1807,7 @@
                 price: 52.00,
                 description: 'Elegant white and pink roses with baby\'s breath',
                 detailedDescription: 'Premium white and blush pink roses accented with delicate baby\'s breath',
-                occasions: { wedding: 96, anniversary: 90, romance: 85, thankyou: 80 },
+                occasions: { wedding: 96, anniversary: 90, romance: 85, thankyou: 80, celebration: 82, birthday: 78 },
                 bestFor: 'Weddings and elegant celebrations',
                 reviews: {
                     rating: 4.9,
@@ -1841,7 +1841,7 @@
                 price: 72.00,
                 description: 'Luxurious pink peonies in full bloom',
                 detailedDescription: '12 lush pink peonies - the ultimate romantic gesture',
-                occasions: { romance: 92, wedding: 88, anniversary: 90, birthday: 85 },
+                occasions: { romance: 92, wedding: 88, anniversary: 90, birthday: 85, celebration: 78, thankyou: 82 },
                 bestFor: 'Romantic gestures and special milestones',
                 reviews: {
                     rating: 5.0,
@@ -1892,7 +1892,7 @@
                 price: 78.00,
                 description: 'Premium garden roses in soft pastels',
                 detailedDescription: '18 garden roses in peach, pink, and cream tones',
-                occasions: { wedding: 94, anniversary: 92, romance: 88, birthday: 85 },
+                occasions: { wedding: 94, anniversary: 92, romance: 88, birthday: 85, celebration: 80, thankyou: 82 },
                 bestFor: 'Luxury gifting and special celebrations',
                 reviews: {
                     rating: 4.9,
@@ -1909,7 +1909,7 @@
                 price: 35.00,
                 description: 'Rustic wildflower mix with natural charm',
                 detailedDescription: 'Seasonal wildflowers in a natural, organic arrangement',
-                occasions: { housewarming: 90, justbecause: 88, thankyou: 85, birthday: 80 },
+                occasions: { housewarming: 90, justbecause: 88, thankyou: 85, birthday: 80, celebration: 72, justforme: 85 },
                 bestFor: 'Nature lovers and casual celebrations',
                 reviews: {
                     rating: 4.6,
@@ -2641,8 +2641,13 @@
         function showInitialRecommendations() {
             const occasion = state.userPreferences.occasion;
             const matchedProducts = Object.values(products)
-                .filter(p => p.category === 'flowers' && p.occasions[occasion] >= 85)
-                .sort((a, b) => (b.occasions[occasion] || 0) - (a.occasions[occasion] || 0))
+                .filter(p => p.category === 'flowers' && p.occasions[occasion] >= 70)
+                .sort((a, b) => {
+                    // Sort by score but add small random factor for variety
+                    const scoreA = (b.occasions[occasion] || 0) + (Math.random() * 10);
+                    const scoreB = (a.occasions[occasion] || 0) + (Math.random() * 10);
+                    return scoreB - scoreA;
+                })
                 .slice(0, 3);
 
             showTyping();
@@ -2674,10 +2679,15 @@
             const productCards = document.querySelectorAll('.product-card-chat');
             productCards.forEach(card => card.parentElement.remove());
 
-            // Show refined products
+            // Show refined products with variety
             const matchedProducts = Object.values(products)
-                .filter(p => p.category === 'flowers' && p.occasions[occasion] >= 85)
-                .sort((a, b) => (b.occasions[occasion] || 0) - (a.occasions[occasion] || 0))
+                .filter(p => p.category === 'flowers' && p.occasions[occasion] >= 70)
+                .sort((a, b) => {
+                    // Add randomization for variety
+                    const scoreA = (b.occasions[occasion] || 0) + (Math.random() * 15);
+                    const scoreB = (a.occasions[occasion] || 0) + (Math.random() * 15);
+                    return scoreB - scoreA;
+                })
                 .slice(0, 3);
 
             showTyping();
@@ -2695,8 +2705,13 @@
         function showRecommendations() {
             const occasion = state.userPreferences.occasion;
             const matchedProducts = Object.values(products)
-                .filter(p => p.category === 'flowers' && p.occasions[occasion] >= 85)
-                .sort((a, b) => (b.occasions[occasion] || 0) - (a.occasions[occasion] || 0))
+                .filter(p => p.category === 'flowers' && p.occasions[occasion] >= 70)
+                .sort((a, b) => {
+                    // Add randomization for variety
+                    const scoreA = (b.occasions[occasion] || 0) + (Math.random() * 12);
+                    const scoreB = (a.occasions[occasion] || 0) + (Math.random() * 12);
+                    return scoreB - scoreA;
+                })
                 .slice(0, 3);
 
             showTyping();
