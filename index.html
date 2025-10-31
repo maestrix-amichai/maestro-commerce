@@ -1754,7 +1754,8 @@
                 colors: null,
                 recipient: null
             },
-            cart: []
+            cart: [],
+            recommendationsShown: false
         };
 
         // ===== PRODUCT CATALOG WITH RICH METADATA =====
@@ -2470,6 +2471,7 @@
             if (occasions[action]) {
                 state.userPreferences.occasion = action;
                 state.userPreferences.questionIndex = 0;
+                state.recommendationsShown = false; // Reset recommendations flag
 
                 // Check if this occasion has sub-categories
                 if (occasions[action].hasSubCategories) {
@@ -2482,6 +2484,7 @@
                 const subCatId = action.replace('subcat_', '');
                 state.userPreferences.subCategory = subCatId;
                 state.userPreferences.questionIndex = 0;
+                state.recommendationsShown = false; // Reset recommendations flag
                 setTimeout(() => askOccasionQuestions(state.userPreferences.occasion, subCatId), 1000);
             } else if (action.startsWith('answer_')) {
                 // Handle question answers
@@ -2521,6 +2524,17 @@
 
             const questionIndex = state.userPreferences.questionIndex || 0;
 
+            // Show initial recommendations after 2 questions answered (questionIndex === 2)
+            if (questionIndex === 2 && !state.recommendationsShown) {
+                state.recommendationsShown = true;
+                showInitialRecommendations();
+            }
+
+            // Refine recommendations if we've already shown them and user answered another question
+            if (questionIndex > 2 && state.recommendationsShown) {
+                refineRecommendations();
+            }
+
             if (questionIndex < occasionData.questions.length) {
                 showTyping();
                 setTimeout(() => {
@@ -2536,8 +2550,17 @@
                     setTimeout(() => addQuickReplies(options), 500);
                 }, 1200);
             } else {
-                // Questions complete, show recommendations directly
-                setTimeout(() => showRecommendations(), 1000);
+                // Questions complete, show final refined recommendations if not already shown
+                if (!state.recommendationsShown) {
+                    setTimeout(() => showRecommendations(), 1000);
+                } else {
+                    // Just show a completion message
+                    showTyping();
+                    setTimeout(() => {
+                        hideTyping();
+                        addMessage('ai', 'Perfect! I\'ve refined my suggestions based on your preferences. Feel free to select one or ask me anything! 🌸', { confidence: 95 });
+                    }, 1000);
+                }
             }
         }
 
@@ -2571,6 +2594,50 @@
         }
 
         // Removed duplicate event listener - buttons now use onclick handlers only
+
+        function showInitialRecommendations() {
+            const occasion = state.userPreferences.occasion;
+            const matchedProducts = Object.values(products)
+                .filter(p => p.category === 'flowers' && p.occasions[occasion] >= 85)
+                .sort((a, b) => (b.occasions[occasion] || 0) - (a.occasions[occasion] || 0))
+                .slice(0, 3);
+
+            showTyping();
+            setTimeout(() => {
+                hideTyping();
+                addMessage('ai', `Great! Let me show you some options while we fine-tune your perfect match... 🌸`, { confidence: 88 });
+                setTimeout(() => {
+                    matchedProducts.forEach((product, i) => {
+                        setTimeout(() => addEnhancedProductCard(product, occasion), i * 400);
+                    });
+                }, 600);
+            }, 1000);
+        }
+
+        function refineRecommendations() {
+            const occasion = state.userPreferences.occasion;
+
+            // Remove old product cards
+            const productCards = document.querySelectorAll('.product-card-chat');
+            productCards.forEach(card => card.parentElement.remove());
+
+            // Show refined products
+            const matchedProducts = Object.values(products)
+                .filter(p => p.category === 'flowers' && p.occasions[occasion] >= 85)
+                .sort((a, b) => (b.occasions[occasion] || 0) - (a.occasions[occasion] || 0))
+                .slice(0, 3);
+
+            showTyping();
+            setTimeout(() => {
+                hideTyping();
+                addMessage('ai', `I've refined my suggestions based on what you told me... 💫`, { confidence: 90 });
+                setTimeout(() => {
+                    matchedProducts.forEach((product, i) => {
+                        setTimeout(() => addEnhancedProductCard(product, occasion), i * 400);
+                    });
+                }, 600);
+            }, 800);
+        }
 
         function showRecommendations() {
             const occasion = state.userPreferences.occasion;
