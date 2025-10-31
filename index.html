@@ -2587,14 +2587,14 @@
 
             const questionIndex = state.userPreferences.questionIndex || 0;
 
-            // Show initial recommendations after 1st question answered (questionIndex === 1)
-            if (questionIndex === 1 && !state.recommendationsShown) {
+            // Show initial recommendations after first answer (questionIndex === 0)
+            if (questionIndex === 0 && !state.recommendationsShown) {
                 state.recommendationsShown = true;
                 showInitialRecommendations();
             }
 
             // Refine recommendations if we've already shown them and user answered another question
-            if (questionIndex > 1 && state.recommendationsShown) {
+            if (questionIndex > 0 && state.recommendationsShown) {
                 refineRecommendations();
             }
 
