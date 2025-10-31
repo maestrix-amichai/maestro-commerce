@@ -2467,6 +2467,69 @@
 
             addUserMessage(displayText);
 
+            // Handle refinement options
+            if (action === 'refine_satisfied') {
+                // Continue with remaining questions
+                showTyping();
+                setTimeout(() => {
+                    hideTyping();
+                    addMessage('ai', 'Wonderful! Let me ask you a few more questions to make sure we find your perfect match... 🌸', { confidence: 92 });
+                    setTimeout(() => {
+                        const occasion = state.userPreferences.occasion;
+                        const subCat = state.userPreferences.subCategory;
+                        askOccasionQuestions(occasion, subCat);
+                    }, 800);
+                }, 1000);
+                return;
+            } else if (action === 'refine_change') {
+                // Show different products from the same occasion
+                const occasion = state.userPreferences.occasion;
+                const allProducts = Object.values(products)
+                    .filter(p => p.category === 'flowers' && p.occasions[occasion] >= 75)
+                    .sort((a, b) => (b.occasions[occasion] || 0) - (a.occasions[occasion] || 0));
+
+                // Remove old product cards
+                const productCards = document.querySelectorAll('.product-card-chat');
+                productCards.forEach(card => card.parentElement.remove());
+
+                showTyping();
+                setTimeout(() => {
+                    hideTyping();
+                    addMessage('ai', 'Let me show you some other beautiful options... 💐', { confidence: 88 });
+                    setTimeout(() => {
+                        // Show next 3 products (or rotate to different ones)
+                        const offset = Math.floor(Math.random() * Math.max(0, allProducts.length - 3));
+                        allProducts.slice(offset, offset + 3).forEach((product, i) => {
+                            setTimeout(() => addEnhancedProductCard(product, occasion), i * 400);
+                        });
+
+                        // Re-offer refinement options
+                        setTimeout(() => {
+                            const refinementOptions = [
+                                { text: '✨ These look perfect!', action: 'refine_satisfied' },
+                                { text: '🔄 Show me something different', action: 'refine_change' },
+                                { text: '💬 Tell me more about my options', action: 'refine_info' }
+                            ];
+                            addQuickReplies(refinementOptions);
+                        }, 1400);
+                    }, 600);
+                }, 1000);
+                return;
+            } else if (action === 'refine_info') {
+                // Provide more information
+                showTyping();
+                setTimeout(() => {
+                    hideTyping();
+                    addMessage('ai', 'Each arrangement is handcrafted by our expert florists and comes with our 7-day freshness guarantee. You can click any arrangement to see full details, reviews, and add it to your cart. Or keep answering questions and I\'ll help narrow down your perfect choice! 🌸', { confidence: 90 });
+                    setTimeout(() => {
+                        const occasion = state.userPreferences.occasion;
+                        const subCat = state.userPreferences.subCategory;
+                        askOccasionQuestions(occasion, subCat);
+                    }, 800);
+                }, 1200);
+                return;
+            }
+
             // Handle occasion selection
             if (occasions[action]) {
                 state.userPreferences.occasion = action;
@@ -2524,14 +2587,14 @@
 
             const questionIndex = state.userPreferences.questionIndex || 0;
 
-            // Show initial recommendations after 2 questions answered (questionIndex === 2)
-            if (questionIndex === 2 && !state.recommendationsShown) {
+            // Show initial recommendations after 1st question answered (questionIndex === 1)
+            if (questionIndex === 1 && !state.recommendationsShown) {
                 state.recommendationsShown = true;
                 showInitialRecommendations();
             }
 
             // Refine recommendations if we've already shown them and user answered another question
-            if (questionIndex > 2 && state.recommendationsShown) {
+            if (questionIndex > 1 && state.recommendationsShown) {
                 refineRecommendations();
             }
 
@@ -2605,11 +2668,21 @@
             showTyping();
             setTimeout(() => {
                 hideTyping();
-                addMessage('ai', `Great! Let me show you some options while we fine-tune your perfect match... 🌸`, { confidence: 88 });
+                addMessage('ai', `Great! Here are some beautiful options based on what you've told me so far... 🌸`, { confidence: 88 });
                 setTimeout(() => {
                     matchedProducts.forEach((product, i) => {
                         setTimeout(() => addEnhancedProductCard(product, occasion), i * 400);
                     });
+
+                    // After products are shown, offer refinement options
+                    setTimeout(() => {
+                        const refinementOptions = [
+                            { text: '✨ These look perfect!', action: 'refine_satisfied' },
+                            { text: '🔄 Show me something different', action: 'refine_change' },
+                            { text: '💬 Tell me more about my options', action: 'refine_info' }
+                        ];
+                        addQuickReplies(refinementOptions);
+                    }, matchedProducts.length * 400 + 600);
                 }, 600);
             }, 1000);
         }
