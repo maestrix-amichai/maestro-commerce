@@ -1,0 +1,2565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloom & Petals - Premium Flower Delivery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+        }
+
+        /* Header & Navigation */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #d63384;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            font-size: 2.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #374151;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #d63384;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .search-icon, .cart-icon {
+            font-size: 1.3rem;
+            color: #374151;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .search-icon:hover, .cart-icon:hover {
+            color: #d63384;
+        }
+
+        .cart-badge {
+            position: relative;
+        }
+
+        .cart-badge::after {
+            content: '0';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #d63384;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #ffeef8 0%, #ffd6e8 100%);
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            color: #1f2937;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            gap: 15px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #d63384 0%, #f06595 100%);
+            color: white;
+            padding: 16px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(214, 51, 132, 0.3);
+            transition: transform 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(214, 51, 132, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #d63384;
+            padding: 16px 40px;
+            border: 2px solid #d63384;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: #d63384;
+            color: white;
+        }
+
+        /* Features Bar */
+        .features-bar {
+            background: white;
+            padding: 30px 40px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .features-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+        }
+
+        .feature-text h4 {
+            font-size: 1rem;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .feature-text p {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        /* Products Section */
+        .products-section {
+            padding: 80px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: #1f2937;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: #6b7280;
+        }
+
+        /* Enhanced Product Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+
+        .product-image-wrapper {
+            position: relative;
+            overflow: hidden;
+            height: 320px;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.1);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #d63384;
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .quick-add {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: white;
+            color: #d63384;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .product-card:hover .quick-add {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .quick-add:hover {
+            background: #d63384;
+            color: white;
+        }
+
+        .product-info {
+            padding: 25px;
+        }
+
+        .product-category {
+            color: #9ca3af;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .product-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .product-description {
+            color: #6b7280;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #d63384;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #fbbf24;
+        }
+
+        /* Newsletter Section */
+        .newsletter {
+            background: linear-gradient(135deg, #ffeef8 0%, #ffd6e8 100%);
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        .newsletter-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .newsletter h2 {
+            font-size: 2.2rem;
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+
+        .newsletter p {
+            color: #6b7280;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 10px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 15px 25px;
+            border: 2px solid #ffd6e8;
+            border-radius: 30px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .newsletter-input:focus {
+            border-color: #d63384;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 60px 40px 30px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section a {
+            color: #d1d5db;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: #f9a8d4;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+        }
+
+        /* Chat Widget Styles */
+        .chat-widget {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .chat-bubble {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #d63384 0%, #f06595 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(214, 51, 132, 0.4);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+        }
+
+        .chat-bubble:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 32px rgba(214, 51, 132, 0.5);
+        }
+
+        .chat-bubble.hidden {
+            display: none;
+        }
+
+        .bubble-icon {
+            font-size: 32px;
+            animation: wave 2s infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(20deg); }
+            75% { transform: rotate(-20deg); }
+        }
+
+        .bubble-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4757;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .chat-window {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 500px;
+            height: 650px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: scale(0.8) translateY(20px);
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            overflow: hidden;
+        }
+
+        .chat-window.visible {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: all;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #d63384 0%, #f06595 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-avatar {
+            width: 45px;
+            height: 45px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .chat-header-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 2px;
+        }
+
+        .chat-status {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .chat-close {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .chat-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: linear-gradient(to bottom, #fef3f7, #ffffff);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #d6338488;
+            border-radius: 3px;
+        }
+
+        .message {
+            display: flex;
+            flex-direction: column;
+            animation: messageSlide 0.4s ease-out;
+        }
+
+        @keyframes messageSlide {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.ai { align-items: flex-start; }
+        .message.user { align-items: flex-end; }
+
+        .message-bubble {
+            padding: 12px 16px;
+            border-radius: 18px;
+            max-width: 85%;
+            word-wrap: break-word;
+            line-height: 1.5;
+        }
+
+        .message.ai .message-bubble {
+            background: white;
+            border: 2px solid #f0f0f0;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #d63384 0%, #f06595 100%);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: 4px;
+            padding: 0 8px;
+        }
+
+        .confidence-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #d1fae5;
+            color: #065f46;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .quick-reply-btn {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid #d63384;
+            color: #d63384;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .quick-reply-btn:hover {
+            background: #d63384;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .product-card-chat {
+            background: #fef3f7;
+            border: 2px solid #ffd6e8;
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .product-card-chat:hover {
+            border-color: #d63384;
+            box-shadow: 0 4px 16px rgba(214, 51, 132, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .product-card-content {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .product-card-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 12px;
+            object-fit: cover;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-card-info { flex: 1; }
+
+        .product-card-name {
+            font-weight: 700;
+            color: #333;
+            font-size: 1.05rem;
+            margin-bottom: 6px;
+        }
+
+        .product-card-desc {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .occasion-badge {
+            display: inline-block;
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .review-summary {
+            background: #f0fdf4;
+            border-left: 3px solid #4ade80;
+            padding: 8px 12px;
+            margin-top: 10px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: #065f46;
+            font-style: italic;
+        }
+
+        .product-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+        }
+
+        .product-card-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #d63384;
+        }
+
+        .product-card-btn {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #d63384 0%, #f06595 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .product-card-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(214, 51, 132, 0.3);
+        }
+
+        /* CAROUSEL */
+        .carousel-wrapper {
+            position: relative;
+            margin-top: 12px;
+            width: 100%;
+        }
+
+        .carousel-container {
+            width: 100%;
+            position: relative;
+            padding: 0;
+        }
+
+        .carousel-track {
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .product-carousel {
+            display: flex;
+            gap: 12px;
+            padding: 8px 0;
+            transition: transform 0.4s ease-out;
+        }
+
+        .carousel-item {
+            min-width: 140px;
+            max-width: 140px;
+            flex-shrink: 0;
+            background: white;
+            border: 2px solid #ffd6e8;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .carousel-item:hover {
+            border-color: #d63384;
+            transform: translateY(-4px);
+        }
+
+        .carousel-item-img {
+            width: 100%;
+            height: 110px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-bottom: 8px;
+        }
+
+        .carousel-item-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .carousel-item-price {
+            color: #d63384;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 3px solid #d63384;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 20;
+            color: #d63384;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .carousel-wrapper:hover .carousel-nav:not(.disabled) {
+            opacity: 1;
+        }
+
+        .carousel-nav:hover:not(.disabled) {
+            background: #d63384;
+            color: white;
+            transform: translateY(-50%) scale(1.15);
+        }
+
+        .carousel-nav.prev {
+            left: 15px;
+        }
+
+        .carousel-nav.next {
+            right: 15px;
+        }
+
+        .carousel-nav.disabled {
+            opacity: 0 !important;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: white;
+            border: 2px solid #f0f0f0;
+            border-radius: 18px;
+            border-bottom-left-radius: 4px;
+            max-width: fit-content;
+        }
+
+        .typing-text {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #d63384;
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-8px); }
+        }
+
+        .chat-input-area {
+            padding: 16px 20px;
+            background: white;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 18px;
+            border: 2px solid #f0f0f0;
+            border-radius: 24px;
+            outline: none;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .chat-input:focus {
+            border-color: #d63384;
+            box-shadow: 0 0 0 3px rgba(214, 51, 132, 0.1);
+        }
+
+        .send-btn {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #d63384 0%, #f06595 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .send-btn:hover:not(:disabled) {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(214, 51, 132, 0.4);
+        }
+
+        .checkout-form {
+            background: #fef3f7;
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 12px;
+        }
+
+        .checkout-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #ffd6e8;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus {
+            border-color: #d63384;
+            box-shadow: 0 0 0 3px rgba(214, 51, 132, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .order-summary {
+            background: white;
+            border: 2px solid #ffd6e8;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .order-summary-title {
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #333;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+            padding-top: 12px;
+            margin-top: 8px;
+            border-top: 2px solid #f0f0f0;
+            font-weight: 700;
+        }
+
+        .submit-order-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #d63384 0%, #f06595 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: all 0.3s;
+        }
+
+        .submit-order-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(214, 51, 132, 0.4);
+        }
+
+        .success-animation {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+            animation: successPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes successPop {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .success-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #22543d;
+            margin-bottom: 8px;
+        }
+
+        .tracking-info {
+            background: #f0fdf4;
+            border: 2px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .tracking-number {
+            font-weight: 700;
+            color: #22543d;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            margin: 8px 0;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #d63384;
+            background: white;
+            color: #d63384;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            background: #d63384;
+            color: white;
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, #d63384 0%, #f06595 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        @media (max-width: 768px) {
+            .chat-window {
+                width: 100%;
+                height: 100vh;
+                bottom: 0;
+                right: 0;
+                border-radius: 0;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <span class="logo-icon">🌸</span>
+                <span>Bloom & Petals</span>
+            </a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#products">Shop</a></li>
+                    <li><a href="#occasions">Occasions</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <span class="search-icon">🔍</span>
+                <span class="cart-icon cart-badge">🛒</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Fresh Flowers Delivered with Love</h1>
+            <p class="hero-subtitle">Handcrafted arrangements for every occasion. Same-day delivery available.</p>
+            <div class="hero-cta">
+                <button class="btn-primary" onclick="document.getElementById('chatBubble').click()">Chat with Bella 💬</button>
+                <button class="btn-secondary" onclick="document.querySelector('.products-section').scrollIntoView({behavior: 'smooth'})">Browse Collection</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Bar -->
+    <section class="features-bar">
+        <div class="features-container">
+            <div class="feature-item">
+                <div class="feature-icon">🚚</div>
+                <div class="feature-text">
+                    <h4>Same-Day Delivery</h4>
+                    <p>Order by 2 PM</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🌿</div>
+                <div class="feature-text">
+                    <h4>Fresh Guarantee</h4>
+                    <p>7-day freshness promise</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🎨</div>
+                <div class="feature-text">
+                    <h4>Expert Florists</h4>
+                    <p>Handcrafted with care</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">💝</div>
+                <div class="feature-text">
+                    <h4>Personalized Cards</h4>
+                    <p>Free with every order</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section" id="products">
+        <div class="section-header">
+            <h2 class="section-title">Bestselling Arrangements</h2>
+            <p class="section-subtitle">Handpicked by our expert florists</p>
+        </div>
+
+        <div class="products-grid">
+            <div class="product-card" onclick="document.getElementById('chatBubble').click()">
+                <div class="product-image-wrapper">
+                    <img src="https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422620/Maestro%20Commerce/Generated_Image_October_31_2025_-_5_57PM_4_cxokfl.png" alt="Spring Bouquet" class="product-image">
+                    <span class="product-badge">Bestseller</span>
+                    <button class="quick-add">Quick Add</button>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Birthday • Thank You</div>
+                    <h3 class="product-name">Spring Bouquet</h3>
+                    <p class="product-description">A delightful mix of tulips, daffodils, and hyacinths</p>
+                    <div class="product-footer">
+                        <span class="product-price">$45.00</span>
+                        <div class="product-rating">
+                            ⭐⭐⭐⭐⭐ <span style="color: #6b7280; font-size: 0.9rem;">(127)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" onclick="document.getElementById('chatBubble').click()">
+                <div class="product-image-wrapper">
+                    <img src="https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422620/Maestro%20Commerce/red-roses.png" alt="Romance Roses" class="product-image">
+                    <span class="product-badge">Premium</span>
+                    <button class="quick-add">Quick Add</button>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Anniversary • Romance</div>
+                    <h3 class="product-name">Romance Roses</h3>
+                    <p class="product-description">Classic red roses arranged beautifully for that special someone</p>
+                    <div class="product-footer">
+                        <span class="product-price">$65.00</span>
+                        <div class="product-rating">
+                            ⭐⭐⭐⭐⭐ <span style="color: #6b7280; font-size: 0.9rem;">(203)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" onclick="document.getElementById('chatBubble').click()">
+                <div class="product-image-wrapper">
+                    <img src="https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422620/Maestro%20Commerce/sunflower-cheerful-bunch.png" alt="Sunshine Mix" class="product-image">
+                    <span class="product-badge">New</span>
+                    <button class="quick-add">Quick Add</button>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Get Well • Celebration</div>
+                    <h3 class="product-name">Sunshine Mix</h3>
+                    <p class="product-description">Bright sunflowers and daisies to brighten any day</p>
+                    <div class="product-footer">
+                        <span class="product-price">$38.00</span>
+                        <div class="product-rating">
+                            ⭐⭐⭐⭐⭐ <span style="color: #6b7280; font-size: 0.9rem;">(89)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" onclick="document.getElementById('chatBubble').click()">
+                <div class="product-image-wrapper">
+                    <img src="https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422620/Maestro%20Commerce/Generated_Image_October_31_2025_-_5_57PM_7_bl3dor.png" alt="Spring Bloom" class="product-image">
+                    <span class="product-badge">Featured</span>
+                    <button class="quick-add">Quick Add</button>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Wedding • Special Event</div>
+                    <h3 class="product-name">Spring Bloom</h3>
+                    <p class="product-description">Elegant white and pink roses with baby's breath</p>
+                    <div class="product-footer">
+                        <span class="product-price">$52.00</span>
+                        <div class="product-rating">
+                            ⭐⭐⭐⭐⭐ <span style="color: #6b7280; font-size: 0.9rem;">(156)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="newsletter-content">
+            <h2>Join Our Bloom Club</h2>
+            <p>Get exclusive offers, flower care tips, and seasonal specials delivered to your inbox</p>
+            <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thanks for subscribing! 🌸');">
+                <input type="email" class="newsletter-input" placeholder="Enter your email" required>
+                <button type="submit" class="btn-primary">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <ul>
+                    <li><a href="#">Our Story</a></li>
+                    <li><a href="#">Our Florists</a></li>
+                    <li><a href="#">Sustainability</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Customer Service</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Delivery Info</a></li>
+                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">Track Order</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Shop</h3>
+                <ul>
+                    <li><a href="#">All Flowers</a></li>
+                    <li><a href="#">Occasions</a></li>
+                    <li><a href="#">Sympathy</a></li>
+                    <li><a href="#">Corporate Gifts</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <ul>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Pinterest</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Bloom & Petals. All rights reserved. | Est. 2020</p>
+        </div>
+    </footer>
+
+    <!-- Chat Widget -->
+    <div class="chat-widget">
+        <div class="chat-bubble" id="chatBubble">
+            <div class="bubble-icon">🌸</div>
+            <div class="bubble-badge">1</div>
+        </div>
+
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <div class="chat-header-left">
+                    <div class="chat-avatar">🤖</div>
+                    <div class="chat-header-info">
+                        <h3>Bella</h3>
+                        <div class="chat-status">
+                            <div class="status-dot"></div>
+                            <span>Online now</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="chat-close" id="chatClose">✕</button>
+            </div>
+
+            <div class="chat-messages" id="chatMessages"></div>
+
+            <div class="chat-input-area">
+                <div class="chat-input-wrapper">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Type your message..." autocomplete="off">
+                    <button class="send-btn" id="sendBtn">➤</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== STATE MANAGEMENT =====
+        const state = {
+            isOpen: false,
+            conversation: [],
+            selectedProduct: null,
+            orderNumber: null,
+            carouselPosition: 0,
+            userPreferences: {
+                occasion: null,
+                budget: null,
+                style: null,
+                colors: null,
+                recipient: null
+            },
+            cart: []
+        };
+
+        // ===== PRODUCT CATALOG WITH RICH METADATA =====
+        const products = {
+            // FLOWERS
+            spring_bouquet: {
+                id: 'spring_bouquet',
+                category: 'flowers',
+                name: 'Spring Bouquet',
+                image: 'https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422620/Maestro%20Commerce/Generated_Image_October_31_2025_-_5_57PM_4_cxokfl.png',
+                price: 45.00,
+                description: 'A delightful mix of tulips, daffodils, and hyacinths',
+                detailedDescription: '12 fresh tulips, 8 daffodils, and fragrant hyacinths arranged with seasonal greens',
+                occasions: { birthday: 92, thankyou: 88, justbecause: 85, celebration: 80 },
+                bestFor: 'Perfect for birthdays and spreading joy',
+                reviews: {
+                    rating: 4.8,
+                    count: 127,
+                    summary: '"Arrived incredibly fresh and lasted over a week!" - Sarah M.'
+                },
+                pairsWith: ['artisan_chocolates', 'celebration_card']
+            },
+            romance_roses: {
+                id: 'romance_roses',
+                category: 'flowers',
+                name: 'Romance Roses',
+                image: 'https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422620/Maestro%20Commerce/red-roses.png',
+                price: 65.00,
+                description: 'Classic red roses arranged beautifully for that special someone',
+                detailedDescription: '24 premium long-stem red roses with eucalyptus and ribbon',
+                occasions: { romance: 98, anniversary: 95, apology: 90, valentines: 99 },
+                bestFor: 'Expressing deep love and commitment',
+                reviews: {
+                    rating: 4.9,
+                    count: 203,
+                    summary: '"He was speechless - absolutely stunning!" - Jessica R.'
+                },
+                pairsWith: ['luxury_chocolates', 'red_wine', 'romantic_card']
+            },
+            sunshine_mix: {
+                id: 'sunshine_mix',
+                category: 'flowers',
+                name: 'Sunshine Mix',
+                image: 'https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422620/Maestro%20Commerce/sunflower-cheerful-bunch.png',
+                price: 38.00,
+                description: 'Bright sunflowers and daisies to brighten any day',
+                detailedDescription: '6 sunflowers, white daisies, and cheerful yellow blooms',
+                occasions: { getwell: 94, celebration: 88, justbecause: 92, birthday: 85 },
+                bestFor: 'Lifting spirits and celebrating sunny days',
+                reviews: {
+                    rating: 4.7,
+                    count: 89,
+                    summary: '"Brought a huge smile to my mom\'s face!" - David L.'
+                },
+                pairsWith: ['tea_gift_set', 'celebration_card']
+            },
+            spring_bloom: {
+                id: 'spring_bloom',
+                category: 'flowers',
+                name: 'Spring Bloom',
+                image: 'https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422620/Maestro%20Commerce/Generated_Image_October_31_2025_-_5_57PM_7_bl3dor.png',
+                price: 52.00,
+                description: 'Elegant white and pink roses with baby\'s breath',
+                detailedDescription: 'Premium white and blush pink roses accented with delicate baby\'s breath',
+                occasions: { wedding: 96, anniversary: 90, romance: 85, thankyou: 80 },
+                bestFor: 'Weddings and elegant celebrations',
+                reviews: {
+                    rating: 4.9,
+                    count: 156,
+                    summary: '"Perfect for our wedding - exceeded expectations!" - Emma K.'
+                },
+                pairsWith: ['champagne_strawberries', 'elegant_vase', 'romantic_card']
+            },
+            elegant_lilies: {
+                id: 'elegant_lilies',
+                category: 'flowers',
+                name: 'Elegant White Lilies',
+                image: 'https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422620/Maestro%20Commerce/Generated_Image_October_31_2025_-_5_57PM_6_chzv2q.png',
+                price: 58.00,
+                description: 'Graceful white lilies symbolizing peace and remembrance',
+                detailedDescription: '10 pristine white Oriental lilies with subtle greenery',
+                occasions: { sympathy: 98, funeral: 98, remembrance: 95, thankyou: 70 },
+                bestFor: 'Honoring memories and offering condolences',
+                reviews: {
+                    rating: 4.9,
+                    count: 143,
+                    summary: '"Beautiful tribute - delivered with care during a difficult time." - Michael S.'
+                },
+                pairsWith: ['sympathy_card']
+            },
+            pink_peonies: {
+                id: 'pink_peonies',
+                category: 'flowers',
+                name: 'Pink Peony Paradise',
+                image: 'https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422620/Maestro%20Commerce/Generated_Image_October_31_2025_-_5_57PM_3_zxdhbm.png',
+                price: 72.00,
+                description: 'Luxurious pink peonies in full bloom',
+                detailedDescription: '12 lush pink peonies - the ultimate romantic gesture',
+                occasions: { romance: 92, wedding: 88, anniversary: 90, birthday: 85 },
+                bestFor: 'Romantic gestures and special milestones',
+                reviews: {
+                    rating: 5.0,
+                    count: 98,
+                    summary: '"Worth every penny - absolutely breathtaking!" - Olivia T.'
+                },
+                pairsWith: ['luxury_chocolates', 'champagne_strawberries', 'romantic_card']
+            },
+            tropical_paradise: {
+                id: 'tropical_paradise',
+                category: 'flowers',
+                name: 'Tropical Paradise',
+                image: 'https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422620/Maestro%20Commerce/orchid-plant-elegant.png',
+                price: 68.00,
+                description: 'Exotic birds of paradise and vibrant orchids',
+                detailedDescription: 'Birds of paradise, orchids, and tropical foliage',
+                occasions: { celebration: 95, housewarming: 92, birthday: 88, thankyou: 80 },
+                bestFor: 'Making bold statements and celebrating life',
+                reviews: {
+                    rating: 4.8,
+                    count: 76,
+                    summary: '"Unique and stunning - conversation starter!" - Rachel P.'
+                },
+                pairsWith: ['modern_vase', 'celebration_card']
+            },
+            lavender_dreams: {
+                id: 'lavender_dreams',
+                category: 'flowers',
+                name: 'Lavender Dreams',
+                image: 'https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422620/Maestro%20Commerce/delicate-pastel-bouquet.png',
+                price: 42.00,
+                description: 'Calming lavender with soft purple blooms',
+                detailedDescription: 'Fresh lavender stems with purple stock and silver dollar eucalyptus',
+                occasions: { justforme: 95, housewarming: 88, thankyou: 85, getwell: 80 },
+                bestFor: 'Self-care and creating peaceful spaces',
+                reviews: {
+                    rating: 4.7,
+                    count: 112,
+                    summary: '"Smells amazing - perfect for relaxation!" - Amanda W.'
+                },
+                pairsWith: ['tea_gift_set', 'modern_vase']
+            },
+            garden_roses: {
+                id: 'garden_roses',
+                category: 'flowers',
+                name: 'Garden Rose Collection',
+                image: 'https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422620/Maestro%20Commerce/Generated_Image_October_31_2025_-_5_57PM_9_nikqjy.png',
+                price: 78.00,
+                description: 'Premium garden roses in soft pastels',
+                detailedDescription: '18 garden roses in peach, pink, and cream tones',
+                occasions: { wedding: 94, anniversary: 92, romance: 88, birthday: 85 },
+                bestFor: 'Luxury gifting and special celebrations',
+                reviews: {
+                    rating: 4.9,
+                    count: 134,
+                    summary: '"The most beautiful roses I\'ve ever received!" - Victoria H.'
+                },
+                pairsWith: ['luxury_chocolates', 'champagne_strawberries', 'elegant_vase']
+            },
+            wildflower_meadow: {
+                id: 'wildflower_meadow',
+                category: 'flowers',
+                name: 'Wildflower Meadow',
+                image: 'https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422620/Maestro%20Commerce/Generated_Image_October_31_2025_-_5_57PM_5_mdw56c.png',
+                price: 35.00,
+                description: 'Rustic wildflower mix with natural charm',
+                detailedDescription: 'Seasonal wildflowers in a natural, organic arrangement',
+                occasions: { housewarming: 90, justbecause: 88, thankyou: 85, birthday: 80 },
+                bestFor: 'Nature lovers and casual celebrations',
+                reviews: {
+                    rating: 4.6,
+                    count: 94,
+                    summary: '"Charming and fresh - feels like a garden!" - Sophie M.'
+                },
+                pairsWith: ['tea_gift_set', 'celebration_card']
+            },
+
+            // CHOCOLATES & SWEET GIFTS
+            godiva_chocolates: {
+                id: 'godiva_chocolates',
+                category: 'chocolates',
+                name: 'Belgian Chocolate Selection',
+                image: 'https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422800/Maestro%20Commerce/Generated_Image_October_31_2025_-_6_03PM_rbp1mx.png',
+                price: 38.99,
+                description: 'Classic Belgian chocolates in a sophisticated wooden presentation box',
+                detailedDescription: '24-piece premium Belgian chocolate collection featuring smooth milk, rich dark, and creamy white chocolates',
+                occasions: { romance: 90, birthday: 88, thankyou: 85, celebration: 82, corporate: 88 },
+                bestFor: 'Classic elegance and corporate gifting',
+                reviews: {
+                    rating: 4.8,
+                    count: 256,
+                    summary: '"Delicious and beautifully packaged - perfect for any occasion!" - Laura B.'
+                }
+            },
+            luxury_chocolates: {
+                id: 'luxury_chocolates',
+                category: 'chocolates',
+                name: 'Gourmet Truffle Collection',
+                image: 'https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422860/Maestro%20Commerce/Generated_Image_October_31_2025_-_6_14PM_yf92e6.png',
+                price: 42.99,
+                description: 'Hand-crafted artisan truffles with rich ganache centers',
+                detailedDescription: 'Hand-crafted artisan truffles in unique flavors: lavender honey, sea salt caramel, espresso, and champagne',
+                occasions: { romance: 95, anniversary: 92, thankyou: 85, celebration: 80 },
+                bestFor: 'Impressing chocolate connoisseurs and luxury gifting',
+                reviews: {
+                    rating: 4.9,
+                    count: 187,
+                    summary: '"Best truffles I\'ve ever tasted - rich and beautifully wrapped!" - James C.'
+                }
+            },
+            heart_chocolates: {
+                id: 'heart_chocolates',
+                category: 'chocolates',
+                name: 'Romantic Heart-Shaped Chocolates',
+                image: 'https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422680/Maestro%20Commerce/Generated_Image_October_31_2025_-_6_11PM_jkyenk.png',
+                price: 29.99,
+                description: 'Deluxe heart-shaped box filled with milk chocolates',
+                detailedDescription: 'Classic heart box filled with premium milk and dark chocolates - perfect for expressing love',
+                occasions: { romance: 98, valentines: 99, anniversary: 90, apology: 85 },
+                bestFor: 'Romantic gestures and Valentine\'s Day',
+                reviews: {
+                    rating: 4.7,
+                    count: 312,
+                    summary: '"Classic and romantic - always a hit!" - Christina D.'
+                }
+            },
+            artisan_chocolates: {
+                id: 'artisan_chocolates',
+                category: 'chocolates',
+                name: 'Artisan Chocolate Assortment Box',
+                image: 'https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422800/Maestro%20Commerce/Generated_Image_October_31_2025_-_6_00PM_xobf5l.png',
+                price: 34.99,
+                description: 'Premium selection of dark, milk, and white chocolates in an elegant gift box',
+                detailedDescription: 'Curated collection of 24 handcrafted chocolates featuring caramel, raspberry, hazelnut, and espresso flavors',
+                occasions: { romance: 90, birthday: 88, thankyou: 90, celebration: 85, anniversary: 88 },
+                bestFor: 'Adding sweetness to any gesture and showing appreciation',
+                reviews: {
+                    rating: 4.9,
+                    count: 284,
+                    summary: '"Delicious - high quality with beautiful packaging!" - Rachel M.'
+                }
+            },
+            champagne_strawberries: {
+                id: 'champagne_strawberries',
+                category: 'gifts',
+                name: 'Champagne & Strawberries Gift',
+                image: 'https://res.cloudinary.com/dukf4ckq1/image/upload/v1730422900/Maestro%20Commerce/Generated_Image_October_31_2025_-_6_15PM_wokgpx.png',
+                price: 64.99,
+                description: 'Elegant pairing of premium champagne with chocolate-dipped strawberries',
+                detailedDescription: 'Premium champagne paired with a dozen hand-dipped chocolate strawberries - the ultimate celebration gift',
+                occasions: { celebration: 98, wedding: 95, anniversary: 95, newyear: 98, romance: 90 },
+                bestFor: 'Major celebrations, weddings, and special toasts',
+                reviews: {
+                    rating: 5.0,
+                    count: 156,
+                    summary: '"Absolutely perfect for our anniversary celebration!" - Thomas & Marie'
+                }
+            },
+            tea_gift_set: {
+                id: 'tea_gift_set',
+                category: 'gifts',
+                name: 'Premium Tea Collection',
+                image: 'https://images.unsplash.com/photo-1594631661960-3385a5f5d5db?w=400',
+                price: 24.00,
+                description: 'Curated selection of premium teas',
+                detailedDescription: '12 varieties of organic loose-leaf tea in a beautiful gift box',
+                occasions: { justforme: 92, thankyou: 88, getwell: 85, housewarming: 80 },
+                bestFor: 'Tea lovers and relaxation gifts',
+                reviews: {
+                    rating: 4.8,
+                    count: 145,
+                    summary: '"Perfect for cozy evenings!" - Michelle K.'
+                }
+            },
+
+            // WINE & CHAMPAGNE
+            red_wine: {
+                id: 'red_wine',
+                category: 'wine',
+                name: 'Premium Cabernet Sauvignon',
+                image: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400',
+                price: 42.00,
+                description: 'Rich and bold California Cabernet',
+                detailedDescription: '2019 Napa Valley Cabernet - notes of blackberry and oak',
+                occasions: { romance: 92, anniversary: 95, celebration: 88, thankyou: 80 },
+                bestFor: 'Celebrating special moments',
+                reviews: {
+                    rating: 4.7,
+                    count: 89,
+                    summary: '"Smooth and sophisticated!" - Robert M.'
+                }
+            },
+            champagne: {
+                id: 'champagne',
+                category: 'wine',
+                name: 'French Champagne',
+                image: 'https://images.unsplash.com/photo-1547595628-c61a29f496f0?w=400',
+                price: 65.00,
+                description: 'Elegant Brut Champagne from France',
+                detailedDescription: 'Premium French Champagne with delicate bubbles',
+                occasions: { wedding: 98, anniversary: 95, celebration: 92, newyear: 99 },
+                bestFor: 'Major celebrations and toasts',
+                reviews: {
+                    rating: 4.9,
+                    count: 134,
+                    summary: '"Perfect for our anniversary!" - Thomas & Marie'
+                }
+            },
+            white_wine: {
+                id: 'white_wine',
+                category: 'wine',
+                name: 'Chardonnay Reserve',
+                image: 'https://images.unsplash.com/photo-1584916201218-f4242ceb4809?w=400',
+                price: 38.00,
+                description: 'Crisp and refreshing white wine',
+                detailedDescription: 'Sonoma Chardonnay with notes of apple and citrus',
+                occasions: { celebration: 88, housewarming: 90, thankyou: 85, justbecause: 80 },
+                bestFor: 'Casual celebrations and dinner parties',
+                reviews: {
+                    rating: 4.6,
+                    count: 72,
+                    summary: '"Light and delicious!" - Andrea S.'
+                }
+            },
+
+            // GREETING CARDS
+            romantic_card: {
+                id: 'romantic_card',
+                category: 'cards',
+                name: 'Romantic Greeting Card',
+                image: 'https://images.unsplash.com/photo-1608475860759-cc71142d0d9e?w=400',
+                price: 5.99,
+                description: 'Elegant love-themed card with envelope',
+                detailedDescription: 'Premium cardstock with gold foil accents',
+                occasions: { romance: 95, anniversary: 92, valentines: 95, apology: 80 },
+                bestFor: 'Adding a personal touch to romantic gifts',
+                reviews: {
+                    rating: 4.8,
+                    count: 234,
+                    summary: '"Beautiful quality card!" - Lisa R.'
+                }
+            },
+            sympathy_card: {
+                id: 'sympathy_card',
+                category: 'cards',
+                name: 'Sympathy Card',
+                image: 'https://images.unsplash.com/photo-1595558120055-3df5e641bd99?w=400',
+                price: 5.99,
+                description: 'Thoughtful condolence card',
+                detailedDescription: 'Tasteful design with heartfelt message',
+                occasions: { sympathy: 98, funeral: 98, remembrance: 95 },
+                bestFor: 'Expressing condolences with grace',
+                reviews: {
+                    rating: 4.9,
+                    count: 187,
+                    summary: '"Perfectly worded and respectful." - Karen H.'
+                }
+            },
+            celebration_card: {
+                id: 'celebration_card',
+                category: 'cards',
+                name: 'Celebration Card',
+                image: 'https://images.unsplash.com/photo-1621795476038-c47a00ef3a6b?w=400',
+                price: 5.99,
+                description: 'Festive card for any celebration',
+                detailedDescription: 'Colorful design with confetti accents',
+                occasions: { birthday: 90, celebration: 95, thankyou: 85, graduation: 88 },
+                bestFor: 'Birthdays and joyful occasions',
+                reviews: {
+                    rating: 4.7,
+                    count: 298,
+                    summary: '"Fun and cheerful!" - Jason T.'
+                }
+            },
+
+            // VASES
+            elegant_vase: {
+                id: 'elegant_vase',
+                category: 'vases',
+                name: 'Crystal Vase',
+                image: 'https://images.unsplash.com/photo-1578500494198-246f612d3b3d?w=400',
+                price: 35.00,
+                description: 'Classic crystal vase',
+                detailedDescription: 'Hand-cut crystal vase, 10" tall',
+                occasions: { wedding: 90, housewarming: 95, anniversary: 85, thankyou: 80 },
+                bestFor: 'Long-lasting home decor gift',
+                reviews: {
+                    rating: 4.8,
+                    count: 156,
+                    summary: '"Timeless elegance!" - Patricia W.'
+                }
+            },
+            modern_vase: {
+                id: 'modern_vase',
+                category: 'vases',
+                name: 'Modern Ceramic Vase',
+                image: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=400',
+                price: 28.00,
+                description: 'Contemporary ceramic vase',
+                detailedDescription: 'Matte finish ceramic in minimalist design',
+                occasions: { housewarming: 95, justbecause: 85, thankyou: 80, birthday: 75 },
+                bestFor: 'Modern homes and style-conscious recipients',
+                reviews: {
+                    rating: 4.7,
+                    count: 123,
+                    summary: '"Perfect for my minimalist aesthetic!" - Alex M.'
+                }
+            }
+        };
+
+        // ===== OCCASION DEFINITIONS =====
+        const occasions = {
+            romance: {
+                name: 'Romance & Love',
+                icon: '💕',
+                questions: [
+                    { text: 'What\'s the occasion?', options: ['First date', 'Just because', 'Anniversary', 'Apology', 'Valentine\'s Day'] },
+                    { text: 'What\'s their favorite color?', options: ['Red (classic)', 'Pink (romantic)', 'White (elegant)', 'Surprise me!'] },
+                    { text: 'How would you describe your relationship style?', options: ['Classic & timeless', 'Bold & passionate', 'Sweet & gentle'] }
+                ]
+            },
+            birthday: {
+                name: 'Birthday',
+                icon: '🎂',
+                questions: [
+                    { text: 'Who are you celebrating?', options: ['Partner/Spouse', 'Parent', 'Friend', 'Colleague', 'Myself'] },
+                    { text: 'What\'s their vibe?', options: ['Bright & cheerful', 'Elegant & sophisticated', 'Fun & quirky'] },
+                    { text: 'What\'s your budget?', options: ['Sweet gesture ($25-40)', 'Thoughtful gift ($40-60)', 'Go big! ($60+)'] }
+                ]
+            },
+            wedding: {
+                name: 'Wedding',
+                icon: '💐',
+                questions: [
+                    { text: 'What do you need?', options: ['Bridal bouquet', 'Centerpieces', 'Gift for couple'] },
+                    { text: 'Wedding style?', options: ['Classic & traditional', 'Modern & minimalist', 'Rustic & natural', 'Romantic & whimsical'] },
+                    { text: 'Color palette?', options: ['White & ivory', 'Blush & pink', 'Pastels', 'Bold & vibrant'] }
+                ]
+            },
+            sympathy: {
+                name: 'Sympathy & Remembrance',
+                icon: '🕊️',
+                questions: [
+                    { text: 'Your relationship to the family?', options: ['Close family/friend', 'Colleague', 'Acquaintance'] },
+                    { text: 'Preferred style?', options: ['Traditional white lilies', 'Peaceful pastels', 'Their favorite flowers if known'] },
+                    { text: 'Delivery location?', options: ['Funeral home', 'Family residence', 'Memorial service'] }
+                ]
+            },
+            housewarming: {
+                name: 'Housewarming',
+                icon: '🏡',
+                questions: [
+                    { text: 'What\'s their home style?', options: ['Modern & minimalist', 'Classic & traditional', 'Bohemian & eclectic', 'Not sure'] },
+                    { text: 'Do they have a favorite color scheme?', options: ['Neutrals', 'Bold colors', 'Pastels', 'Surprise me'] },
+                    { text: 'Would they enjoy a vase too?', options: ['Yes, add a vase', 'No, just flowers'] }
+                ]
+            },
+            justforme: {
+                name: 'Just For Me',
+                icon: '🌸',
+                questions: [
+                    { text: 'What are you in the mood for?', options: ['Self-care Sunday', 'Brighten my space', 'Treat myself', 'Weekly ritual'] },
+                    { text: 'Preferred vibe?', options: ['Calming & peaceful', 'Energizing & bright', 'Romantic & dreamy'] },
+                    { text: 'Any scent preferences?', options: ['Fragrant & aromatic', 'Subtle scent', 'No strong scent'] }
+                ]
+            },
+            thankyou: {
+                name: 'Thank You',
+                icon: '🙏',
+                questions: [
+                    { text: 'Who are you thanking?', options: ['Host/Hostess', 'Teacher', 'Friend', 'Colleague', 'Family member'] },
+                    { text: 'What\'s the tone?', options: ['Professional', 'Personal & warm', 'Casual & friendly'] },
+                    { text: 'Budget range?', options: ['Thoughtful gesture ($25-40)', 'Generous thanks ($40-60)', 'Extra special ($60+)'] }
+                ]
+            },
+            celebration: {
+                name: 'Celebration',
+                icon: '🎉',
+                questions: [
+                    { text: 'What are you celebrating?', options: ['Promotion', 'Graduation', 'New baby', 'Achievement', 'Just because!'] },
+                    { text: 'Energy level?', options: ['Bold & vibrant', 'Elegant celebration', 'Sweet & cheerful'] },
+                    { text: 'Want to add champagne?', options: ['Yes, make it festive!', 'No, just flowers'] }
+                ]
+            }
+        };
+
+        // ===== DOM ELEMENTS =====
+        const chatBubble = document.getElementById('chatBubble');
+        const chatWindow = document.getElementById('chatWindow');
+        const chatClose = document.getElementById('chatClose');
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+
+        // ===== EVENT LISTENERS =====
+        chatBubble.addEventListener('click', openChat);
+        chatClose.addEventListener('click', closeChat);
+        sendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        // ===== CHAT FUNCTIONS =====
+        function openChat() {
+            state.isOpen = true;
+            chatBubble.classList.add('hidden');
+            chatWindow.classList.add('visible');
+            if (state.conversation.length === 0) {
+                setTimeout(() => startConversation(), 500);
+            }
+        }
+
+        function closeChat() {
+            state.isOpen = false;
+            chatWindow.classList.remove('visible');
+            chatBubble.classList.remove('hidden');
+        }
+
+        function getCurrentTime() {
+            return new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function scrollToBottom() {
+            setTimeout(() => chatMessages.scrollTop = chatMessages.scrollHeight, 100);
+        }
+
+        function addMessage(type, content, options = {}) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.className = 'message-bubble';
+
+            if (typeof content === 'string') {
+                bubbleDiv.innerHTML = content;
+            } else {
+                bubbleDiv.appendChild(content);
+            }
+
+            messageDiv.appendChild(bubbleDiv);
+
+            if (options.showTime !== false) {
+                const timeDiv = document.createElement('div');
+                timeDiv.className = 'message-time';
+                timeDiv.textContent = getCurrentTime();
+                messageDiv.appendChild(timeDiv);
+            }
+
+            if (options.confidence) {
+                const badge = document.createElement('div');
+                badge.className = 'confidence-badge';
+                badge.innerHTML = `✓ ${options.confidence}% confident`;
+                bubbleDiv.appendChild(badge);
+            }
+
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        function showTyping() {
+            const div = document.createElement('div');
+            div.className = 'message ai';
+            div.id = 'typing-indicator';
+            div.innerHTML = `
+                <div class="typing-indicator">
+                    <span class="typing-text">Bella is typing</span>
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            `;
+            chatMessages.appendChild(div);
+            scrollToBottom();
+        }
+
+        function hideTyping() {
+            const typing = document.getElementById('typing-indicator');
+            if (typing) typing.remove();
+        }
+
+        function addUserMessage(text) {
+            addMessage('user', text);
+            state.conversation.push({ role: 'user', content: text });
+        }
+
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+            addUserMessage(message);
+            chatInput.value = '';
+            setTimeout(() => processUserMessage(message), 800);
+        }
+
+        // ===== CONVERSATION FLOW =====
+        function startConversation() {
+            showTyping();
+            setTimeout(() => {
+                hideTyping();
+                addMessage('ai', 'Hi! I\'m Bella 🌸 your personal florist at Bloom & Petals!<br><br>I\'d love to help you find the perfect flowers. What brings you here today?', { confidence: 95 });
+                setTimeout(() => addOccasionSelector(), 500);
+            }, 1500);
+        }
+
+        function addOccasionSelector() {
+            const occasionButtons = [
+                { text: '💕 Romance & Love', action: 'romance' },
+                { text: '🎂 Birthday', action: 'birthday' },
+                { text: '💐 Wedding', action: 'wedding' },
+                { text: '🕊️ Sympathy', action: 'sympathy' },
+                { text: '🏡 Housewarming', action: 'housewarming' },
+                { text: '🌸 Just For Me', action: 'justforme' },
+                { text: '🙏 Thank You', action: 'thankyou' },
+                { text: '🎉 Celebration', action: 'celebration' }
+            ];
+            addQuickReplies(occasionButtons);
+        }
+
+        function addQuickReplies(replies) {
+            const div = document.createElement('div');
+            div.className = 'message ai';
+            const container = document.createElement('div');
+            container.className = 'quick-replies';
+            replies.forEach(reply => {
+                const btn = document.createElement('button');
+                btn.className = 'quick-reply-btn';
+                btn.textContent = reply.text;
+                btn.onclick = () => handleQuickReply(reply.action, reply.text);
+                container.appendChild(btn);
+            });
+            div.appendChild(container);
+            chatMessages.appendChild(div);
+            scrollToBottom();
+        }
+
+        function handleQuickReply(action, displayText) {
+            // Remove all quick reply buttons
+            document.querySelectorAll('.quick-replies').forEach(el => el.parentElement.remove());
+
+            addUserMessage(displayText);
+
+            // Handle occasion selection
+            if (occasions[action]) {
+                state.userPreferences.occasion = action;
+                state.userPreferences.questionIndex = 0;
+                setTimeout(() => askOccasionQuestions(action), 1000);
+            } else {
+                setTimeout(() => processUserMessage(displayText), 800);
+            }
+        }
+
+        function askOccasionQuestions(occasion) {
+            const occasionData = occasions[occasion];
+            const questionIndex = state.userPreferences.questionIndex || 0;
+
+            if (questionIndex < occasionData.questions.length) {
+                showTyping();
+                setTimeout(() => {
+                    hideTyping();
+                    const question = occasionData.questions[questionIndex];
+                    addMessage('ai', question.text, { confidence: 90 });
+
+                    const options = question.options.map(opt => ({
+                        text: opt,
+                        action: `answer_${questionIndex}_${opt}`
+                    }));
+
+                    setTimeout(() => addQuickReplies(options), 500);
+                }, 1200);
+            } else {
+                // Questions complete, show recommendations
+                setTimeout(() => showRecommendations(), 1000);
+            }
+        }
+
+        function processUserMessage(message) {
+            // Handle occasion question answers
+            if (message.startsWith('answer_')) return;
+
+            const lower = message.toLowerCase();
+
+            // Simple keyword matching fallback
+            if (lower.includes('anniversary') || lower.includes('romantic')) {
+                state.userPreferences.occasion = 'romance';
+                showRecommendations();
+            } else if (lower.includes('birthday')) {
+                state.userPreferences.occasion = 'birthday';
+                showRecommendations();
+            } else if (lower.includes('wedding')) {
+                state.userPreferences.occasion = 'wedding';
+                showRecommendations();
+            } else if (lower.includes('sympathy') || lower.includes('funeral')) {
+                state.userPreferences.occasion = 'sympathy';
+                showRecommendations();
+            } else {
+                showTyping();
+                setTimeout(() => {
+                    hideTyping();
+                    addMessage('ai', 'I\'d love to help! Let me show you what we have:', { confidence: 88 });
+                    setTimeout(() => showAllProducts(), 500);
+                }, 1200);
+            }
+        }
+
+        // Handle answers to occasion questions
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('quick-reply-btn')) {
+                const text = e.target.textContent;
+                if (state.userPreferences.occasion && text && !text.includes('💕') && !text.includes('🎂')) {
+                    state.userPreferences.questionIndex = (state.userPreferences.questionIndex || 0) + 1;
+                    setTimeout(() => askOccasionQuestions(state.userPreferences.occasion), 1000);
+                }
+            }
+        });
+
+        function showRecommendations() {
+            const occasion = state.userPreferences.occasion;
+            const matchedProducts = Object.values(products)
+                .filter(p => p.category === 'flowers' && p.occasions[occasion] >= 85)
+                .sort((a, b) => (b.occasions[occasion] || 0) - (a.occasions[occasion] || 0))
+                .slice(0, 3);
+
+            showTyping();
+            setTimeout(() => {
+                hideTyping();
+                addMessage('ai', `Perfect! I've found some beautiful options that are ideal for ${occasions[occasion]?.name || 'your occasion'}. Each has been loved by customers in similar situations! 🌸`, { confidence: 93 });
+                setTimeout(() => {
+                    matchedProducts.forEach((product, i) => {
+                        setTimeout(() => addEnhancedProductCard(product, occasion), i * 400);
+                    });
+                }, 600);
+            }, 1500);
+        }
+
+        function showAllProducts() {
+            const flowerProducts = Object.values(products).filter(p => p.category === 'flowers');
+
+            showTyping();
+            setTimeout(() => {
+                hideTyping();
+                addMessage('ai', 'Here\'s our beautiful collection! Use the arrows to browse all options 👉', { confidence: 93 });
+                setTimeout(() => createCarousel(flowerProducts), 500);
+            }, 1200);
+        }
+
+        function addEnhancedProductCard(product, occasion = null) {
+            const div = document.createElement('div');
+            div.className = 'message ai';
+            const card = document.createElement('div');
+            card.className = 'product-card-chat';
+
+            let occasionBadge = '';
+            if (occasion && product.occasions[occasion]) {
+                occasionBadge = `<div class="occasion-badge">${product.occasions[occasion]}% Perfect Match for ${occasions[occasion]?.name}</div>`;
+            }
+
+            card.innerHTML = `
+                ${occasionBadge}
+                <div class="product-card-content">
+                    <img src="${product.image}" alt="${product.name}" class="product-card-image">
+                    <div class="product-card-info">
+                        <div class="product-card-name">${product.name}</div>
+                        <div class="product-card-desc">${product.detailedDescription || product.description}</div>
+                        <div style="color: #0369a1; font-size: 0.8rem; margin-top: 6px;">✨ ${product.bestFor}</div>
+                    </div>
+                </div>
+                <div class="review-summary">${product.reviews.summary}</div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 0.85rem;">
+                    <span style="color: #fbbf24;">${'⭐'.repeat(Math.round(product.reviews.rating))}</span>
+                    <span style="color: #666;">${product.reviews.rating} (${product.reviews.count} reviews)</span>
+                </div>
+                <div class="product-card-footer">
+                    <div class="product-card-price">$${product.price.toFixed(2)}</div>
+                    <button class="product-card-btn">Select This One</button>
+                </div>
+            `;
+            card.querySelector('.product-card-btn').onclick = () => selectProduct(product);
+            div.appendChild(card);
+            chatMessages.appendChild(div);
+            scrollToBottom();
+        }
+
+        function createCarousel(productsArray = null) {
+            const items = productsArray || Object.values(products).filter(p => p.category === 'flowers');
+
+            const div = document.createElement('div');
+            div.className = 'message ai';
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'carousel-wrapper';
+
+            const prevBtn = document.createElement('div');
+            prevBtn.className = 'carousel-nav prev';
+            prevBtn.innerHTML = '‹';
+            prevBtn.onclick = () => scrollCarousel(-1);
+
+            const nextBtn = document.createElement('div');
+            nextBtn.className = 'carousel-nav next';
+            nextBtn.innerHTML = '›';
+            nextBtn.onclick = () => scrollCarousel(1);
+
+            const container = document.createElement('div');
+            container.className = 'carousel-container';
+
+            const track = document.createElement('div');
+            track.className = 'carousel-track';
+
+            const carousel = document.createElement('div');
+            carousel.className = 'product-carousel';
+            carousel.id = 'productCarousel';
+
+            items.forEach(p => {
+                const item = document.createElement('div');
+                item.className = 'carousel-item';
+                item.innerHTML = `
+                    <img src="${p.image}" alt="${p.name}" class="carousel-item-img">
+                    <div class="carousel-item-name">${p.name}</div>
+                    <div class="carousel-item-price">$${p.price.toFixed(2)}</div>
+                `;
+                item.onclick = () => {
+                    addUserMessage(`Tell me more about ${p.name}`);
+                    setTimeout(() => {
+                        showTyping();
+                        setTimeout(() => {
+                            hideTyping();
+                            addEnhancedProductCard(p);
+                        }, 1000);
+                    }, 500);
+                };
+                carousel.appendChild(item);
+            });
+
+            track.appendChild(carousel);
+            container.appendChild(track);
+            wrapper.appendChild(prevBtn);
+            wrapper.appendChild(container);
+            wrapper.appendChild(nextBtn);
+            div.appendChild(wrapper);
+            chatMessages.appendChild(div);
+
+            state.carouselPosition = 0;
+            updateCarouselButtons();
+            scrollToBottom();
+        }
+
+        function scrollCarousel(direction) {
+            const carousel = document.getElementById('productCarousel');
+            if (!carousel) return;
+
+            const track = carousel.parentElement;
+            const containerWidth = track.clientWidth;
+            const itemWidth = 140 + 12;
+
+            state.carouselPosition += direction * itemWidth;
+
+            const maxScroll = carousel.scrollWidth - containerWidth;
+            state.carouselPosition = Math.max(0, Math.min(state.carouselPosition, maxScroll));
+
+            carousel.style.transform = `translateX(-${state.carouselPosition}px)`;
+            updateCarouselButtons();
+        }
+
+        function updateCarouselButtons() {
+            const carousel = document.getElementById('productCarousel');
+            if (!carousel) return;
+
+            const prevBtn = document.querySelector('.carousel-nav.prev');
+            const nextBtn = document.querySelector('.carousel-nav.next');
+
+            const track = carousel.parentElement;
+            const containerWidth = track.clientWidth;
+            const maxScroll = carousel.scrollWidth - containerWidth;
+
+            if (prevBtn) {
+                prevBtn.classList.toggle('disabled', state.carouselPosition <= 0);
+            }
+
+            if (nextBtn) {
+                nextBtn.classList.toggle('disabled', state.carouselPosition >= maxScroll);
+            }
+        }
+
+        function selectProduct(product) {
+            state.selectedProduct = product;
+            addUserMessage(`I'd like to order the ${product.name}`);
+
+            setTimeout(() => {
+                showTyping();
+                setTimeout(() => {
+                    hideTyping();
+                    addMessage('ai', `Excellent choice! The ${product.name} is absolutely beautiful 💐<br><br>${product.reviews.count} customers have loved it!`, { confidence: 96 });
+
+                    // Show pairing suggestions
+                    if (product.pairsWith && product.pairsWith.length > 0) {
+                        setTimeout(() => showPairingSuggestions(product), 1500);
+                    } else {
+                        setTimeout(() => proceedToCheckout(), 2000);
+                    }
+                }, 1500);
+            }, 800);
+        }
+
+        function showPairingSuggestions(mainProduct) {
+            const pairings = mainProduct.pairsWith
+                .map(id => products[id])
+                .filter(p => p);
+
+            if (pairings.length === 0) {
+                proceedToCheckout();
+                return;
+            }
+
+            addMessage('ai', '💝 Want to make it extra special? These pair beautifully:', { confidence: 92 });
+
+            setTimeout(() => {
+                pairings.forEach((pairing, i) => {
+                    setTimeout(() => {
+                        const div = document.createElement('div');
+                        div.className = 'message ai';
+                        const card = document.createElement('div');
+                        card.className = 'product-card-chat';
+                        card.style.background = '#fff';
+                        card.style.border = '2px solid #e5e7eb';
+
+                        card.innerHTML = `
+                            <div class="product-card-content">
+                                <img src="${pairing.image}" alt="${pairing.name}" class="product-card-image" style="width: 80px; height: 80px;">
+                                <div class="product-card-info">
+                                    <div class="product-card-name" style="font-size: 0.95rem;">${pairing.name}</div>
+                                    <div class="product-card-desc">${pairing.description}</div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+                                        <div style="color: #d63384; font-weight: 700;">+$${pairing.price.toFixed(2)}</div>
+                                        <button class="product-card-btn" style="padding: 6px 16px; font-size: 0.85rem;">Add to Order</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                        card.querySelector('.product-card-btn').onclick = () => {
+                            state.cart.push(pairing);
+                            card.style.opacity = '0.6';
+                            card.querySelector('.product-card-btn').textContent = '✓ Added';
+                            card.querySelector('.product-card-btn').disabled = true;
+                        };
+
+                        div.appendChild(card);
+                        chatMessages.appendChild(div);
+                        scrollToBottom();
+                    }, i * 300);
+                });
+
+                setTimeout(() => {
+                    const continueBtn = [{ text: 'Continue to Checkout', action: 'checkout' }];
+                    addQuickReplies(continueBtn);
+                }, pairings.length * 300 + 500);
+            }, 500);
+        }
+
+        // Handle checkout continuation
+        document.addEventListener('click', (e) => {
+            if (e.target.textContent === 'Continue to Checkout') {
+                document.querySelectorAll('.quick-replies').forEach(el => el.parentElement.remove());
+                addUserMessage('Continue to Checkout');
+                setTimeout(() => proceedToCheckout(), 800);
+            }
+        });
+
+        function proceedToCheckout() {
+            showTyping();
+            setTimeout(() => {
+                hideTyping();
+                addMessage('ai', 'Perfect! Let me help you complete your order. I just need a few details for delivery. 📝', { confidence: 96 });
+                setTimeout(() => showCheckoutForm(), 1000);
+            }, 1000);
+        }
+
+        function showCheckoutForm() {
+            const cartTotal = [state.selectedProduct, ...state.cart].reduce((sum, p) => sum + p.price, 0);
+            const deliveryFee = 12.99;
+            const total = cartTotal + deliveryFee;
+
+            const div = document.createElement('div');
+            div.className = 'message ai';
+            const form = document.createElement('div');
+            form.className = 'checkout-form';
+
+            let cartItemsHTML = state.cart.map(item => `
+                <div class="order-item">
+                    <span>${item.name}</span>
+                    <span>$${item.price.toFixed(2)}</span>
+                </div>
+            `).join('');
+
+            form.innerHTML = `
+                <div class="checkout-title">📝 Delivery Information</div>
+                <div class="form-group">
+                    <label class="form-label">Recipient Name *</label>
+                    <input type="text" class="form-input" id="recipientName" placeholder="Full name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Delivery Address *</label>
+                    <input type="text" class="form-input" id="address" placeholder="Street address">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">City *</label>
+                        <input type="text" class="form-input" id="city" placeholder="City">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">ZIP *</label>
+                        <input type="text" class="form-input" id="zip" placeholder="12345">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone *</label>
+                    <input type="tel" class="form-input" id="phone" placeholder="(555) 123-4567">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Delivery Date *</label>
+                    <input type="date" class="form-input" id="deliveryDate">
+                </div>
+                <div class="order-summary">
+                    <div class="order-summary-title">Order Summary</div>
+                    <div class="order-item">
+                        <span>${state.selectedProduct.name}</span>
+                        <span>$${state.selectedProduct.price.toFixed(2)}</span>
+                    </div>
+                    ${cartItemsHTML}
+                    <div class="order-item">
+                        <span>Same-Day Delivery</span>
+                        <span>$${deliveryFee.toFixed(2)}</span>
+                    </div>
+                    <div class="order-item">
+                        <span>Total</span>
+                        <span>$${total.toFixed(2)}</span>
+                    </div>
+                </div>
+                <button class="submit-order-btn" id="submitOrder">Complete Order 🎉</button>
+            `;
+            div.appendChild(form);
+            chatMessages.appendChild(div);
+            scrollToBottom();
+
+            const dateInput = document.getElementById('deliveryDate');
+            dateInput.min = new Date().toISOString().split('T')[0];
+            dateInput.value = dateInput.min;
+
+            document.getElementById('submitOrder').onclick = submitOrder;
+        }
+
+        function submitOrder() {
+            if (!document.getElementById('recipientName').value.trim() ||
+                !document.getElementById('address').value.trim() ||
+                !document.getElementById('city').value.trim() ||
+                !document.getElementById('zip').value.trim() ||
+                !document.getElementById('phone').value.trim()) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            state.orderNumber = 'BL' + Math.random().toString(36).substr(2, 9).toUpperCase();
+            const btn = document.getElementById('submitOrder');
+            btn.textContent = 'Processing... 🔄';
+            btn.disabled = true;
+
+            setTimeout(() => showOrderConfirmation(), 2000);
+        }
+
+        function showOrderConfirmation() {
+            const div = document.createElement('div');
+            div.className = 'message ai';
+            const conf = document.createElement('div');
+            conf.className = 'success-animation';
+            conf.innerHTML = `
+                <div class="success-icon">🎉</div>
+                <div class="success-title">Order Confirmed!</div>
+                <div style="color: #666; margin-bottom: 16px;">
+                    Thank you! Your ${state.selectedProduct.name} will be delivered with care 💐
+                </div>
+                <div class="tracking-info">
+                    <strong>Order Number:</strong>
+                    <div class="tracking-number">${state.orderNumber}</div>
+                    <div style="color: #666; font-size: 0.9rem; margin-top: 8px;">
+                        🚚 Estimated delivery: ${new Date(document.getElementById('deliveryDate').value).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="action-btn" onclick="trackOrder()">📦 Track Order</button>
+                    <button class="action-btn primary" onclick="location.reload()">🌸 Shop More</button>
+                </div>
+            `;
+            div.appendChild(conf);
+            chatMessages.appendChild(div);
+            scrollToBottom();
+
+            setTimeout(() => {
+                addMessage('ai', 'You\'ll receive SMS updates on your delivery! Is there anything else I can help you with today? 😊', { confidence: 97 });
+            }, 2000);
+        }
+
+        function trackOrder() {
+            addUserMessage('Can I track my order?');
+            setTimeout(() => {
+                showTyping();
+                setTimeout(() => {
+                    hideTyping();
+                    addMessage('ai', `Your order <strong>${state.orderNumber}</strong> is being prepared! 📦<br><br>You'll receive SMS updates when:<br>• Flowers are prepared<br>• Out for delivery<br>• Delivered`, { confidence: 99 });
+                }, 1500);
+            }, 800);
+        }
+
+        window.addEventListener('load', () => {
+            setTimeout(() => chatBubble.style.animation = 'wave 2s infinite', 1000);
+        });
+    </script>
+</body>
+</html>
