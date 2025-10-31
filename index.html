@@ -857,71 +857,127 @@
         }
 
         .drawer-product-full {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
+            background: #fef3f7;
+            border: 2px solid #ffd6e8;
+            border-radius: 16px;
+            padding: 16px;
             margin-bottom: 15px;
-            border: 1px solid #e5e7eb;
             transition: all 0.3s;
             cursor: pointer;
         }
 
         .drawer-product-full:hover {
-            box-shadow: 0 8px 20px rgba(214, 51, 132, 0.15);
-            transform: translateY(-4px);
+            border-color: #d63384;
+            box-shadow: 0 4px 16px rgba(214, 51, 132, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .drawer-product-full .match-badge {
+            display: inline-block;
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .drawer-product-full .product-content {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 10px;
         }
 
         .drawer-product-full img {
-            width: 100%;
-            height: 200px;
+            width: 100px;
+            height: 100px;
+            border-radius: 12px;
             object-fit: cover;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .drawer-product-full-content {
-            padding: 15px;
+        .drawer-product-full .product-info {
+            flex: 1;
+            min-width: 0;
         }
 
         .drawer-product-full h5 {
-            font-size: 1.1rem;
-            margin: 0 0 8px 0;
+            font-size: 1rem;
+            margin: 0 0 6px 0;
             color: #1f2937;
             font-weight: 600;
         }
 
         .drawer-product-full .description {
             font-size: 0.85rem;
-            color: #6b7280;
-            margin-bottom: 10px;
+            color: #666;
+            margin-bottom: 8px;
             line-height: 1.4;
         }
 
-        .drawer-product-full .match-badge {
-            display: inline-block;
-            background: #d1fae5;
+        .drawer-product-full .best-for {
+            color: #0369a1;
+            font-size: 0.8rem;
+            margin-top: 6px;
+        }
+
+        .drawer-product-full .review-box {
+            background: #f0fdf4;
+            border-left: 3px solid #4ade80;
+            padding: 8px 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-size: 0.85rem;
             color: #065f46;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .drawer-product-full .rating-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+        }
+
+        .drawer-product-full .stars {
+            color: #fbbf24;
+        }
+
+        .drawer-product-full .rating-text {
+            color: #666;
         }
 
         .drawer-product-full .footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 10px;
         }
 
         .drawer-product-full .price {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: #d63384;
             font-weight: 700;
         }
 
-        .drawer-product-full .rating {
-            font-size: 0.8rem;
-            color: #fbbf24;
+        .drawer-product-full .select-btn {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #d63384 0%, #f06595 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .drawer-product-full .select-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(214, 51, 132, 0.3);
         }
 
         .chat-header {
@@ -2720,24 +2776,49 @@
             } else {
                 div.className = 'drawer-product-full';
                 const matchBadge = product.occasion && product.occasions[product.occasion]
-                    ? `<div class="match-badge">${product.occasions[product.occasion]}% Match</div>`
+                    ? `<div class="match-badge">${product.occasions[product.occasion]}% Perfect Match</div>`
                     : '';
 
                 div.innerHTML = `
-                    <img src="${product.image}" alt="${product.name}">
-                    <div class="drawer-product-full-content">
-                        ${matchBadge}
-                        <h5>${product.name}</h5>
-                        <div class="description">${product.description}</div>
-                        <div class="footer">
-                            <div class="price">$${product.price.toFixed(2)}</div>
-                            <div class="rating">${'⭐'.repeat(Math.round(product.reviews.rating))}</div>
+                    ${matchBadge}
+                    <div class="product-content">
+                        <img src="${product.image}" alt="${product.name}">
+                        <div class="product-info">
+                            <h5>${product.name}</h5>
+                            <div class="description">${product.detailedDescription || product.description}</div>
+                            <div class="best-for">✨ ${product.bestFor}</div>
                         </div>
                     </div>
+                    <div class="review-box">${product.reviews.summary}</div>
+                    <div class="rating-row">
+                        <span class="stars">${'⭐'.repeat(Math.round(product.reviews.rating))}</span>
+                        <span class="rating-text">${product.reviews.rating} (${product.reviews.count} reviews)</span>
+                    </div>
+                    <div class="footer">
+                        <div class="price">$${product.price.toFixed(2)}</div>
+                        <button class="select-btn" onclick="event.stopPropagation()">Select This One</button>
+                    </div>
                 `;
+
+                // Add button handler after rendering
+                setTimeout(() => {
+                    const btn = div.querySelector('.select-btn');
+                    if (btn) {
+                        btn.onclick = (e) => {
+                            e.stopPropagation();
+                            selectProduct(product);
+                        };
+                    }
+                }, 0);
             }
 
-            div.onclick = () => selectProduct(product);
+            // Make entire card clickable for full mode
+            if (mode === 'full') {
+                div.onclick = () => selectProduct(product);
+            } else {
+                div.onclick = () => selectProduct(product);
+            }
+
             return div;
         }
 
