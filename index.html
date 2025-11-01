@@ -3214,8 +3214,6 @@
                 { text: '🎂 Birthday', action: 'birthday' },
                 { text: '💐 Wedding', action: 'wedding' },
                 { text: '🕊️ Sympathy', action: 'sympathy' },
-                { text: '🏡 Housewarming', action: 'housewarming' },
-                { text: '🌸 Just For Me', action: 'justforme' },
                 { text: '🙏 Thank You', action: 'thankyou' },
                 { text: '🎉 Celebration', action: 'celebration' }
             ];
@@ -3227,7 +3225,11 @@
             div.className = 'message ai';
             const container = document.createElement('div');
             container.className = 'quick-replies';
-            replies.forEach(reply => {
+
+            // Limit to 6 options maximum
+            const limitedReplies = replies.slice(0, 6);
+
+            limitedReplies.forEach(reply => {
                 const btn = document.createElement('button');
                 btn.className = 'quick-reply-btn';
                 btn.textContent = reply.text;
@@ -3262,7 +3264,10 @@
                 const repliesContainer = document.createElement('div');
                 repliesContainer.className = 'quick-replies';
 
-                group.replies.forEach(reply => {
+                // Limit to 6 options maximum per group
+                const limitedReplies = group.replies.slice(0, 6);
+
+                limitedReplies.forEach(reply => {
                     const btn = document.createElement('button');
                     btn.className = `quick-reply-btn ${group.style || 'primary'}`;
                     btn.textContent = reply.text;
