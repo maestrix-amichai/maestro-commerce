@@ -887,131 +887,193 @@
         }
 
         .drawer-product-full {
-            background: #fef3f7;
-            border: 2px solid #ffd6e8;
+            background: white;
             border-radius: 16px;
-            padding: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
             margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
             transition: all 0.3s;
-            cursor: pointer;
         }
 
         .drawer-product-full:hover {
-            border-color: #d63384;
-            box-shadow: 0 4px 16px rgba(214, 51, 132, 0.2);
-            transform: translateY(-2px);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Image Section */
+        .drawer-product-full .image-section {
+            position: relative;
+            height: 200px;
+            background: linear-gradient(135deg, #ffeef8 0%, #ffd6e8 100%);
+            overflow: hidden;
+        }
+
+        .drawer-product-full .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .drawer-product-full:hover .product-image {
+            transform: scale(1.05);
         }
 
         .drawer-product-full .match-badge {
-            display: inline-block;
-            background: #e0f2fe;
-            color: #0369a1;
-            padding: 4px 10px;
-            border-radius: 12px;
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: white;
+            color: #3b82f6;
+            padding: 6px 12px;
+            border-radius: 16px;
             font-size: 0.75rem;
-            font-weight: 600;
-            margin-bottom: 8px;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            z-index: 10;
         }
 
-        .drawer-product-full .product-content {
+        /* Content Section */
+        .drawer-product-full .content-section {
+            padding: 16px;
             display: flex;
-            gap: 16px;
-            align-items: center;
-            margin-bottom: 10px;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        .drawer-product-full img {
-            width: 100px;
-            height: 100px;
-            border-radius: 12px;
-            object-fit: cover;
-            flex-shrink: 0;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .drawer-product-full .product-info {
-            flex: 1;
-            min-width: 0;
+        .drawer-product-full .title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
         }
 
         .drawer-product-full h5 {
-            font-size: 1rem;
-            margin: 0 0 6px 0;
+            font-size: 1.1rem;
+            margin: 0;
             color: #1f2937;
-            font-weight: 600;
+            font-weight: 700;
+            line-height: 1.3;
+            flex: 1;
+        }
+
+        .drawer-product-full .price {
+            font-size: 1.4rem;
+            color: #d63384;
+            font-weight: 700;
+            white-space: nowrap;
         }
 
         .drawer-product-full .description {
             font-size: 0.85rem;
-            color: #666;
-            margin-bottom: 8px;
-            line-height: 1.4;
+            color: #6b7280;
+            line-height: 1.5;
         }
 
-        .drawer-product-full .best-for {
-            color: #0369a1;
-            font-size: 0.8rem;
-            margin-top: 6px;
+        .drawer-product-full .occasion-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            align-self: flex-start;
         }
 
-        .drawer-product-full .review-box {
-            background: #f0fdf4;
-            border-left: 3px solid #4ade80;
-            padding: 8px 12px;
-            margin: 10px 0;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            color: #065f46;
-            font-style: italic;
+        .drawer-product-full .occasion-pill::before {
+            content: "✨";
         }
 
-        .drawer-product-full .rating-row {
+        /* Reviews Section */
+        .drawer-product-full .reviews-container {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
-            font-size: 0.85rem;
+            gap: 12px;
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 10px;
         }
 
         .drawer-product-full .stars {
             color: #fbbf24;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            line-height: 1;
         }
 
-        .drawer-product-full .rating-text {
-            color: #666;
+        .drawer-product-full .rating-info {
+            flex: 1;
         }
 
-        .drawer-product-full .footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: transparent;
-            padding-top: 12px;
-            margin-top: 12px;
-            border-top: 1px solid rgba(214, 51, 132, 0.1);
-        }
-
-        .drawer-product-full .price {
-            font-size: 1.3rem;
-            color: #d63384;
+        .drawer-product-full .rating-score {
+            font-size: 0.9rem;
             font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .drawer-product-full .review-quote {
+            font-size: 0.75rem;
+            color: #6b7280;
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        /* Action Buttons */
+        .drawer-product-full .action-row {
+            display: flex;
+            gap: 10px;
         }
 
         .drawer-product-full .select-btn {
-            padding: 8px 20px;
+            flex: 1;
+            padding: 12px 20px;
             background: linear-gradient(135deg, #d63384 0%, #f06595 100%);
             color: white;
             border: none;
-            border-radius: 20px;
+            border-radius: 10px;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s;
             font-size: 0.9rem;
+            box-shadow: 0 2px 8px rgba(214, 51, 132, 0.3);
         }
 
         .drawer-product-full .select-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(214, 51, 132, 0.4);
+        }
+
+        .drawer-product-full .btn-favorite {
+            width: 44px;
+            height: 44px;
+            background: white;
+            border: 2px solid #d63384;
+            color: #d63384;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .drawer-product-full .btn-favorite:hover {
+            background: #ffeef8;
             transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(214, 51, 132, 0.3);
+        }
+
+        .drawer-product-full .btn-favorite.active {
+            background: #d63384;
+            color: white;
         }
 
         .chat-header {
@@ -2152,6 +2214,7 @@
                 recipient: null
             },
             cart: [],
+            favorites: [], // User's favorited products
             recommendationsShown: false,
             drawer: {
                 isOpen: false,
@@ -2162,6 +2225,16 @@
                 historyIndex: -1 // Current position in history
             }
         };
+
+        // Load favorites from localStorage on init
+        try {
+            const savedFavorites = localStorage.getItem('bloom-favorites');
+            if (savedFavorites) {
+                state.favorites = JSON.parse(savedFavorites);
+            }
+        } catch (e) {
+            console.log('Could not load favorites from localStorage:', e);
+        }
 
         // ===== PRODUCT CATALOG WITH RICH METADATA =====
         const products = {
@@ -2851,33 +2924,71 @@
                     : '';
 
                 div.innerHTML = `
-                    ${matchBadge}
-                    <div class="product-content">
-                        <img src="${product.image}" alt="${product.name}">
-                        <div class="product-info">
+                    <!-- Image Section -->
+                    <div class="image-section">
+                        <img src="${product.image}" alt="${product.name}" class="product-image" loading="lazy">
+                        ${matchBadge}
+                    </div>
+
+                    <!-- Content Section -->
+                    <div class="content-section">
+                        <!-- Title & Price Row -->
+                        <div class="title-row">
                             <h5>${product.name}</h5>
-                            <div class="description">${product.detailedDescription || product.description}</div>
-                            <div class="best-for">✨ ${product.bestFor}</div>
+                            <div class="price">$${product.price.toFixed(2)}</div>
                         </div>
-                    </div>
-                    <div class="review-box">${product.reviews.summary}</div>
-                    <div class="rating-row">
-                        <span class="stars">${'⭐'.repeat(Math.round(product.reviews.rating))}</span>
-                        <span class="rating-text">${product.reviews.rating} (${product.reviews.count} reviews)</span>
-                    </div>
-                    <div class="footer">
-                        <div class="price">$${product.price.toFixed(2)}</div>
-                        <button class="select-btn" onclick="event.stopPropagation()">Select This One</button>
+
+                        <!-- Description -->
+                        <div class="description">${product.detailedDescription || product.description}</div>
+
+                        <!-- Occasion Pill -->
+                        <div class="occasion-pill">${product.bestFor}</div>
+
+                        <!-- Reviews Section -->
+                        <div class="reviews-container">
+                            <div class="stars" aria-label="Rating: ${product.reviews.rating} out of 5 stars">
+                                ${'★'.repeat(Math.round(product.reviews.rating))}
+                            </div>
+                            <div class="rating-info">
+                                <div class="rating-score">${product.reviews.rating} (${product.reviews.count} reviews)</div>
+                                <div class="review-quote">${product.reviews.summary}</div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="action-row">
+                            <button class="select-btn" aria-label="Select ${product.name} and proceed to checkout">
+                                Select This One
+                            </button>
+                            <button class="btn-favorite" aria-label="Add to favorites" data-product-id="${product.id}">
+                                ♥
+                            </button>
+                        </div>
                     </div>
                 `;
 
-                // Add button handler after rendering
+                // Add button handlers after rendering
                 setTimeout(() => {
-                    const btn = div.querySelector('.select-btn');
-                    if (btn) {
-                        btn.onclick = (e) => {
+                    const selectBtn = div.querySelector('.select-btn');
+                    const favoriteBtn = div.querySelector('.btn-favorite');
+
+                    if (selectBtn) {
+                        selectBtn.onclick = (e) => {
                             e.stopPropagation();
                             selectProduct(product);
+                        };
+                    }
+
+                    if (favoriteBtn) {
+                        // Check if product is already favorited
+                        if (state.favorites && state.favorites.find(p => p.id === product.id)) {
+                            favoriteBtn.classList.add('active');
+                            favoriteBtn.setAttribute('aria-label', 'Remove from favorites');
+                        }
+
+                        favoriteBtn.onclick = (e) => {
+                            e.stopPropagation();
+                            toggleProductFavorite(product, favoriteBtn);
                         };
                     }
                 }, 0);
@@ -2891,6 +3002,40 @@
             }
 
             return div;
+        }
+
+        function toggleProductFavorite(product, buttonElement) {
+            // Toggle active class
+            const isActive = buttonElement.classList.toggle('active');
+
+            // Update aria-label for accessibility
+            buttonElement.setAttribute(
+                'aria-label',
+                isActive ? 'Remove from favorites' : 'Add to favorites'
+            );
+
+            // Initialize favorites array in state if it doesn't exist
+            if (!state.favorites) {
+                state.favorites = [];
+            }
+
+            // Update favorites list
+            if (isActive) {
+                if (!state.favorites.find(p => p.id === product.id)) {
+                    state.favorites.push(product);
+                }
+            } else {
+                state.favorites = state.favorites.filter(p => p.id !== product.id);
+            }
+
+            // Save to localStorage
+            try {
+                localStorage.setItem('bloom-favorites', JSON.stringify(state.favorites));
+            } catch (e) {
+                console.log('Could not save favorites to localStorage:', e);
+            }
+
+            console.log('Favorites:', state.favorites);
         }
 
         function scrollDrawer(direction) {
