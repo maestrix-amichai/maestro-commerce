@@ -656,7 +656,7 @@
         }
 
         .suggestions-drawer.compact {
-            width: 200px;
+            width: 280px;
         }
 
         .suggestions-drawer.full {
@@ -2817,7 +2817,7 @@
             if (e.key === 'Enter') sendMessage();
         });
 
-        drawerHint.addEventListener('click', () => setDrawerMode('compact'));
+        drawerHint.addEventListener('click', () => setDrawerMode('full'));
         drawerClose.addEventListener('click', () => setDrawerMode('hidden'));
         drawerToggleCompact.addEventListener('click', () => setDrawerMode('compact'));
         drawerToggleFull.addEventListener('click', () => setDrawerMode('full'));
@@ -2890,9 +2890,9 @@
             drawerBack.disabled = (state.drawer.historyIndex === 0);
             drawerForward.disabled = true; // Always true when adding new
 
-            // Auto-open drawer in compact mode when products are added
+            // Auto-open drawer in full mode when products are added
             if (state.drawer.mode === 'hidden') {
-                setDrawerMode('compact');
+                setDrawerMode('full');
             } else {
                 renderDrawerProducts();
             }
