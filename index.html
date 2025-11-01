@@ -1231,6 +1231,61 @@
             transform: translateY(-2px);
         }
 
+        /* Reply Groups */
+        .reply-groups {
+            margin-top: 12px;
+        }
+
+        .reply-group {
+            margin-bottom: 16px;
+        }
+
+        .reply-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .reply-group-label {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .reply-group-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #e5e7eb, transparent);
+            margin: 12px 0;
+        }
+
+        /* Primary buttons (answer options) */
+        .quick-reply-btn.primary {
+            background: linear-gradient(135deg, #d63384 0%, #f06595 100%);
+            color: white;
+            border: none;
+            box-shadow: 0 2px 8px rgba(214, 51, 132, 0.25);
+        }
+
+        .quick-reply-btn.primary:hover {
+            background: linear-gradient(135deg, #c1297a 0%, #e0508a 100%);
+            box-shadow: 0 4px 12px rgba(214, 51, 132, 0.35);
+            transform: translateY(-2px);
+        }
+
+        /* Secondary buttons (drawer actions) */
+        .quick-reply-btn.secondary {
+            background: white;
+            border: 2px solid #e5e7eb;
+            color: #6b7280;
+            font-size: 0.85rem;
+        }
+
+        .quick-reply-btn.secondary:hover {
+            background: #fef3f7;
+            border-color: #d63384;
+            color: #d63384;
+            transform: translateY(-2px);
+        }
+
         .product-card-chat {
             background: #fef3f7;
             border: 2px solid #ffd6e8;
@@ -3184,9 +3239,56 @@
             scrollToBottom();
         }
 
+        function addQuickReplyGroups(groups) {
+            const div = document.createElement('div');
+            div.className = 'message ai';
+            const groupsContainer = document.createElement('div');
+            groupsContainer.className = 'reply-groups';
+
+            groups.forEach((group, index) => {
+                // Create group container
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'reply-group';
+
+                // Add label if provided
+                if (group.label) {
+                    const label = document.createElement('div');
+                    label.className = 'reply-group-label';
+                    label.textContent = group.label;
+                    groupDiv.appendChild(label);
+                }
+
+                // Add quick replies container
+                const repliesContainer = document.createElement('div');
+                repliesContainer.className = 'quick-replies';
+
+                group.replies.forEach(reply => {
+                    const btn = document.createElement('button');
+                    btn.className = `quick-reply-btn ${group.style || 'primary'}`;
+                    btn.textContent = reply.text;
+                    btn.onclick = () => handleQuickReply(reply.action, reply.text);
+                    repliesContainer.appendChild(btn);
+                });
+
+                groupDiv.appendChild(repliesContainer);
+                groupsContainer.appendChild(groupDiv);
+
+                // Add divider between groups (except for last group)
+                if (index < groups.length - 1) {
+                    const divider = document.createElement('div');
+                    divider.className = 'reply-group-divider';
+                    groupsContainer.appendChild(divider);
+                }
+            });
+
+            div.appendChild(groupsContainer);
+            chatMessages.appendChild(div);
+            scrollToBottom();
+        }
+
         function handleQuickReply(action, displayText) {
-            // Remove all quick reply buttons
-            document.querySelectorAll('.quick-replies').forEach(el => el.parentElement.remove());
+            // Remove all quick reply buttons and reply groups
+            document.querySelectorAll('.quick-replies, .reply-groups').forEach(el => el.parentElement.remove());
 
             addUserMessage(displayText);
 
@@ -3309,7 +3411,22 @@
             // Show initial recommendations after first answer (questionIndex === 0)
             if (questionIndex === 0 && !state.recommendationsShown) {
                 state.recommendationsShown = true;
-                showInitialRecommendations();
+
+                // Get the next question if available
+                let nextQuestion = null;
+                if (questionIndex < occasionData.questions.length) {
+                    const question = occasionData.questions[questionIndex];
+                    nextQuestion = {
+                        text: question.text,
+                        options: question.options.map(opt => ({
+                            text: opt,
+                            action: `answer_${questionIndex}_${opt}`
+                        }))
+                    };
+                }
+
+                showInitialRecommendations(nextQuestion);
+                return; // Don't show question again below
             }
 
             // Refine recommendations if we've already shown them and user answered another question
@@ -3377,7 +3494,7 @@
 
         // Removed duplicate event listener - buttons now use onclick handlers only
 
-        function showInitialRecommendations() {
+        function showInitialRecommendations(nextQuestion = null) {
             const occasion = state.userPreferences.occasion;
             const matchedProducts = Object.values(products)
                 .filter(p => p.category === 'flowers' && p.occasions[occasion] >= 70)
@@ -3397,14 +3514,33 @@
                 hideTyping();
                 addMessage('ai', `Great! I've added some beautiful options to the suggestions panel. Take a look and let me know what you think! 🌸`);
 
-                // Offer refinement options
+                // Offer refinement options and next question if available
                 setTimeout(() => {
-                    const refinementOptions = [
+                    const drawerActions = [
                         { text: '✨ These look perfect!', action: 'refine_satisfied' },
                         { text: '🔄 Show me something different', action: 'refine_change' },
                         { text: '💬 Tell me more about my options', action: 'refine_info' }
                     ];
-                    addQuickReplies(refinementOptions);
+
+                    if (nextQuestion) {
+                        // Show both drawer actions and question options
+                        const groups = [
+                            {
+                                label: 'Check the suggestions →',
+                                style: 'secondary',
+                                replies: drawerActions
+                            },
+                            {
+                                label: nextQuestion.text,
+                                style: 'primary',
+                                replies: nextQuestion.options
+                            }
+                        ];
+                        addQuickReplyGroups(groups);
+                    } else {
+                        // Show only drawer actions
+                        addQuickReplies(drawerActions);
+                    }
                 }, 600);
             }, 1000);
         }
@@ -3646,7 +3782,7 @@
         // Handle checkout continuation
         document.addEventListener('click', (e) => {
             if (e.target.textContent === 'Continue to Checkout') {
-                document.querySelectorAll('.quick-replies').forEach(el => el.parentElement.remove());
+                document.querySelectorAll('.quick-replies, .reply-groups').forEach(el => el.parentElement.remove());
                 addUserMessage('Continue to Checkout');
                 setTimeout(() => proceedToCheckout(), 800);
             }
