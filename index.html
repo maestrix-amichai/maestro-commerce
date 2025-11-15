@@ -3199,25 +3199,75 @@
         }
 
         // ===== CONVERSATION FLOW =====
-        function startConversation() {
-            showTyping();
-            setTimeout(() => {
-                hideTyping();
-                addMessage('ai', 'Hi! I\'m Bella 🌸 your personal florist at Bloom & Petals!<br><br>I\'d love to help you find the perfect flowers. What brings you here today?', { confidence: 95 });
-                setTimeout(() => addOccasionSelector(), 500);
-            }, 1500);
-        }
+        // API endpoint configuration - Supabase Edge Function
+        const SUPABASE_URL = 'https://bgivcrhwvvlnbokhwwwl.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnaXZjcmh3dnZsbmJva2h3d3dsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE0MzY0OTAsImV4cCI6MjA0NzAxMjQ5MH0.XohNLlp5K6Dnh0N1s3qJYLH7hN6HmFGmLIcaVQe_Jfc';
+        const API_ENDPOINT = `${SUPABASE_URL}/functions/v1/chat-ai`;
+        const SHOP_ID = '00000000-0000-0000-0000-000000000001'; // Default shop ID
 
-        function addOccasionSelector() {
-            const occasionButtons = [
-                { text: '💕 Romance & Love', action: 'romance' },
-                { text: '🎂 Birthday', action: 'birthday' },
-                { text: '💐 Wedding', action: 'wedding' },
-                { text: '🕊️ Sympathy', action: 'sympathy' },
-                { text: '🙏 Thank You', action: 'thankyou' },
-                { text: '🎉 Celebration', action: 'celebration' }
-            ];
-            addQuickReplies(occasionButtons);
+        async function startConversation() {
+            showTyping();
+
+            try {
+                // Initialize session if not exists
+                if (!state.sessionId) {
+                    state.sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+                }
+
+                const response = await fetch(API_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    },
+                    body: JSON.stringify({
+                        sessionId: state.sessionId,
+                        message: '[GREETING]', // Special keyword for initial greeting
+                        shopId: SHOP_ID
+                    })
+                });
+
+                const result = await response.json();
+
+                hideTyping();
+
+                if (result && result.message) {
+                    // Display AI response
+                    addMessage('ai', result.message, { confidence: result.confidence || 95 });
+
+                    // Show quick replies if provided
+                    if (result.quickReplies && result.quickReplies.length > 0) {
+                        setTimeout(() => {
+                            const formattedReplies = result.quickReplies.map(qr => ({
+                                text: qr.text,
+                                action: qr.action || qr.text,
+                                variant: qr.variant
+                            }));
+                            addQuickReplies(formattedReplies);
+                        }, 500);
+                    }
+
+                    // Show suggested products if provided
+                    if (result.suggestedProducts && result.suggestedProducts.length > 0) {
+                        setTimeout(() => {
+                            // Backend now returns full product objects, not just IDs
+                            const productObjects = result.suggestedProducts;
+
+                            if (productObjects.length > 0) {
+                                updateDrawerProducts(productObjects, null, result.panelTitle || '✨ Recommendations');
+                            }
+                        }, 800);
+                    }
+                } else {
+                    throw new Error('Invalid response format');
+                }
+
+            } catch (error) {
+                console.error('Failed to start AI conversation:', error);
+                hideTyping();
+                // Simple fallback (AI will handle greeting in normal operation)
+                addMessage('ai', 'Hi! I\'m here to help you find the perfect flowers. What can I help you with today? 🌸', { confidence: 95 });
+            }
         }
 
         function addQuickReplies(replies) {
@@ -3295,284 +3345,85 @@
             // Remove all quick reply buttons and reply groups
             document.querySelectorAll('.quick-replies, .reply-groups').forEach(el => el.parentElement.remove());
 
+            // Add user message
             addUserMessage(displayText);
 
-            // Handle refinement options
-            if (action === 'refine_satisfied') {
-                // Continue with remaining questions
-                showTyping();
-                setTimeout(() => {
-                    hideTyping();
-                    addMessage('ai', 'Wonderful! Let me ask you a few more questions to make sure we find your perfect match... 🌸', { confidence: 92 });
-                    setTimeout(() => {
-                        const occasion = state.userPreferences.occasion;
-                        const subCat = state.userPreferences.subCategory;
-                        askOccasionQuestions(occasion, subCat);
-                    }, 800);
-                }, 1000);
-                return;
-            } else if (action === 'refine_change') {
-                // Show different products from the same occasion
-                const occasion = state.userPreferences.occasion;
-                const allProducts = Object.values(products)
-                    .filter(p => p.category === 'flowers' && p.occasions[occasion] >= 70)
-                    .sort(() => Math.random() - 0.5); // Shuffle for variety
-
-                // Show next 3 products (or rotate to different ones)
-                const offset = Math.floor(Math.random() * Math.max(0, allProducts.length - 3));
-                const newProducts = allProducts.slice(offset, offset + 3);
-
-                // Update drawer with new products
-                updateDrawerProducts(newProducts, occasion, '🔄 More Beautiful Options');
-
-                showTyping();
-                setTimeout(() => {
-                    hideTyping();
-                    addMessage('ai', 'I\'ve updated the suggestions with some other beautiful options... 💐');
-
-                    // Re-offer refinement options
-                    setTimeout(() => {
-                        const refinementOptions = [
-                            { text: '✨ These look perfect!', action: 'refine_satisfied' },
-                            { text: '🔄 Show me something different', action: 'refine_change' },
-                            { text: '💬 Tell me more about my options', action: 'refine_info' }
-                        ];
-                        addQuickReplies(refinementOptions);
-                    }, 600);
-                }, 1000);
-                return;
-            } else if (action === 'refine_info') {
-                // Provide more information
-                showTyping();
-                setTimeout(() => {
-                    hideTyping();
-                    addMessage('ai', 'Each arrangement is handcrafted by our expert florists and comes with our 7-day freshness guarantee. You can click any arrangement in the suggestions panel to see full details, reviews, and add it to your cart. Or keep answering questions and I\'ll help narrow down your perfect choice! 🌸');
-                    setTimeout(() => {
-                        const occasion = state.userPreferences.occasion;
-                        const subCat = state.userPreferences.subCategory;
-                        askOccasionQuestions(occasion, subCat);
-                    }, 800);
-                }, 1200);
-                return;
-            }
-
-            // Handle occasion selection
-            if (occasions[action]) {
-                state.userPreferences.occasion = action;
-                state.userPreferences.questionIndex = 0;
-                state.recommendationsShown = false; // Reset recommendations flag
-
-                // Check if this occasion has sub-categories
-                if (occasions[action].hasSubCategories) {
-                    setTimeout(() => showSubCategorySelection(action), 1000);
-                } else {
-                    setTimeout(() => askOccasionQuestions(action), 1000);
-                }
-            } else if (action.startsWith('subcat_')) {
-                // Handle sub-category selection
-                const subCatId = action.replace('subcat_', '');
-                state.userPreferences.subCategory = subCatId;
-                state.userPreferences.questionIndex = 0;
-                state.recommendationsShown = false; // Reset recommendations flag
-                setTimeout(() => askOccasionQuestions(state.userPreferences.occasion, subCatId), 1000);
-            } else if (action.startsWith('answer_')) {
-                // Handle question answers
-                state.userPreferences.questionIndex = (state.userPreferences.questionIndex || 0) + 1;
-                const occasion = state.userPreferences.occasion;
-                const subCat = state.userPreferences.subCategory;
-                setTimeout(() => askOccasionQuestions(occasion, subCat), 1000);
-            } else {
-                setTimeout(() => processUserMessage(displayText), 800);
-            }
+            // Let AI handle all responses (no more hard-coded logic!)
+            setTimeout(() => processUserMessage(displayText), 800);
         }
 
-        function showSubCategorySelection(occasion) {
-            const occasionData = occasions[occasion];
+        async function processUserMessage(message) {
             showTyping();
-            setTimeout(() => {
+
+            try {
+                // Initialize session if not exists
+                if (!state.sessionId) {
+                    state.sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+                }
+
+                const response = await fetch(API_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    },
+                    body: JSON.stringify({
+                        sessionId: state.sessionId,
+                        message: message,
+                        shopId: SHOP_ID
+                    })
+                });
+
+                const result = await response.json();
+
                 hideTyping();
-                addMessage('ai', 'Great choice! Let me help you find exactly what you need. What type of celebration is this?', { confidence: 92 });
 
-                const subCatButtons = Object.entries(occasionData.subCategories).map(([id, data]) => ({
-                    text: data.displayName,
-                    action: `subcat_${id}`
-                }));
+                if (result && result.message) {
+                    // Display AI response
+                    addMessage('ai', result.message, { confidence: result.confidence || 95 });
 
-                setTimeout(() => addQuickReplies(subCatButtons), 500);
-            }, 1200);
-        }
+                    // Show AI-generated quick replies
+                    if (result.quickReplies && result.quickReplies.length > 0) {
+                        setTimeout(() => {
+                            const formattedReplies = result.quickReplies.map(qr => ({
+                                text: qr.text,
+                                action: qr.action || qr.text,
+                                variant: qr.variant
+                            }));
+                            addQuickReplies(formattedReplies);
+                        }, 500);
+                    }
 
-        function askOccasionQuestions(occasion, subCategory = null) {
-            // Get the right question set - from sub-category if available
-            let occasionData;
-            if (subCategory && occasions[occasion].subCategories) {
-                occasionData = occasions[occasion].subCategories[subCategory];
-            } else {
-                occasionData = occasions[occasion];
-            }
+                    // Show AI-selected products
+                    if (result.suggestedProducts && result.suggestedProducts.length > 0) {
+                        const productObjects = result.suggestedProducts
+                            .map(id => products[id])
+                            .filter(p => p);
 
-            const questionIndex = state.userPreferences.questionIndex || 0;
+                        if (productObjects.length > 0) {
+                            setTimeout(() => {
+                                updateDrawerProducts(
+                                    productObjects,
+                                    null,
+                                    result.panelTitle || '✨ Recommendations'
+                                );
+                            }, 800);
+                        }
+                    }
 
-            // Show initial recommendations after first answer (questionIndex === 0)
-            if (questionIndex === 0 && !state.recommendationsShown) {
-                state.recommendationsShown = true;
-
-                // Get the next question if available
-                let nextQuestion = null;
-                if (questionIndex < occasionData.questions.length) {
-                    const question = occasionData.questions[questionIndex];
-                    nextQuestion = {
-                        text: question.text,
-                        options: question.options.map(opt => ({
-                            text: opt,
-                            action: `answer_${questionIndex}_${opt}`
-                        }))
-                    };
-                }
-
-                showInitialRecommendations(nextQuestion);
-                return; // Don't show question again below
-            }
-
-            // Refine recommendations if we've already shown them and user answered another question
-            if (questionIndex > 0 && state.recommendationsShown) {
-                refineRecommendations();
-            }
-
-            if (questionIndex < occasionData.questions.length) {
-                showTyping();
-                setTimeout(() => {
-                    hideTyping();
-                    const question = occasionData.questions[questionIndex];
-                    addMessage('ai', question.text, { confidence: 90 });
-
-                    const options = question.options.map(opt => ({
-                        text: opt,
-                        action: `answer_${questionIndex}_${opt}`
-                    }));
-
-                    setTimeout(() => addQuickReplies(options), 500);
-                }, 1200);
-            } else {
-                // Questions complete, show final refined recommendations if not already shown
-                if (!state.recommendationsShown) {
-                    setTimeout(() => showRecommendations(), 1000);
                 } else {
-                    // Just show a completion message
-                    showTyping();
-                    setTimeout(() => {
-                        hideTyping();
-                        addMessage('ai', 'Perfect! I\'ve refined my suggestions based on your preferences. Feel free to select one or ask me anything! 🌸', { confidence: 95 });
-                    }, 1000);
+                    throw new Error('Invalid response format');
                 }
-            }
-        }
 
-        function processUserMessage(message) {
-            // Handle occasion question answers
-            if (message.startsWith('answer_')) return;
-
-            const lower = message.toLowerCase();
-
-            // Simple keyword matching fallback
-            if (lower.includes('anniversary') || lower.includes('romantic')) {
-                state.userPreferences.occasion = 'romance';
-                showRecommendations();
-            } else if (lower.includes('birthday')) {
-                state.userPreferences.occasion = 'birthday';
-                showRecommendations();
-            } else if (lower.includes('wedding')) {
-                state.userPreferences.occasion = 'wedding';
-                showRecommendations();
-            } else if (lower.includes('sympathy') || lower.includes('funeral')) {
-                state.userPreferences.occasion = 'sympathy';
-                showRecommendations();
-            } else {
-                showTyping();
-                setTimeout(() => {
-                    hideTyping();
-                    addMessage('ai', 'I\'d love to help! Let me show you what we have:', { confidence: 88 });
-                    setTimeout(() => showAllProducts(), 500);
-                }, 1200);
+            } catch (error) {
+                console.error('AI chat error:', error);
+                hideTyping();
+                // Fallback error message
+                addMessage('ai', 'I apologize! I\'m having a moment. Could you rephrase that for me? 🌸', { confidence: 50 });
             }
         }
 
         // Removed duplicate event listener - buttons now use onclick handlers only
-
-        function showInitialRecommendations(nextQuestion = null) {
-            const occasion = state.userPreferences.occasion;
-            const matchedProducts = Object.values(products)
-                .filter(p => p.category === 'flowers' && p.occasions[occasion] >= 70)
-                .sort((a, b) => {
-                    // Sort by score but add small random factor for variety
-                    const scoreA = (b.occasions[occasion] || 0) + (Math.random() * 10);
-                    const scoreB = (a.occasions[occasion] || 0) + (Math.random() * 10);
-                    return scoreB - scoreA;
-                })
-                .slice(0, 3);
-
-            // Update drawer with products
-            updateDrawerProducts(matchedProducts, occasion, '✨ Perfect Matches');
-
-            showTyping();
-            setTimeout(() => {
-                hideTyping();
-                addMessage('ai', `Great! I've added some beautiful options to the suggestions panel. Take a look and let me know what you think! 🌸`);
-
-                // Offer refinement options and next question if available
-                setTimeout(() => {
-                    const drawerActions = [
-                        { text: '✨ These look perfect!', action: 'refine_satisfied' },
-                        { text: '🔄 Show me something different', action: 'refine_change' },
-                        { text: '💬 Tell me more about my options', action: 'refine_info' }
-                    ];
-
-                    if (nextQuestion) {
-                        // Show both drawer actions and question options
-                        const groups = [
-                            {
-                                label: 'Check the suggestions →',
-                                style: 'secondary',
-                                replies: drawerActions
-                            },
-                            {
-                                label: nextQuestion.text,
-                                style: 'primary',
-                                replies: nextQuestion.options
-                            }
-                        ];
-                        addQuickReplyGroups(groups);
-                    } else {
-                        // Show only drawer actions
-                        addQuickReplies(drawerActions);
-                    }
-                }, 600);
-            }, 1000);
-        }
-
-        function refineRecommendations() {
-            const occasion = state.userPreferences.occasion;
-
-            // Show refined products with variety
-            const matchedProducts = Object.values(products)
-                .filter(p => p.category === 'flowers' && p.occasions[occasion] >= 70)
-                .sort((a, b) => {
-                    // Add randomization for variety
-                    const scoreA = (b.occasions[occasion] || 0) + (Math.random() * 15);
-                    const scoreB = (a.occasions[occasion] || 0) + (Math.random() * 15);
-                    return scoreB - scoreA;
-                })
-                .slice(0, 3);
-
-            // Update drawer with refined products
-            updateDrawerProducts(matchedProducts, occasion, '💫 Refined For You');
-
-            showTyping();
-            setTimeout(() => {
-                hideTyping();
-                addMessage('ai', `I've updated the suggestions based on your preferences... 💫`);
-            }, 800);
-        }
 
         function showRecommendations() {
             const occasion = state.userPreferences.occasion;
